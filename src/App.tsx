@@ -1,0 +1,73 @@
+import { Fragment, useEffect, useState } from "react";
+import { DATA_CENTER_TOKEN, useApp } from "./context/AppContext";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import axios from "axios";
+import { Loader } from "./components/Loader";
+
+import LandingPages from "./Pages/Landing/Index";
+
+axios.defaults.baseURL = "";
+
+function App() {
+  const { signOut, loadData } = useApp();
+  const [loading, setLoading] = useState(false);
+  const preloader = document.getElementById("preloader");
+
+  axios.interceptors.request.use(
+    (axiosConfig) => {
+      const token = localStorage.getItem(DATA_CENTER_TOKEN);
+      axiosConfig.headers.Authorization = `Bearer ${token}`;
+      return axiosConfig;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
+
+  axios.interceptors.response.use(
+    function (response) {
+      return response;
+    },
+    function (error) {
+      if (error.response) {
+        if (error?.response?.status === 401) {
+          signOut();
+        }
+      }
+
+      return Promise.reject(error);
+    }
+  );
+
+  useEffect(() => {
+    if (preloader) {
+      setTimeout(() => {
+        preloader.style.display = "none";
+        setLoading(false);
+      }, 100);
+    }
+
+    //
+  }, [preloader]);
+
+  useEffect(() => {
+    loadData();
+  }, []);
+  return (
+    <Fragment>
+      {loading ? (
+        <Loader />
+      ) : (
+        <Router>
+          <Routes>
+            <>
+            <Route path="/" element={<LandingPages.Homepage />} />
+            </>
+          </Routes>
+        </Router>
+      )}
+    </Fragment>
+  );
+}
+
+export default App;
