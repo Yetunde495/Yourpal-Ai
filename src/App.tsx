@@ -5,6 +5,7 @@ import axios from "axios";
 import { Loader } from "./components/Loader";
 
 import LandingPages from "./Pages/Landing/Index";
+import AuthPages from "./Pages/Authentication/Index";
 
 axios.defaults.baseURL = "";
 
@@ -61,7 +62,15 @@ function App() {
         <Router>
           <Routes>
             <>
-            <Route path="/" element={<LandingPages.Homepage />} />
+              <Route path="/" element={<LandingPages.Homepage />} />
+              <Route path="/signin" element={<AuthPages.Signin />} />
+              <Route path="/signup" element={<AuthPages.Signup />} />
+              <Route
+                path="/forgot-password"
+                element={<AuthPages.ResetPassword />}
+              />
+              <Route path="/reset-password/:email/:token" element={<AuthPages.ResetPasswordForm/>} />
+
             </>
           </Routes>
         </Router>

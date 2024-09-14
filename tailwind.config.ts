@@ -24,8 +24,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        header: ["open sans", "sans-serif"],
-        fraunces: ["fraunces", "serif"],
+        outfit: ["outfit", "sans-serif"]
       },
       fontSize: {
         "title-xxl": ["44px", "55px"],
@@ -47,7 +46,7 @@ export default {
         bodydark: "#AEB7C0",
         bodydark1: "#DEE4EE",
         bodydark2: "#8A99AF",
-        primary: "#6C5BD4",
+        primary: "#5272EA",
         secondary: "#80CAEE",
         stroke: "#E2E8F0",
         gray: "#EFF4FB",
@@ -245,6 +244,7 @@ export default {
       dropShadow: {
         1: "0px 1px 0px #E2E8F0",
         2: "0px 1px 4px rgba(0, 0, 0, 0.12)",
+        3: "14px 14px 44px 0px #4A829666"
       },
       animation: {
         scroll: "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",

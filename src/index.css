@@ -2,3 +2,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+body {
+    font-family: "DM Sans", sans-serif;
+}
+a {
+    color: #5272EA;
+}
+a:hover {
+    color: #5273eae5;
+}
+.bg-gradient {
+    background: linear-gradient(317.04deg, #B588F7 2.52%, #1DE5E2 97.53%);  
+}
+.auth-card {
+    background: linear-gradient(33.29deg, #FFFFFF -26.19%, #D8F2F8 162.87%);
+    box-shadow: 8px -2px 12.7px 0px #00000040;
+
+}
