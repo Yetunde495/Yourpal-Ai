@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useApp } from "../../context/AppContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FormProvider, useForm } from "react-hook-form";
 // import { toast } from "react-toastify";
 import { toast } from "react-toastify";
@@ -15,7 +15,7 @@ import { LockedPasswordInput } from "../../components/form/PasswordInput";
 
 const Signin: React.FC = () => {
   const {} = useApp();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   //   const [success, setSuccess] = useState(false);
 
@@ -33,6 +33,7 @@ const Signin: React.FC = () => {
 
     try {
       // console.log(response.data)
+      navigate('/app/workspace')
     } catch (err: any) {
       toast.error(err.message);
     } finally {

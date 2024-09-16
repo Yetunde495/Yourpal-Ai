@@ -6,6 +6,8 @@ import { Loader } from "./components/Loader";
 
 import LandingPages from "./Pages/Landing/Index";
 import AuthPages from "./Pages/Authentication/Index";
+import RouteLayout from "./layout/RouteLayout";
+import DashboardPages from "./Pages/Workspace/Index"
 
 axios.defaults.baseURL = "";
 
@@ -71,6 +73,13 @@ function App() {
               />
               <Route path="/reset-password/:email/:token" element={<AuthPages.ResetPasswordForm/>} />
 
+            </>
+
+            <>
+            <Route path="/app" element={<RouteLayout />}>
+            <Route path="/app/workspace" element={<DashboardPages.Workspace />} />
+
+              </Route>
             </>
           </Routes>
         </Router>

@@ -1,35 +1,21 @@
 import React, { PropsWithChildren, useContext, useReducer } from "react";
 
-export const DATA_CENTER_USER = "@user";
-export const DATA_CENTER_TOKEN = "@token";
-export const DATA_CENTER_SPACE = "@space"
+export const DATA_CENTER_USER = "@yourpal_user";
+export const DATA_CENTER_TOKEN = "@yourpal_token";
+export const DATA_CENTER_HUB = "@yourpal_hub"
 
-type dropdownTypes = {
-  categories: Array<any>,
-  tags: Array<any>,
-  view_types: Array<any>,
-  media_types: Array<any>,
-  source_types: Array<any>,
 
-}
 
 const defaultContext = {
   user: null,
   isLoggedIn: false,
   newChat: false,
-  dropdownData: {
-  categories: [],
-  tags: [],
-  view_types: [],
-  media_types: [],
-  source_types: [],
- 
-  },
+  hubCategory: 'home',
+  changeCategory: (_category: string) => {},
   signIn: (_data: any) => {},
   setNewChat: (_value:boolean) => {},
   signOut: () => {},
   updateUser: (_user: any) => {},
-  updateDropdownData: (_dropdownData: any) => {},
   loadData: () => {},
 } as any;
 
@@ -37,13 +23,13 @@ interface AppContextInterface {
   user: any | null;
   isLoggedIn: boolean;
   newChat: boolean;
-  dropdownData: dropdownTypes | null;
+  hubCategory:string;
   signIn: (data: any) => void;
   signOut: () => void;
   updateUser: (data:  any) => void;
-  updateDropdownData: (data:  any) => void;
   loadData: () => void;
   setNewChat: (value:boolean) => void;
+  changeCategory: (value: string) => void;
 }
 
 function reducer(state: any, action: any) {
@@ -119,22 +105,24 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
     update({newChat: value})
   }
 
+  const changeCategory = (value: string) => {
+    update({hubCategory: value})
+  }
 
-  const updateDropdownData = (data: any) => {
-    update({ dropdownData: data });
-  };
+
+ 
 
 
   let value: AppContextInterface = {
     user: state?.user,
     isLoggedIn: state?.isLoggedIn,
-    dropdownData: state?.dropdownData,
     newChat: state?.newChat,
+    hubCategory: state?.hubCategory,
+    changeCategory,
     setNewChat,
     signIn,
     signOut,
     updateUser,
-    updateDropdownData,
     loadData,
   };
 

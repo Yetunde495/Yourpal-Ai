@@ -4,6 +4,18 @@
 @tailwind utilities;
 
 
+@layer utilities {
+    /* Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+  
+    .no-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+  }
+
 body {
     font-family: "DM Sans", sans-serif;
 }
@@ -15,9 +27,19 @@ a:hover {
 }
 .bg-gradient {
     background: linear-gradient(317.04deg, #B588F7 2.52%, #1DE5E2 97.53%);  
+/* background: linear-gradient(297.26deg, #B588F7 13.79%, #077AB2 36.71%, #457032 52.7%, #8343CC 69.05%, #1DE5E2 86.45%); */
+
+
 }
 .auth-card {
     background: linear-gradient(33.29deg, #FFFFFF -26.19%, #D8F2F8 162.87%);
     box-shadow: 8px -2px 12.7px 0px #00000040;
 
 }
+.bg-gray-200 {
+    background-color: #e2e8f0;
+  }
+  
+  .connected {
+    background-color: #4ade80; /* Change to a lively color */
+  }

@@ -1,12 +1,15 @@
+import { Link } from "react-router-dom";
 
 
 
 
 const Homepage: React.FC = () => {
     return (
-        <div>Homepage
+        <div>
+          <div className="w-full h-40">
+          <Link to={'/signin'} className="bg-black text-white px-6 py-3">Sign in</Link>
 
-        
+          </div>
         </div>
     )
 }
