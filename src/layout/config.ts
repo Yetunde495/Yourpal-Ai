@@ -88,29 +88,28 @@ export const HOME_NAV_DATA = [
         name: "Workspace",
         path: "/app/workspace", //use for nested rendering
         icon: icons.Dashboard,
-        fillIcon: icons.DashboardFill
+        fillIcon: icons.DashboardFill,
       },
       {
         name: "Saved Profiles",
         path: "/app/workspace/saved-profiles", //use for nested rendering
         icon: icons.Users,
-        fillIcon: icons.UsersFill
+        fillIcon: icons.UsersFill,
       },
       {
         name: "Persona Management",
         path: "/app/workspace/saved-profiles", //use for nested rendering
         icon: icons.User,
-        fillIcon: icons.UserFill
+        fillIcon: icons.UserFill,
       },
       {
         name: "Template Management",
         path: "/app/workspace/saved-profiles", //use for nested rendering
         icon: icons.Template,
-        fillIcon: icons.TemplateFill
+        fillIcon: icons.TemplateFill,
       },
-
     ],
-  }
+  },
 ];
 
 //Students navigation
@@ -138,12 +137,12 @@ export const RECRUITER_NAV_DATA = [
   {
     children: [
       {
-        name: "Home",
-        path: "/app/home", //use for nested rendering
+        name: "Talent Hub",
+        path: "/app/recruiter", //use for nested rendering
         icon: icons.Home,
       },
       {
-        name: "Dashboard",
+        name: "Application Builder",
         path: "/app/tutors/dashboard", //use for nested rendering
         icon: icons.Dashboard,
       },

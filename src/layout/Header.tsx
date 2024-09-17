@@ -8,6 +8,7 @@ import HomeIcon from "../assets/nav-icons/home.svg";
 import JobIcon from "../assets/nav-icons/jobseeker.svg";
 import RecruiterIcon from "../assets/nav-icons/recruiter.svg";
 import SocialIcon from "../assets/nav-icons/social.svg";
+import { useNavigate } from "react-router-dom";
 
 type SidebarProps = {
   sidebarOpen: boolean;
@@ -16,6 +17,7 @@ type SidebarProps = {
 
 const Header = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const { hubCategory, changeCategory } = useApp();
+  const navigate = useNavigate();
   return (
     <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
       <div className="flex flex-grow items-center gap-3 py-3 px-4 shadow-2 md:px-6 2xl:px-11">
@@ -54,18 +56,27 @@ const Header = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             >
               <img src={JobIcon} className="w-7 h-7" />
               <p>
-                JobSeeker <span className="bg-[#457032] text-white px-[2.5px] text-sm font-bold">Pal</span>
+                JobSeeker{" "}
+                <span className="bg-[#457032] text-white px-[2.5px] text-sm font-bold">
+                  Pal
+                </span>
               </p>
             </li>
             <li
-              onClick={() => changeCategory("recruiter")}
+              onClick={() => {
+                changeCategory("recruiter");
+                navigate("/app/recruiter");
+              }}
               className={`flex flex-col items-center hover:bg-[#8343CC]/15 rounded-md cursor-pointer px-8 py-1.5 ${
                 hubCategory === "recruiter" ? "bg-[#8343cc]/15" : ""
               }`}
             >
               <img src={RecruiterIcon} className="w-7 h-7" />
               <p>
-                Recruiter <span className="bg-[#8343cc] text-white px-[2.5px] text-sm font-bold">Pal</span>
+                Recruiter{" "}
+                <span className="bg-[#8343cc] text-white px-[2.5px] text-sm font-bold">
+                  Pal
+                </span>
               </p>
             </li>
             <li
@@ -76,7 +87,10 @@ const Header = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             >
               <img src={SocialIcon} className="w-7 h-7" />
               <p>
-                Social <span className="bg-[#0077b5] text-white px-[2.5px] text-sm font-bold">Pal</span>
+                Social{" "}
+                <span className="bg-[#0077b5] text-white px-[2.5px] text-sm font-bold">
+                  Pal
+                </span>
               </p>
             </li>
           </ul>
@@ -91,8 +105,6 @@ const Header = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             {/* <!-- Notification Menu Area --> */}
             <DropdownNotification />
             {/* <!-- Notification Menu Area --> */}
-
-          
           </ul>
 
           {/* <!-- User Area --> */}

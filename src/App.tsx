@@ -3,11 +3,11 @@ import { DATA_CENTER_TOKEN, useApp } from "./context/AppContext";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import axios from "axios";
 import { Loader } from "./components/Loader";
-
 import LandingPages from "./Pages/Landing/Index";
 import AuthPages from "./Pages/Authentication/Index";
 import RouteLayout from "./layout/RouteLayout";
-import DashboardPages from "./Pages/Workspace/Index"
+import DashboardPages from "./Pages/Workspace/Index";
+import RecruitmentPages from "./Pages//Recruitment/Index";
 
 axios.defaults.baseURL = "";
 
@@ -71,14 +71,22 @@ function App() {
                 path="/forgot-password"
                 element={<AuthPages.ResetPassword />}
               />
-              <Route path="/reset-password/:email/:token" element={<AuthPages.ResetPasswordForm/>} />
-
+              <Route
+                path="/reset-password/:email/:token"
+                element={<AuthPages.ResetPasswordForm />}
+              />
             </>
 
             <>
-            <Route path="/app" element={<RouteLayout />}>
-            <Route path="/app/workspace" element={<DashboardPages.Workspace />} />
-
+              <Route path="/app" element={<RouteLayout />}>
+                <Route
+                  path="/app/workspace"
+                  element={<DashboardPages.Workspace />}
+                />
+                <Route
+                  path="/app/recruiter"
+                  element={<RecruitmentPages.Recruitment />}
+                />
               </Route>
             </>
           </Routes>
