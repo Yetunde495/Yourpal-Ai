@@ -1,17 +1,19 @@
-import { Link } from "react-router-dom";
+import Navbar from "./Navbar";
+import HeroSection from "./HeroSection";
 
-
-
+import Features from "./Features";
 
 const Homepage: React.FC = () => {
-    return (
-        <div>
-          <div className="w-full h-40 flex justify-center items-center">
-          <Link to={'/signin'} className="bg-black text-white px-6 py-3">Sign in</Link>
+  return (
+    <div>
+      <div className="hero-bg">
+        <Navbar />
+        <HeroSection />
+      </div>
 
-          </div>
-        </div>
-    )
-}
+      <Features />
+    </div>
+  );
+};
 
 export default Homepage;

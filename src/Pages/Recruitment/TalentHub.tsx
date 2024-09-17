@@ -2,7 +2,7 @@ import { BiSearch, BiSolidArchiveIn } from "react-icons/bi";
 import Table from "../../components/table";
 import TablePagination from "../../components/table/TablePagination";
 import { TableLoader } from "../../components/Loader";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Notification from "../../components/Notification";
@@ -14,6 +14,12 @@ import { MdCancel } from "react-icons/md";
 import Popover from "../../components/Popover";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import cancelIcon from "../../assets/svg/icon-cancel.svg";
+import { ActionTooltip } from "../../components/action-tooltip";
+import { Icons } from "../../components/icons";
+import Delete from "../../components/modal/Delete";
+import AlertDialog from "../../components/modal/AlertDialog";
+import MatchScoreTable from "./MatchScoreTable";
+import { ScrollArea } from "../../components/scroll-area";
 
 const statusOptions = [
   {
@@ -41,7 +47,8 @@ const statusOptions = [
 const sampleData = [
   {
     status: "Interested",
-    name: "Resume 1",
+    count: "1",
+    id: 1,
     job: {
       position: "IT Manager",
       companyName: "ABCD",
@@ -49,7 +56,8 @@ const sampleData = [
   },
   {
     status: "Rejected",
-    name: "Resume 2",
+    count: "2",
+    id: 2,
     job: null,
   },
 ];
@@ -58,6 +66,7 @@ const TalentHub: React.FC = () => {
   const navigate = useNavigate();
   const [allResumes, setAllResumes] = useState<any>([]);
   const [_selectedResume, setSelectedResume] = useState<any>(null);
+  const [matchScoreAlert, setMatchScoreAlert] = useState(false);
 
   const [search, setSearch] = useState<string>("");
 
@@ -130,7 +139,12 @@ const TalentHub: React.FC = () => {
           </div>
 
           <div className="ml-auto">
-            <h1>Create Job</h1>
+            <Link
+              to="#"
+              className="rounded-full bg-indigo-600 px-3.5 w-[200px] text-center py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              New Talent Match
+            </Link>
           </div>
         </div>
 
@@ -142,12 +156,10 @@ const TalentHub: React.FC = () => {
               <Table show>
                 <Table.TableRow>
                   <Table.Row>Status</Table.Row>
-                  <Table.Row>Resume Name</Table.Row>
                   <Table.Row>Job</Table.Row>
-                  <Table.Row>Cover Letter</Table.Row>
-                  <Table.Row>Resume</Table.Row>
-                  <Table.Row>Company Overview</Table.Row>
-                  <Table.Row>Interview Tips</Table.Row>
+                  <Table.Row>Resume Count</Table.Row>
+                  <Table.Row>Actions</Table.Row>
+                  <Table.Row>Match Score</Table.Row>
                   <Table.Row>More Info</Table.Row>
                 </Table.TableRow>
 
@@ -190,7 +202,6 @@ const TalentHub: React.FC = () => {
                           }}
                         />
                       </Table.Cell>
-                      <Table.Cell>{item?.name}</Table.Cell>
                       <Table.Cell isAction>
                         {item?.job ? (
                           <div>
@@ -203,11 +214,33 @@ const TalentHub: React.FC = () => {
                           </div>
                         )}
                       </Table.Cell>
-                      <Table.Cell>{"Null"}</Table.Cell>
-                      <Table.Cell>{"Null"}</Table.Cell>
-                      <Table.Cell>{"Null"}</Table.Cell>
-                      <Table.Cell>{"Null"}</Table.Cell>
-                      <Table.Cell isAction></Table.Cell>
+                      <Table.Cell>{item?.count}</Table.Cell>
+                      <Table.Cell>
+                        <CellAction id={item.id} />
+                      </Table.Cell>
+                      <Table.Cell>
+                        <ActionTooltip label="View" side="top">
+                          <div
+                            onClick={() => setMatchScoreAlert(true)}
+                            className="group flex p-2 items-center justify-center transition-colors hover:bg-gray-100 cursor-pointer"
+                          >
+                            <Icons.passwordEye className="h-4 w-4 group-hover:text-black" />
+                            <span className="sr-only">View</span>
+                          </div>
+                        </ActionTooltip>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <ActionTooltip label="Info" side="top">
+                          <Link
+                            to=""
+                            // href={`${pathname}/${id}`}
+                            className="group flex p-2 items-center justify-center transition-colors hover:bg-gray-100 cursor-pointer"
+                          >
+                            <Icons.info className="h-4 w-4 text-[#5272EA]" />
+                            <span className="sr-only">Info</span>
+                          </Link>
+                        </ActionTooltip>
+                      </Table.Cell>
                     </Table.CellRows>
                   ))}
                 </Table.TableItems>
@@ -221,6 +254,15 @@ const TalentHub: React.FC = () => {
                 setPageLimit={setItemsPerPage}
                 pageLimit={itemsPerPage}
               />
+              {matchScoreAlert && (
+                <AlertDialog
+                  show={matchScoreAlert}
+                  onHide={() => setMatchScoreAlert(false)}
+                  title="Job Match Score"
+                >
+                  <MatchScoreTable setMatchScoreAlert={setMatchScoreAlert} />
+                </AlertDialog>
+              )}
             </>
           ) : (
             <Table.NoData
@@ -239,6 +281,65 @@ const TalentHub: React.FC = () => {
         </div>
       </section>
     </section>
+  );
+};
+
+const CellAction = ({ id }: { id: string }) => {
+  const [deleteAlert, setDeleteAlert] = useState(false);
+
+  const handleDelete = (id: string) => {
+    // Logic to delete the item by id
+    console.log(`Deleting item with id: ${id}`);
+    setDeleteAlert(false);
+  };
+
+  return (
+    <div className="flex items-center gap-2">
+      <ActionTooltip label="Edit" side="top">
+        <Link
+          to=""
+          // href={`${pathname}/${id}`}
+          className="group flex p-2 items-center justify-center transition-colors hover:bg-gray-100 cursor-pointer"
+        >
+          <Icons.edit className="h-4 w-4 group-hover:text-black" />
+          <span className="sr-only">Edit</span>
+        </Link>
+      </ActionTooltip>
+      <ActionTooltip label="Download" side="top">
+        <Link
+          to=""
+          // href={`${pathname}/${id}`}
+          className="group flex p-2 items-center justify-center transition-colors hover:bg-gray-100 cursor-pointer"
+        >
+          <Icons.download className="h-4 w-4 group-hover:text-black" />
+          <span className="sr-only">Download</span>
+        </Link>
+      </ActionTooltip>
+      <ActionTooltip label="Delete" side="top">
+        <div
+          onClick={() => setDeleteAlert(true)}
+          className="group flex p-2 items-center justify-center  transition-colors cursor-pointer"
+        >
+          <Icons.trash className="h-4 w-4 group-hover:text-red-500" />
+          <span className="sr-only">Delete</span>
+        </div>
+      </ActionTooltip>
+      {deleteAlert && (
+        <Delete
+          show={deleteAlert}
+          id={id}
+          onHide={() => setDeleteAlert(false)}
+          onProceed={handleDelete}
+          title="Are you sure?"
+          desc="This action cannot be undone."
+          okText="Delete"
+          cancelText="Cancel"
+          isLoading={false}
+          isLoadingText="Deleting..."
+          icon={<span>🗑️</span>}
+        ></Delete>
+      )}
+    </div>
   );
 };
 

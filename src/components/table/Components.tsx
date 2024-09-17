@@ -8,7 +8,11 @@ export interface RowPhotoProps {
 
 export const RowPhoto: React.FC<RowPhotoProps> = ({ photoURL, desc }) => (
   <div className="rounded">
-    <img src={photoURL || Placeholder} alt={desc} className="object-cover w-35 h-20 rounded-md" />
+    <img
+      src={photoURL || Placeholder}
+      alt={desc}
+      className="object-cover w-35 h-20 rounded-md"
+    />
   </div>
 );
 
@@ -576,7 +580,7 @@ export const Pagination = ({
 export interface NoDataProps {
   message?: string;
   title?: string;
-  children?: string;
+  children?: React.ReactNode;
   show: boolean;
   onAdd?: () => void;
   hideButton?: any;
@@ -590,7 +594,7 @@ export const NoData: React.FC<NoDataProps> = ({
   show,
   onAdd,
   hideButton,
-  btnText
+  btnText,
 }) => {
   return show ? (
     <div className="rounded-md border flex items-center justify-center min-h-[400px] border-stroke bg-white pb-10 shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -607,7 +611,6 @@ export const NoData: React.FC<NoDataProps> = ({
               className="flex w-[120px] items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary focus:outline-none focus:ring-4 focus:ring-primary dark:bg-primary dark:hover:bg-white dark:focus:ring-white"
             >
               {btnText || "Add"}
-              
             </button>
           </div>
         )}
