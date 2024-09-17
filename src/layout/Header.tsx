@@ -43,7 +43,10 @@ const Header = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               className={`flex flex-col items-center hover:bg-primary/15 ${
                 hubCategory === "home" ? "bg-primary/15" : ""
               } rounded-md cursor-pointer px-8 py-1.5`}
-              onClick={() => changeCategory("home")}
+              onClick={() => {
+                changeCategory("home")
+                navigate("/app/workspace");
+              }}
             >
               <img src={HomeIcon} className="w-7 h-7" />
               <p>Home</p>

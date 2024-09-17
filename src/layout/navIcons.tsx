@@ -6,6 +6,7 @@ import {
   AiFillDatabase,
   AiOutlinePlus,
   AiOutlineHome,
+  AiFillHome,
 } from "react-icons/ai";
 import {
   MdOutlineAnalytics,
@@ -25,6 +26,7 @@ import { HiMiniUsers } from "react-icons/hi2";
 
 export default {
   Home: AiOutlineHome,
+  HomeFill: AiFillHome,
   Notification: BsBellFill,
   Plus: AiOutlinePlus,
   User: HiOutlineUser,
