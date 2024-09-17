@@ -22,7 +22,7 @@ const DefaultLayout = ({children}:{children: React.ReactNode}) => {
         <div className='relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden'>
           <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
           <main>
-            <div className='mx-auto py-4 px-2 md:p-6 2xl:p-10'>
+            <div className='mx-auto'>
               {children}
             </div>
           </main>
