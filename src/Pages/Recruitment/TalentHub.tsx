@@ -20,6 +20,10 @@ import Delete from "../../components/modal/Delete";
 import AlertDialog from "../../components/modal/AlertDialog";
 import MatchScoreTable from "./MatchScoreTable";
 import { ScrollArea } from "../../components/scroll-area";
+import BtnIcon from "../../assets/btnIcon.png";
+import { Textarea } from "../../components/textarea";
+import Dropdown from "../../components/Dropdown2";
+import { TooltipTrigger } from "../../components/tooltip-new";
 
 const statusOptions = [
   {
@@ -62,11 +66,16 @@ const sampleData = [
   },
 ];
 
+const uploadedFiles = [{ name: "file1.pdf" }, { name: "hello.pdf" }];
+
 const TalentHub: React.FC = () => {
   const navigate = useNavigate();
   const [allResumes, setAllResumes] = useState<any>([]);
   const [_selectedResume, setSelectedResume] = useState<any>(null);
   const [matchScoreAlert, setMatchScoreAlert] = useState(false);
+  const [talentMatchAlert, setTalentMatchAlert] = useState(false);
+  const [removeResume, setRemoveResume] = useState(false);
+  const [resumeInput, setResumeInput] = useState(false);
 
   const [search, setSearch] = useState<string>("");
 
@@ -139,12 +148,12 @@ const TalentHub: React.FC = () => {
           </div>
 
           <div className="ml-auto">
-            <Link
-              to="#"
+            <button
+              onClick={() => setTalentMatchAlert(true)}
               className="rounded-full bg-indigo-600 px-3.5 w-[200px] text-center py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               New Talent Match
-            </Link>
+            </button>
           </div>
         </div>
 
@@ -280,6 +289,171 @@ const TalentHub: React.FC = () => {
           )}
         </div>
       </section>
+
+      {talentMatchAlert && (
+        <AlertDialog
+          show={talentMatchAlert}
+          onHide={() => setTalentMatchAlert(false)}
+        >
+          <div className="mb-10">
+            <h2>New Talent Match</h2>
+            <p className="text-xs mt-3">
+              Importing Maximum of 10 Resumes / Cv by selecting from Saved
+              Resume or Uploading
+            </p>
+          </div>
+
+          <ScrollArea className="h-[50vh]">
+            <div className="bg-[#E4E4E4] rounded-lg px-4 py-2">
+              <div
+                className={`flex items-center ${
+                  resumeInput ? "justify-end" : "justify-between"
+                }`}
+              >
+                {!resumeInput && (
+                  <div className="flex items-center gap-1">
+                    <Icons.checkCircle className="h-4 w-4 " />
+                    <p className="text-xs">Select From Your Saved Resume</p>
+                  </div>
+                )}
+
+                <div className=" flex items-center">
+                  <ActionTooltip label="Replace" side="top">
+                    <div className="group flex p-2 items-center justify-center transition-colors hover:bg-gray-100 cursor-pointer">
+                      <Icons.sync className="h-4 w-4" />
+                      <span className="sr-only">Replace</span>
+                    </div>
+                  </ActionTooltip>
+                  <ActionTooltip label="Choose an option" side="top">
+                    <Dropdown
+                      icon={
+                        <TooltipTrigger asChild>
+                          <Icons.sort />
+                        </TooltipTrigger>
+                      }
+                      bg={false}
+                    >
+                      <div className="flex flex-col py-2 text-start px-4">
+                        <p className="text-xs hover:bg-[#f1ebf7] p-2 rounded-md cursor-pointer">
+                          Select from saved Resume
+                        </p>
+                        <p
+                          className="text-xs hover:bg-[#f1ebf7] p-2 rounded-md cursor-pointer"
+                          onClick={() => {
+                            setResumeInput(true);
+                          }}
+                        >
+                          Upload resume
+                        </p>
+                      </div>
+                    </Dropdown>
+                  </ActionTooltip>
+                </div>
+              </div>
+              {resumeInput && (
+                <div className="col-span-full mt-10">
+                  <div className=" flex items-center gap-2">
+                    <Icons.addDoc />
+                    <label
+                      htmlFor="cover-photo"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Upload your Resume
+                    </label>
+                  </div>
+                  <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10 bg-[#ecedee]">
+                    <div className="text-center">
+                      <div className="mt-4 flex text-sm leading-6 text-gray-600">
+                        <p className="pl-1">
+                          Drag and drop File here or&nbsp;{" "}
+                        </p>
+
+                        <label
+                          htmlFor="file-upload"
+                          className="relative cursor-pointer rounded-md  font-semibold text-indigo-600 focus-within:outline-none hover:text-indigo-500"
+                        >
+                          <span>Click to Upload</span>
+                          <input
+                            id="file-upload"
+                            name="file-upload"
+                            type="file"
+                            className="sr-only"
+                          />
+                        </label>
+                      </div>
+                      <p className="text-xs leading-5 text-gray-600">
+                        Supported format: PDF, DOC, DOCX
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex gap-4 my-5">
+                {uploadedFiles.map((file, id) => (
+                  <div key={id}>
+                    <div className="flex items-center gap-2 px-2.5 py-1.5 bg-[#FFFFFF] rounded-full text-xs">
+                      {file.name}{" "}
+                      <span
+                        onClick={() => {
+                          setRemoveResume(true);
+                          setTalentMatchAlert(false);
+                        }}
+                      >
+                        <Icons.cancel className="cursor-pointer" />
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-[#E4E4E4] rounded-lg px-4 mt-10 py-5">
+              <div className="flex justify-start">
+                <p className="text-xs mb-5">
+                  Job Description you’d like to Match the resume to
+                  (Recommended){" "}
+                </p>
+              </div>
+              <Textarea
+                placeholder="Paste job description/title here..."
+                className="md:h-40 border-[#091540] border-[0.08rem] w-full h-20 mb-5"
+              />
+            </div>
+            <div className="mt-10 flex items-center justify-between">
+              <button className="text-sm">Close</button>
+              {uploadedFiles.length != 0 ? (
+                <button className="group relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 text-sm font-medium text-gray-900 rounded-full group bg-gradient-to-br from-[#60BEE2] via-[#5E4D84] to-[#8FC2DA] group-hover:from-[#60BEE2] group-hover:via-[#5E4D84] group-hover:to-[#8FC2DA] hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800">
+                  <span className="relative px-5 py-1 transition-all ease-in duration-200 bg-white dark:bg-gray-900 rounded-full group-hover:bg-opacity-0 flex gap-2">
+                    <img src={BtnIcon} /> Generate
+                  </span>
+                </button>
+              ) : (
+                <button className="border-[#8343CC] border text-[#8343CC] hover:text-white text-sm px-5 rounded-full py-1 hover:bg-[#8343CC]">
+                  Continue
+                </button>
+              )}
+            </div>
+          </ScrollArea>
+        </AlertDialog>
+      )}
+
+      {removeResume && (
+        <AlertDialog show={removeResume} onHide={() => setRemoveResume(false)}>
+          <h3 className="text-base mb-3">Remove Resume</h3>
+          <p className="text-xs mb-5">
+            Are you sure you want to remove this resume from bulk?
+          </p>{" "}
+          <div className="flex gap-5 justify-center items-center flex-col mt-10">
+            <button className="border-red-500 border text-red-500 text-sm px-5 rounded-full py-1 font-normal w-[60%]">
+              Yes, Remove
+            </button>
+            <button className="border-[#D4D4D4] border text-[#928f8f] text-sm px-5 rounded-full py-1 font-normal w-[60%]">
+              No, Cancel
+            </button>
+          </div>
+        </AlertDialog>
+      )}
     </section>
   );
 };
