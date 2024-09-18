@@ -19,7 +19,6 @@ import { Icons } from "../../components/icons";
 import Delete from "../../components/modal/Delete";
 import AlertDialog from "../../components/modal/AlertDialog";
 import MatchScoreTable from "./MatchScoreTable";
-import { ScrollArea } from "../../components/scroll-area";
 
 const statusOptions = [
   {

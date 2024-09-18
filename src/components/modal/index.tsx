@@ -65,16 +65,16 @@ const Modal: React.FC<WarningProps> = ({
         ref={modalRef}
       >
         <div className="flex flex-col justify-center relative">
-          <div className="flex justify-center text-center items-center border-b-4 border-[#EBECFA]">
-            <h3 className="pb-2 text-xl font-semibold text-center text-black dark:text-white sm:text-2xl">
+          <div className="flex items-center md:px-6 px-4">
+            <h3 className="pb-2 text-xl font-semibold text-black dark:text-white sm:text-2xl">
               {title}
             </h3>
             {closeButton && (
               <button
                 onClick={onHide}
-                className="absolute -top-[12px] text-zinc-400 right-2 hover:bg-slate-400 hover:text-white rounded-full p-[2px]"
+                className="absolute -top-[12px] text-zinc-900 right-2 bg-slate-200 hover:bg-slate-300 rounded-full p-[4px]"
               >
-                <RxCross2 size={22} className="" />
+                <RxCross2 size={18} className="" />
               </button>
             )}
           </div>

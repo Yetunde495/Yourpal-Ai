@@ -11,10 +11,19 @@ import { useQuery } from "@tanstack/react-query";
 // import Dropdown from "../../components/Dropdown2";
 import { DropdownSelect } from "../../components/form/customDropdown";
 import { FaCircleCheck, FaStar, FaTrophy } from "react-icons/fa6";
-import { MdCancel } from "react-icons/md";
+import { MdCancel, MdOutlineFileDownload } from "react-icons/md";
 import Popover from "../../components/Popover";
-import { IoMdInformationCircleOutline } from "react-icons/io";
-import cancelIcon from "../../assets/svg/icon-cancel.svg"
+import {
+  IoMdInformationCircle,
+  IoMdInformationCircleOutline,
+} from "react-icons/io";
+import cancelIcon from "../../assets/svg/icon-cancel.svg";
+import { BsEye } from "react-icons/bs";
+import CoverLetterDetails from "./coverletterDetails";
+import CompanyOverview from "./companyOverview";
+import InterviewTips from "./InterviewTips";
+import { Tooltip2 } from "../../components/Tooltip";
+import { LiaEdit } from "react-icons/lia";
 
 const statusOptions = [
   {
@@ -47,23 +56,41 @@ const sampleData = [
       position: "IT Manager",
       companyName: "ABCD",
     },
+    cover_letter: `Dear [Employer's Name],
+
+I am excited to apply for the Human Resources position at [Company Name]. With [X years] of experience in HR management, including recruitment, employee relations, and performance management, I am confident in my ability to contribute effectively to your team.
+
+In my previous role at [Your Current/Previous Company], I streamlined the onboarding process, reducing turnover by 20% and improving employee satisfaction. I am particularly drawn to [Company Name] because of your commitment to diversity and inclusion, which aligns with my passion for creating a positive work environment.
+
+I look forward to the opportunity to discuss how my skills and experiences can support your HR goals.
+
+Thank you for considering my application.
+
+Best regards,  
+Ahmed Mohammad AlDhraif AlShamsi
+
+
+    `,
   },
   {
     status: "Rejected",
     name: "Resume 2",
-    job: null
+    job: null,
   },
 ];
 
 const JobHub: React.FC = () => {
   const navigate = useNavigate();
   const [allResumes, setAllResumes] = useState<any>([]);
-  const [_selectedResume, setSelectedResume] = useState<any>(null);
+  const [selectedResume, setSelectedResume] = useState<any>(null);
 
   const [search, setSearch] = useState<string>("");
 
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [letterModal, setLetterModal] = useState(false);
+  const [interviewtipModal, setInterviewtipModal] = useState(false);
+  const [companyoverviewModal, setCompanyoverviewModal] = useState(false);
 
   const { data, isFetching } = useQuery(
     ["ALL CLASSROOMS", search, page, itemsPerPage],
@@ -177,14 +204,21 @@ const JobHub: React.FC = () => {
                           onSelect={(_val) => {}}
                           defaultValue={{
                             label: (
-                              <div className="w-full flex gap-3">
+                              <div className="w-full flex gap-2 items-center">
                                 <span>
                                   {item?.status === "Interested" ? (
                                     <FaStar className="text-primary" />
-                                  ) : (
+                                  ) : item?.status === "Applied" ? (
                                     <FaCircleCheck className="text-success" />
+                                  ) : item?.status === "Rejected" ? (
+                                    <MdCancel className="text-danger" />
+                                  ) : item?.status === "Offer" ? (
+                                    <FaTrophy className="text-warning" />
+                                  ) : (
+                                    <BiSolidArchiveIn className="text-[#545454CC]" />
                                   )}
                                 </span>
+                                <span>{item?.status}</span>
                               </div>
                             ),
                             value: item?.status,
@@ -193,16 +227,83 @@ const JobHub: React.FC = () => {
                       </Table.Cell>
                       <Table.Cell>{item?.name}</Table.Cell>
                       <Table.Cell isAction>
-                         {item?.job ? <div>
-                          <p>{item?.job?.position}</p>
-                          <p>{item?.job?.companyName}</p>
-                        </div> : <div><img src={cancelIcon} className="-ml-4 -mt-3" /></div>}
-                        </Table.Cell>
-                      <Table.Cell>{"Null"}</Table.Cell>
-                      <Table.Cell>{"Null"}</Table.Cell>
-                      <Table.Cell>{"Null"}</Table.Cell>
-                      <Table.Cell>{"Null"}</Table.Cell>
-                      <Table.Cell isAction></Table.Cell>
+                        {item?.job ? (
+                          <div>
+                            <p>{item?.job?.position}</p>
+                            <p>{item?.job?.companyName}</p>
+                          </div>
+                        ) : (
+                          <div>
+                            <img src={cancelIcon} className="-ml-4 -mt-3" />
+                          </div>
+                        )}
+                      </Table.Cell>
+                      <Table.Cell isAction>
+                        <div className="flex w-full items-center justify-center">
+                          <div>
+                            <Tooltip2 text="View">
+                              <button onClick={() => setLetterModal(true)}>
+                                <BsEye />
+                              </button>
+                            </Tooltip2>
+                          </div>
+                        </div>
+                      </Table.Cell>
+                      <Table.Cell isAction>
+                        <div className="flex w-full gap-1 items-center">
+                          <Tooltip2 text="Edit">
+                            <button
+                              onClick={() => {}}
+                            >
+                              <LiaEdit size={20} />
+                            </button>
+                          </Tooltip2>
+                          <Tooltip2 text="Download">
+                            <button
+                              onClick={() => {}}
+                            >
+                              <MdOutlineFileDownload size={20} />
+                            </button>
+                          </Tooltip2>
+                          
+                        </div>
+                      </Table.Cell>
+                      <Table.Cell isAction>
+                        <div className="flex w-full items-center justify-center">
+                          <div>
+                            <Tooltip2 text="View">
+                              <button
+                                onClick={() => setCompanyoverviewModal(true)}
+                              >
+                                <BsEye />
+                              </button>
+                            </Tooltip2>
+                          </div>
+                        </div>
+                      </Table.Cell>
+                      <Table.Cell isAction>
+                        <div className="flex w-full items-center justify-center">
+                          <div>
+                            <Tooltip2 text="View">
+                              <button
+                                onClick={() => setInterviewtipModal(true)}
+                              >
+                                <BsEye />
+                              </button>
+                            </Tooltip2>
+                          </div>
+                        </div>
+                      </Table.Cell>
+                      <Table.Cell isAction>
+                        <div className="flex w-full items-center justify-center">
+                          <button onClick={() => {}}>
+                            <IoMdInformationCircle
+                              size={20}
+                              className="text-primary"
+                            />
+                          </button>
+                        </div>
+                      </Table.Cell>
                     </Table.CellRows>
                   ))}
                 </Table.TableItems>
@@ -233,6 +334,36 @@ const JobHub: React.FC = () => {
           )}
         </div>
       </section>
+      {letterModal && (
+        <CoverLetterDetails
+          show={letterModal}
+          setShow={() => {
+            setSelectedResume(null);
+            setLetterModal(false);
+          }}
+          resumeData={selectedResume}
+        />
+      )}
+      {companyoverviewModal && (
+        <CompanyOverview
+          show={companyoverviewModal}
+          setShow={() => {
+            setSelectedResume(null);
+            setCompanyoverviewModal(false);
+          }}
+          resumeData={selectedResume}
+        />
+      )}
+      {interviewtipModal && (
+        <InterviewTips
+          show={interviewtipModal}
+          setShow={() => {
+            setSelectedResume(null);
+            setInterviewtipModal(false);
+          }}
+          resumeData={selectedResume}
+        />
+      )}
     </section>
   );
 };

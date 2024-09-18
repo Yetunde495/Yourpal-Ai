@@ -31,6 +31,7 @@ interface DropdownSelectProps {
   defaultValue?: DropDownOption | null;
   loading?: boolean;
   border?: boolean;
+  // showSelectedlabel?: boolean;
 }
 
 export interface DropDownOption {
@@ -375,6 +376,7 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
   defaultValue = null,
   loading = false,
   border = true,
+  // showSelectedlabel=true
 }) => {
   const [selectedOption, setSelectedOption] = useState<DropDownOption | null>(
     defaultValue
@@ -442,7 +444,7 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
           ) : (
             placeholder
           )}
-          <span className="absolute right-2 top-1/2 -translate-y-1/2">
+          <span className="absolute right-2 top-1/2 -translate-y-1/2 bg-white">
             <svg
               className="fill-current"
               width="20"
