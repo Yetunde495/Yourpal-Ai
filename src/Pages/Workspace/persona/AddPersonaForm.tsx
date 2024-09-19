@@ -181,7 +181,7 @@ const AddPersonaForm = () => {
                       <select
                         id="personality"
                         name="personality"
-                        className="block w-full rounded-md border border-[#D4D4D4] py-1.5 sm:text-sm sm:leading-6 [&_*]:text-black"
+                        className="block w-full rounded-md border border-[#D4D4D4] py-1.5 sm:text-sm focus-visible:outline-none sm:leading-6 [&_*]:text-black"
                       >
                         <option>Pacific Standard Time</option>
                         <option>Eastern Standard Time</option>

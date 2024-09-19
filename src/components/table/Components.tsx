@@ -269,7 +269,7 @@ export const Cell: React.FC<CellProps> = ({
 }) => {
   let val = (
     <td className="border-b border-[#eee] py-3 px-4 dark:border-strokedark">
-      <p className="text-zinc-500 dark:text-white">{cell || children}</p>
+      <p className=" dark:text-white text-sm text-black">{cell || children}</p>
     </td>
   );
 

@@ -9,7 +9,7 @@ import {
   IoMdCheckmarkCircle,
   IoMdAdd,
 } from "react-icons/io";
-import { RxCross2 } from "react-icons/rx";
+import { RxCross2, RxLinkedinLogo } from "react-icons/rx";
 import { FaSort } from "react-icons/fa6";
 import { GrSync } from "react-icons/gr";
 import { HiDocumentAdd } from "react-icons/hi";
@@ -32,4 +32,5 @@ export const Icons = {
   search: BiSearch,
   ChevronRight: BsChevronRight,
   elipsis: LuMoreHorizontal,
+  linkedIn: RxLinkedinLogo,
 };

@@ -2,7 +2,8 @@ import PersonaMgt from "./persona/PersonaMgt";
 import Recruitment from "../Recruitment/Recruitment";
 import Workspace from "./Workspace";
 import AddPersonaForm from "./persona/AddPersonaForm";
-import ManageTags from "./persona/manageTags";
+import ManageTags from "./persona/ManageTags";
+import AccountSettings from "../Settings/AccountSettings";
 
 function Index() {}
 
@@ -11,5 +12,6 @@ Index.Recruitment = Recruitment;
 Index.PersonaMgt = PersonaMgt;
 Index.AddPersona = AddPersonaForm;
 Index.ManageTags = ManageTags;
+Index.AccountSettings = AccountSettings;
 
 export default Index;

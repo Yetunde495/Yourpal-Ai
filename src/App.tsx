@@ -98,6 +98,10 @@ function App() {
                   path="/app/workspace/persona/manage-tags"
                   element={<DashboardPages.ManageTags />}
                 />
+                <Route
+                  path="/app/settings"
+                  element={<DashboardPages.AccountSettings />}
+                />
               </Route>
             </>
           </Routes>
