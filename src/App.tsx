@@ -7,7 +7,6 @@ import LandingPages from "./Pages/Landing/Index";
 import AuthPages from "./Pages/Authentication/Index";
 import RouteLayout from "./layout/RouteLayout";
 import DashboardPages from "./Pages/Workspace/Index";
-import RecruitmentPages from "./Pages//Recruitment/Index";
 
 axios.defaults.baseURL = "";
 
@@ -85,7 +84,19 @@ function App() {
                 />
                 <Route
                   path="/app/recruiter"
-                  element={<RecruitmentPages.Recruitment />}
+                  element={<DashboardPages.Recruitment />}
+                />
+                <Route
+                  path="/app/workspace/persona"
+                  element={<DashboardPages.PersonaMgt />}
+                />
+                <Route
+                  path="/app/workspace/persona/add-persona"
+                  element={<DashboardPages.AddPersona />}
+                />
+                <Route
+                  path="/app/workspace/persona/manage-tags"
+                  element={<DashboardPages.ManageTags />}
                 />
               </Route>
             </>

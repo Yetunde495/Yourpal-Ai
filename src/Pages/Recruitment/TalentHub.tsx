@@ -76,6 +76,7 @@ const TalentHub: React.FC = () => {
   const [talentMatchAlert, setTalentMatchAlert] = useState(false);
   const [removeResume, setRemoveResume] = useState(false);
   const [resumeInput, setResumeInput] = useState(false);
+  const [matchJob, setMatchJob] = useState(false);
 
   const [search, setSearch] = useState<string>("");
 
@@ -269,7 +270,11 @@ const TalentHub: React.FC = () => {
                   onHide={() => setMatchScoreAlert(false)}
                   title="Job Match Score"
                 >
-                  <MatchScoreTable setMatchScoreAlert={setMatchScoreAlert} />
+                  <MatchScoreTable
+                    setMatchScoreAlert={setMatchScoreAlert}
+                    matchJob={matchJob}
+                    setMatchJob={setMatchJob}
+                  />
                 </AlertDialog>
               )}
             </>
@@ -289,6 +294,43 @@ const TalentHub: React.FC = () => {
           )}
         </div>
       </section>
+
+      {matchJob && (
+        <AlertDialog
+          show={matchJob}
+          onHide={() => {
+            setMatchJob(false);
+            setMatchScoreAlert(false);
+          }}
+        >
+          <div>
+            <h3>Match Job Descripton</h3>
+            <div className="bg-[#E4E4E4] rounded-lg px-4 mt-10 py-5">
+              <div className="flex justify-start">
+                <p className="text-xs mb-5">
+                  Job Description you’d like to Match the resume to
+                  (Recommended){" "}
+                </p>
+              </div>
+              <Textarea
+                placeholder="Paste job description/title here..."
+                className="md:h-40 border-[#091540] border-[0.08rem] w-full h-20 mb-5"
+              />
+            </div>
+            <div className="mt-10 flex items-center justify-between">
+              <button className="text-sm" onClick={() => setMatchJob(false)}>
+                Close
+              </button>
+
+              <button className="group relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 text-sm font-medium text-gray-900 rounded-full group bg-gradient-to-br from-[#60BEE2] via-[#5E4D84] to-[#8FC2DA] group-hover:from-[#60BEE2] group-hover:via-[#5E4D84] group-hover:to-[#8FC2DA] hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800">
+                <span className="relative px-5 py-1 transition-all ease-in duration-200 bg-white dark:bg-gray-900 rounded-full group-hover:bg-opacity-0 flex gap-2">
+                  <img src={BtnIcon} /> Generate
+                </span>
+              </button>
+            </div>
+          </div>
+        </AlertDialog>
+      )}
 
       {talentMatchAlert && (
         <AlertDialog
@@ -421,7 +463,14 @@ const TalentHub: React.FC = () => {
               />
             </div>
             <div className="mt-10 flex items-center justify-between">
-              <button className="text-sm">Close</button>
+              <button
+                className="text-sm"
+                onClick={() => {
+                  setTalentMatchAlert(false);
+                }}
+              >
+                Close
+              </button>
               {uploadedFiles.length != 0 ? (
                 <button className="group relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 text-sm font-medium text-gray-900 rounded-full group bg-gradient-to-br from-[#60BEE2] via-[#5E4D84] to-[#8FC2DA] group-hover:from-[#60BEE2] group-hover:via-[#5E4D84] group-hover:to-[#8FC2DA] hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800">
                   <span className="relative px-5 py-1 transition-all ease-in duration-200 bg-white dark:bg-gray-900 rounded-full group-hover:bg-opacity-0 flex gap-2">

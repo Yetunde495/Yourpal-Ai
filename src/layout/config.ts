@@ -98,7 +98,7 @@ export const HOME_NAV_DATA = [
       },
       {
         name: "Persona Management",
-        path: "/app/workspace/saved-profiles", //use for nested rendering
+        path: "/app/workspace/persona", //use for nested rendering
         icon: icons.User,
         fillIcon: icons.UserFill,
       },
@@ -140,13 +140,13 @@ export const RECRUITER_NAV_DATA = [
         name: "Talent Hub",
         path: "/app/recruiter", //use for nested rendering
         icon: icons.Home,
-        fillIcon: icons.HomeFill
+        fillIcon: icons.HomeFill,
       },
       {
         name: "Application Builder",
         path: "/app/tutors/dashboard", //use for nested rendering
         icon: icons.Dashboard,
-        fillIcon: icons.DashboardFill
+        fillIcon: icons.DashboardFill,
       },
     ],
   },
