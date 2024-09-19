@@ -1,6 +1,6 @@
 import DefaultLayout from "../../../layout/DefaultLayout";
 import { Icons } from "../../../components/icons";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Notification from "../../../components/Notification";
 import { toast } from "react-toastify";
@@ -8,10 +8,7 @@ import paginate from "../../../lib/utils/paginate";
 import { TableLoader } from "../../../components/Loader";
 import Table from "../../../components/table";
 import TablePagination from "../../../components/table/TablePagination";
-import Delete from "../../../components/modal/Delete";
 import { useQuery } from "@tanstack/react-query";
-import { FaCircleCheck, FaStar, FaTrophy } from "react-icons/fa6";
-import { DropdownSelect } from "../../../components/form/customDropdown";
 import Dropdown from "../../../components/Dropdown2";
 
 const pages = [{ name: "Manage Tags", href: "#", current: true }];
@@ -29,21 +26,6 @@ const sampleData = [
   },
 ];
 
-const statusOptions = [
-  {
-    text: "Interested",
-    icon: <FaStar className="text-primary" />,
-  },
-  {
-    text: "Applied",
-    icon: <FaCircleCheck className="text-success" />,
-  },
-  {
-    text: "Offer",
-    icon: <FaTrophy className="text-warning" />,
-  },
-];
-
 const ManageTags = () => {
   const navigate = useNavigate();
   const [allResumes, setAllResumes] = useState<any>([]);
@@ -51,8 +33,6 @@ const ManageTags = () => {
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [selectAll, setSelectAll] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
   const { data, isFetching } = useQuery(
     ["ALL CLASSROOMS", search, page, itemsPerPage],
@@ -234,42 +214,5 @@ const ManageTags = () => {
     </DefaultLayout>
   );
 };
-const CellAction = ({ id }: { id: string }) => {
-  const [deleteAlert, setDeleteAlert] = useState(false);
 
-  const handleDelete = (id: string) => {
-    // Logic to delete the item by id
-    console.log(`Deleting item with id: ${id}`);
-    setDeleteAlert(false);
-  };
-
-  return (
-    <div className="flex items-center gap-2">
-      <div
-        onClick={() => setDeleteAlert(true)}
-        className="group flex p-2 items-center justify-center  transition-colors cursor-pointer"
-      >
-        <p className="text-red-500 underline">Delete</p>
-      </div>
-      <button className="text-xs text-primary border border-primary py-1 px-7 rounded-full">
-        Edit
-      </button>
-      {deleteAlert && (
-        <Delete
-          show={deleteAlert}
-          id={id}
-          onHide={() => setDeleteAlert(false)}
-          onProceed={handleDelete}
-          title="Are you sure?"
-          desc="This action cannot be undone."
-          okText="Delete"
-          cancelText="Cancel"
-          isLoading={false}
-          isLoadingText="Deleting..."
-          icon={<span>🗑️</span>}
-        ></Delete>
-      )}
-    </div>
-  );
-};
 export default ManageTags;
