@@ -1,5 +1,6 @@
 import React from "react";
 import Placeholder from "../../assets/react.svg";
+import EmptyImg from "../../assets/images/empty-state.png"
 
 export interface RowPhotoProps {
   photoURL: string;
@@ -597,24 +598,24 @@ export const NoData: React.FC<NoDataProps> = ({
   btnText,
 }) => {
   return show ? (
-    <div className="rounded-md border flex items-center justify-center min-h-[400px] border-stroke bg-white pb-10 shadow-default dark:border-strokedark dark:bg-boxdark">
-      <div className="mt-7.5 text-center">
-        <h2 className="mb-3 text-2xl font-bold text-black dark:text-white">
+    <div className="rounded-md border flex flex-col items-center justify-center min-h-[440px] border-stroke bg-white pb-10 shadow-default dark:border-strokedark dark:bg-boxdark">
+        <img src={EmptyImg} className="max-w-[350px]" />
+        <h2 className="mb-1 text-xl font-bold text-black dark:text-white -mt-14">
           {title}
         </h2>
-        <p className="font-medium text-lg">{message || children}</p>
+        <p className="font-medium">{message || children}</p>
         {hideButton ? null : (
-          <div className="mb-10 mt-10 flex flex-col items-center justify-center">
+          <div className="mb-10 mt-4 flex flex-col items-center justify-center">
             <button
               onClick={() => (typeof onAdd === "function" ? onAdd() : {})}
               type="button"
-              className="flex w-[120px] items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary focus:outline-none focus:ring-4 focus:ring-primary dark:bg-primary dark:hover:bg-white dark:focus:ring-white"
+              className="flex min-w-[150px] items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary focus:outline-none focus:ring-4 focus:ring-primary dark:bg-primary dark:hover:bg-white dark:focus:ring-white"
             >
               {btnText || "Add"}
             </button>
           </div>
         )}
-      </div>
+     
     </div>
   ) : null;
 };

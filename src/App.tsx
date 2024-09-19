@@ -8,6 +8,7 @@ import AuthPages from "./Pages/Authentication/Index";
 import RouteLayout from "./layout/RouteLayout";
 import DashboardPages from "./Pages/Workspace/Index";
 import RecruitmentPages from "./Pages//Recruitment/Index";
+import TemplatePages from "./Pages/Template/Index"
 
 axios.defaults.baseURL = "";
 
@@ -86,6 +87,10 @@ function App() {
                 <Route
                   path="/app/recruiter"
                   element={<RecruitmentPages.Recruitment />}
+                />
+                <Route
+                  path="/app/all-templates"
+                  element={<TemplatePages.AllTemplates />}
                 />
               </Route>
             </>

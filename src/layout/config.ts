@@ -104,7 +104,7 @@ export const HOME_NAV_DATA = [
       },
       {
         name: "Template Management",
-        path: "/app/workspace/saved-profiles", //use for nested rendering
+        path: "/app/all-templates", //use for nested rendering
         icon: icons.Template,
         fillIcon: icons.TemplateFill,
       },

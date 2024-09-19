@@ -24,7 +24,9 @@ a:hover {
   /* color: #5273eae5; */
 }
 .bg-gradient {
-  background: linear-gradient(317.04deg, #b588f7 2.52%, #1de5e2 97.53%);
+  /* background: linear-gradient(317.04deg, #b588f7 2.52%, #1de5e2 97.53%); */
+  background: linear-gradient(137.67deg, #B588F7 2.24%, #1DE5E2 97.84%);
+
   /* background: linear-gradient(297.26deg, #B588F7 13.79%, #077AB2 36.71%, #457032 52.7%, #8343CC 69.05%, #1DE5E2 86.45%); */
 }
 .auth-card {
@@ -49,4 +51,9 @@ a:hover {
   box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
     rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+}
+
+.focus-visible\:ring-ring:focus-visible {
+  --tw-ring-color: unset !important;
+  --tw-ring-offset-width: 0 !important;
 }

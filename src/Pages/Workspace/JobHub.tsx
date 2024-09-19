@@ -228,9 +228,9 @@ const JobHub: React.FC = () => {
                       <Table.Cell>{item?.name}</Table.Cell>
                       <Table.Cell isAction>
                         {item?.job ? (
-                          <div>
+                          <div className="font-medium">
                             <p>{item?.job?.position}</p>
-                            <p>{item?.job?.companyName}</p>
+                            <p className="text-sm text-primary">{item?.job?.companyName}</p>
                           </div>
                         ) : (
                           <div>

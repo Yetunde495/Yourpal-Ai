@@ -2,6 +2,7 @@ import { useState } from "react";
 import Tabs, { Tab } from "../../components/tabs";
 import DefaultLayout from "../../layout/DefaultLayout";
 import JobHub from "./JobHub";
+import TalentHub from "../Recruitment/TalentHub";
 
 const Workspace: React.FC = () => {
   const [tab, setTab] = useState<string>("Job Hub");
@@ -16,7 +17,7 @@ const Workspace: React.FC = () => {
         </div>
 
         <div className="pb-6 px-4 md:px-6">
-            {tab === "Job Hub" ? <JobHub /> : null}
+            {tab === "Job Hub" ? <JobHub /> : <TalentHub />}
         </div>
       </section>
     </DefaultLayout>
