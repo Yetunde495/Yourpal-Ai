@@ -1,5 +1,5 @@
 import { CiWarning } from "react-icons/ci";
-import { IoEyeOutline } from "react-icons/io5";
+import { IoEyeOutline, IoReturnUpBackOutline } from "react-icons/io5";
 import { MdOutlineFileDownload, MdOutlineFilterList } from "react-icons/md";
 import { BsTrash, BsChevronRight } from "react-icons/bs";
 import { FaEdit } from "react-icons/fa";
@@ -33,4 +33,5 @@ export const Icons = {
   ChevronRight: BsChevronRight,
   elipsis: LuMoreHorizontal,
   linkedIn: RxLinkedinLogo,
+  back: IoReturnUpBackOutline,
 };

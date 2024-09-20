@@ -102,6 +102,10 @@ function App() {
                   path="/app/settings"
                   element={<DashboardPages.AccountSettings />}
                 />
+                <Route
+                  path="/app/subscription"
+                  element={<DashboardPages.SubPricing />}
+                />
               </Route>
             </>
           </Routes>

@@ -4,7 +4,6 @@ import { TableLoader } from "../../components/Loader";
 import Table from "../../components/table";
 import TablePagination from "../../components/table/TablePagination";
 import Notification from "../../components/Notification";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import paginate from "../../lib/utils/paginate";
@@ -17,6 +16,7 @@ const clients = [
     title: "Current Plan",
     date: "December 13, 2022",
     dateTime: "2022-12-13",
+    link: "/app/subscription",
   },
   {
     id: 2,
@@ -27,6 +27,7 @@ const clients = [
     dateTime: "2023-01-22",
     amount: "$14,000.00",
     status: "Paid",
+    link: "",
   },
 ];
 
@@ -48,7 +49,6 @@ const sampleData = [
 ];
 
 const Subscription = () => {
-  const navigate = useNavigate();
   const [allResumes, setAllResumes] = useState<any>([]);
   const [_selectedResume, setSelectedResume] = useState<any>(null);
   const [search, setSearch] = useState<string>("");
@@ -119,8 +119,9 @@ const Subscription = () => {
                       <div className="text-base font-medium leading-6 text-gray-900">
                         {card.name}
                       </div>
+
                       <div className="relative ml-auto text-primary underline">
-                        {card.linkText}
+                        <a href={card.link}> {card.linkText}</a>
                       </div>
                     </div>
                   </div>

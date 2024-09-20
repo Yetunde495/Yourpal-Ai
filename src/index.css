@@ -59,3 +59,7 @@ a:hover {
 .linkedin-cont {
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
+
+.recruiter-gradient {
+  background: linear-gradient(90deg, #5272ea, #2e4084);
+}
