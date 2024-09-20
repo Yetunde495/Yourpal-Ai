@@ -24,9 +24,9 @@ const CoverLetterDetails: React.FC<{
         onHide={setShow}
         title="Cover Letter"
         onProceed={() => {}}
-        size="w-full max-w-[80%]"
+        size="w-full lg:max-w-[80%]"
       >
-        <div className="px-8">
+        <div className="lg:px-8 md:px-3 px-0">
           <div className="flex justify-between items-center">
             <div className="flex items-center rounded-lg">
               <button className="px-4 flex items-center gap-2 py-2 bg-[#E0E0E080] hover:bg-zinc-200 rounded-l-lg">
@@ -56,18 +56,19 @@ const CoverLetterDetails: React.FC<{
             />
           </div>
 
-          <div className="flex justify-end items-center gap-3">
+          <div className="flex md:justify-end justify-between items-center gap-3">
             <button
-              className="px-4 flex items-center gap-2 py-2 font-medium text-black"
+              className="md:px-4 flex items-center gap-2 py-2 font-medium text-black"
               onClick={setShow}
             >
               Close
             </button>
-            <button className="px-6 py-2 bg-transparent rounded-full text-primary border border-primary hover:bg-primary hover:text-white">
+            <button className="md:px-6 px-3 py-2 bg-transparent rounded-full text-primary border border-primary hover:bg-primary hover:text-white">
+
               New Cover Letter
             </button>
             <div>
-              <button className="px-6 py-2 bg-primary rounded-full text-white hover:bg-primary/95">
+              <button className="md:px-6 px-3 py-2 bg-primary rounded-full text-white hover:bg-primary/95">
                 Save Changes
               </button>
             </div>

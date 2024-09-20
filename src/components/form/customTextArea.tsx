@@ -1,5 +1,6 @@
 import React from "react";
 import { useController } from "react-hook-form";
+import { FaStarOfLife } from "react-icons/fa6";
 
 type TextareaProps = {
   label: string;
@@ -8,13 +9,14 @@ type TextareaProps = {
   classNames?: string;
   defaultValue?:string;
   placeholder?: string;
+  isRequired?:boolean;
   row?:number;
   cols?:number;
   formatValue?: (value: string) => string;
   OnChange?: (value: string) => void;
 };
 
-const Textarea: React.FC<TextareaProps> = ({ label, name, rules, OnChange, classNames, defaultValue, placeholder, }) => {
+const Textarea: React.FC<TextareaProps> = ({ label, isRequired, name, rules, OnChange, classNames, defaultValue, placeholder, }) => {
   const { field, fieldState } = useController({ name, rules, defaultValue });
   const { onChange, onBlur, value, ref } = field;
   const { error } = fieldState;
@@ -33,9 +35,9 @@ const Textarea: React.FC<TextareaProps> = ({ label, name, rules, OnChange, class
     <div className={containerClass}>
       <label
         htmlFor={name}
-        className="mb-3 block text-black dark:text-white"
+        className="mb-3 text-black dark:text-white flex items-center gap-1"
       >
-        {label}
+        {label} {isRequired && <span><FaStarOfLife className="text-danger" size={8} /></span>}
       </label>
       <textarea
         {...field}

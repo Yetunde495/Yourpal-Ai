@@ -1,12 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { MdOutlineQuestionMark } from "react-icons/md";
+import FaqComponent from "../Pages/General/Faq";
+import ContactForm from "../Pages/General/Contact";
 
 const DropdownSupport = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef<HTMLAnchorElement | null>(null);
   const dropdown = useRef<HTMLDivElement | null>(null);
+  const [faqView, setFaq] = useState(false);
+  const [support, setSupport] = useState(false);
 
   useEffect(() => {
     const clickHandler = ({ target }: any) => {
@@ -39,15 +43,13 @@ const DropdownSupport = () => {
   }, []);
 
   return (
-    <li className="relative">
+    <div className="relative">
       <Link
         ref={trigger}
         onClick={() => setDropdownOpen(!dropdownOpen)}
         to="#"
         className="relative flex h-8 w-8 items-center justify-center rounded-lg text-slate-700 border-[0.5px] border-stroke bg-white dark:border-strokedark dark:bg-meta-4 dark:text-white"
       >
-        
-
         <MdOutlineQuestionMark size={18} />
       </Link>
 
@@ -59,25 +61,28 @@ const DropdownSupport = () => {
           dropdownOpen === true ? "block" : "hidden"
         }`}
       >
-
         <ul className="flex h-auto flex-col overflow-y-auto custom-scrollbar">
           <li
-            onClick={() => {}}
+            onClick={() => {
+              setSupport(true);
+            }}
             className="py-2 flex items-center gap-3 text-black/90 px-4 text-[14px] border-b border-stroke cursor-pointer  hover:bg-slate-50 dark:hover:bg-primary/10"
           >
             Contact Support
           </li>
           <li
-            onClick={() => {}}
+            onClick={() => {
+              setFaq(true);
+            }}
             className="py-2 flex items-center gap-3 text-black/90 px-4 text-[14px] border-b border-stroke cursor-pointer  hover:bg-slate-50 dark:hover:bg-primary/10"
           >
-             FAQ
+            FAQ
           </li>
           <li
             onClick={() => {}}
             className="py-2 flex items-center gap-3 text-black/90 px-4 text-[14px] border-b border-stroke cursor-pointer  hover:bg-slate-50 dark:hover:bg-primary/10"
           >
-           Tour Guide
+            Tour Guide
           </li>
 
           <li
@@ -88,7 +93,11 @@ const DropdownSupport = () => {
           </li>
         </ul>
       </div>
-    </li>
+      {faqView && <FaqComponent show={faqView} setShow={() => setFaq(false)} />}
+      {support && (
+        <ContactForm show={support} setShow={() => setSupport(false)} />
+      )}
+    </div>
   );
 };
 

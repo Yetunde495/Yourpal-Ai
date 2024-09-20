@@ -1,5 +1,6 @@
 import React from "react";
 import { FieldValues, useController } from "react-hook-form";
+import { FaStarOfLife } from "react-icons/fa6";
 
 type InputProps = {
   label: string;
@@ -22,13 +23,14 @@ type TextInputProps = {
   classNames?: string;
   rules?: any;
   error?: string;
+  isRequired?:boolean;
   defValue?: string | number;
   placeholder?: string;
   defaultValue?: string;
   disabled?: boolean;
 }
 
-export const AutoInput: React.FC<TextInputProps> = ({ type, disabled=false, defValue, label, name,  classNames, placeholder, defaultValue, rules }) => {
+export const AutoInput: React.FC<TextInputProps> = ({ type, isRequired, disabled=false, defValue, label, name,  classNames, placeholder, defaultValue, rules }) => {
   
 
   const { field, fieldState } = useController({ name, defaultValue,  rules });
@@ -41,8 +43,8 @@ export const AutoInput: React.FC<TextInputProps> = ({ type, disabled=false, defV
   
   return (
     <div className={containerClass}>
-      <label htmlFor={name} className="mb-[0.4rem] block text-black dark:text-white">
-        {label}
+      <label htmlFor={name} className="mb-[0.4rem] text-black dark:text-white flex items-center gap-1">
+        {label} {isRequired && <span><FaStarOfLife className="text-danger" size={8} /></span>}
       </label>
       <input
         {...field}

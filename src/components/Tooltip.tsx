@@ -94,7 +94,7 @@ export const Tooltip2: React.FC<TooltipProps> = ({ text, position = 'top', child
       {showTooltip && (
         <div
           ref={tooltipRef}
-          className={`absolute z-999 w-full min-w-16 bg-white dark:bg-black dark:text-white text-black/80 text-sm py-2.5 px-3 rounded-md shadow-3 
+          className={`absolute z-999 w-full min-w-16 bg-black text-white text-center text-xs py-1 px-1.5 rounded-md shadow-3 
           ${tooltipPosition === 'top' ? 'bottom-full left-1/2 transform -translate-x-1/2 mb-2' :
             tooltipPosition === 'bottom' ? 'top-full left-1/2 transform -translate-x-1/2 mt-2' :
             tooltipPosition === 'left' ? 'right-full top-1/2 transform -translate-y-1/2 mr-2' :

@@ -26,25 +26,32 @@ const Accordion: React.FC<AccordionProps> = ({ items, initialOpenIndex }) => {
     <div className="w-full bg-white dark:bg-boxdark-2">
       {items.map((item, index) => {
         return (
-          <div key={index} className="mb-2 bg-white dark:bg-boxdark-2">
+          <div key={index} className="mb-4 bg-white dark:bg-boxdark-2">
             <button
               onClick={() => toggleItem(index)}
-              className="w-full py-2 text-left bg-gray-200 flex justify-between items-center"
+              className="w-full py-2 text-left bg-neutral-100 flex justify-between items-center"
             >
               <div className="flex ml-4 gap-2 items-center">
-                {item.showIcon && <div className="text-zinc-500">{item.icon}</div>}
+                {item.showIcon && (
+                  <div className="text-zinc-500">{item.icon}</div>
+                )}
                 <span style={{ color: item.accordionHeaderBg }}>
                   {item.title}
                 </span>
               </div>
-              {openIndex === index ? (
-                <IoIosArrowUp className="dark:text-primary mr-4" size={22} />
-              ) : (
-                <IoIosArrowDown className="dark:text-primary mr-4" size={22} />
-              )}
+              <div>
+                {openIndex === index ? (
+                  <IoIosArrowUp className="dark:text-primary mr-4" size={22} />
+                ) : (
+                  <IoIosArrowDown
+                    className="dark:text-primary mr-4"
+                    size={22}
+                  />
+                )}
+              </div>
             </button>
             {openIndex === index && (
-              <div className="p-2 mx-2 text-sm bg-white dark:bg-boxdark-2 dark:text-slate-50 mt-2 mb-5 rounded-md">
+              <div className="py-3 px-4 text-sm bg-neutral-100 dark:bg-boxdark-2 dark:text-slate-50 mb-5 rounded-b-md">
                 {item.content}
               </div>
             )}

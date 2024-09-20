@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { useController } from "react-hook-form";
+import { FaStarOfLife } from "react-icons/fa6";
 
 type SelectProps = {
   label: string;
@@ -9,6 +10,7 @@ type SelectProps = {
   defaultValue?: string;
   classNames?: string;
   children?: React.ReactNode;
+  isRequired?: boolean;
   onChange?: (value: string) => void;
 };
 
@@ -19,6 +21,7 @@ const Select: React.FC<SelectProps> = ({
   children,
   classNames,
   onChange,
+  isRequired,
   defaultValue,
 }) => {
   const { field, fieldState } = useController({ name, rules, defaultValue });
@@ -36,8 +39,8 @@ const Select: React.FC<SelectProps> = ({
   };
   return (
     <div className={containerClass}>
-      <label htmlFor={name} className="mb-2.5 block text-black dark:text-white">
-        {label}
+      <label htmlFor={name} className="mb-2.5 text-black dark:text-white flex items-center gap-1">
+        {label} {isRequired && <span><FaStarOfLife className="text-danger" size={8} /></span>}
       </label>
       <div className="relative z-20 bg-transparent dark:bg-form-input">
       <select

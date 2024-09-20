@@ -24,6 +24,7 @@ import CompanyOverview from "./companyOverview";
 import InterviewTips from "./InterviewTips";
 import { Tooltip2 } from "../../components/Tooltip";
 import { LiaEdit } from "react-icons/lia";
+import ApplicationInfo from "./ApplicationInfo";
 
 const statusOptions = [
   {
@@ -56,6 +57,9 @@ const sampleData = [
       position: "IT Manager",
       companyName: "ABCD",
     },
+    created_at: "2024-08-26T22:46:24.684Z",
+    last_updated: "2024-08-26T22:46:24.684Z",
+    tags: ['HR', 'expert', 'recruitment', 'onboarding', 'compliance', 'policies', 'structure' ],
     cover_letter: `Dear [Employer's Name],
 
 I am excited to apply for the Human Resources position at [Company Name]. With [X years] of experience in HR management, including recruitment, employee relations, and performance management, I am confident in my ability to contribute effectively to your team.
@@ -90,6 +94,7 @@ const JobHub: React.FC = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [letterModal, setLetterModal] = useState(false);
   const [interviewtipModal, setInterviewtipModal] = useState(false);
+  const [infoView, setInfoView] = useState(false);
   const [companyoverviewModal, setCompanyoverviewModal] = useState(false);
 
   const { data, isFetching } = useQuery(
@@ -242,7 +247,7 @@ const JobHub: React.FC = () => {
                         <div className="flex w-full items-center justify-center">
                           <div>
                             <Tooltip2 text="View">
-                              <button onClick={() => setLetterModal(true)}>
+                              <button onClick={() => setLetterModal(true)} className="hover:bg-stone-200 rounded-md p-[2.5px]">
                                 <BsEye />
                               </button>
                             </Tooltip2>
@@ -251,9 +256,11 @@ const JobHub: React.FC = () => {
                       </Table.Cell>
                       <Table.Cell isAction>
                         <div className="flex w-full gap-1 items-center">
+                         
                           <Tooltip2 text="Edit">
                             <button
                               onClick={() => {}}
+                              className="hover:bg-stone-200 rounded-md p-[2.5px]"
                             >
                               <LiaEdit size={20} />
                             </button>
@@ -261,6 +268,7 @@ const JobHub: React.FC = () => {
                           <Tooltip2 text="Download">
                             <button
                               onClick={() => {}}
+                              className="hover:bg-stone-200 rounded-md p-[2.5px]"
                             >
                               <MdOutlineFileDownload size={20} />
                             </button>
@@ -274,6 +282,7 @@ const JobHub: React.FC = () => {
                             <Tooltip2 text="View">
                               <button
                                 onClick={() => setCompanyoverviewModal(true)}
+                                className="hover:bg-stone-200 rounded-md p-[2.5px]"
                               >
                                 <BsEye />
                               </button>
@@ -287,6 +296,7 @@ const JobHub: React.FC = () => {
                             <Tooltip2 text="View">
                               <button
                                 onClick={() => setInterviewtipModal(true)}
+                                className="hover:bg-stone-200 rounded-md p-[2.5px]"
                               >
                                 <BsEye />
                               </button>
@@ -296,12 +306,18 @@ const JobHub: React.FC = () => {
                       </Table.Cell>
                       <Table.Cell isAction>
                         <div className="flex w-full items-center justify-center">
-                          <button onClick={() => {}}>
+                          
+                          <div className="">
+                          <Tooltip2 text="More Details">
+                          <button onClick={() => setInfoView(true)} className="hover:bg-stone-200 rounded-md p-[2.5px]">
                             <IoMdInformationCircle
-                              size={20}
+                              size={22}
                               className="text-primary"
                             />
                           </button>
+                          </Tooltip2>
+                          </div>
+                      
                         </div>
                       </Table.Cell>
                     </Table.CellRows>
@@ -362,6 +378,16 @@ const JobHub: React.FC = () => {
             setInterviewtipModal(false);
           }}
           resumeData={selectedResume}
+        />
+      )}
+      {infoView && (
+        <ApplicationInfo 
+         show={infoView}
+         setShow={() => {
+          setSelectedResume(null)
+          setInfoView(false)
+         }}
+         resumeData={selectedResume}  
         />
       )}
     </section>
