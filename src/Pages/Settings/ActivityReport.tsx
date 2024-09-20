@@ -1,33 +1,41 @@
-import DefaultLayout from "../../../layout/DefaultLayout";
-import { Icons } from "../../../components/icons";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import Notification from "../../../components/Notification";
+import DefaultLayout from "../../layout/DefaultLayout";
+import { Icons } from "../../components/icons";
+import paginate from "../../lib/utils/paginate";
+import Notification from "../../components/Notification";
 import { toast } from "react-toastify";
-import paginate from "../../../lib/utils/paginate";
-import { TableLoader } from "../../../components/Loader";
-import Table from "../../../components/table";
-import TablePagination from "../../../components/table/TablePagination";
 import { useQuery } from "@tanstack/react-query";
-import Dropdown from "../../../components/Dropdown2";
-
-const pages = [{ name: "Manage Tags", href: "#", current: true }];
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import { TableLoader } from "../../components/Loader";
+import Table from "../../components/table";
+import TablePagination from "../../components/table/TablePagination";
 
 const sampleData = [
   {
-    tag: "Job Seeker",
     id: 1,
-    dateModified: "Jul 01, 2024",
+    job: {
+      companyName: "Henry Peters",
+      email: "hellog@gmail.com",
+    },
+    desc: "Lorem ipsum dolor sit amet consectetur. Neque dui duis volutpat lobortis sed. Morbi sed eget aliquam nec vitae tristique fames quis amet. Ultricies eleifend mattis aenean amet eget. Platea non nam nunc congue et. Pharetra consequat tincidunt.",
+    lastAccessDate: "12/05/2024",
+    lastAccessTime: "12:24 PM",
   },
   {
-    tag: "Recruiter",
     id: 2,
-    dateModified: "Jul 01, 2024",
+    job: {
+      companyName: "John Doe",
+      email: "hellog@gmail.com",
+    },
+    desc: "Lorem ipsum dolor sit amet",
+    lastAccessDate: "12/05/2024",
+    lastAccessTime: "12:24 PM",
   },
 ];
 
-const ManageTags = () => {
-  const navigate = useNavigate();
+const pages = [{ name: "Activity Report", href: "#", current: true }];
+
+const ActivityReport = () => {
   const [allResumes, setAllResumes] = useState<any>([]);
   const [_selectedResume, setSelectedResume] = useState<any>(null);
   const [search, setSearch] = useState<string>("");
@@ -66,15 +74,15 @@ const ManageTags = () => {
   );
   return (
     <DefaultLayout>
-      <section className="pb-6 px-4 md:px-6">
+      <div className="py-6 px-4 md:px-6">
         <section className="sm:block py-8">
           <nav aria-label="Breadcrumb" className="flex">
             <ol role="list" className="flex items-center space-x-4">
               <li>
                 <div>
-                  <a href="/app/workspace/persona" className=" hover:underline">
+                  <a href="/app/settings" className=" hover:underline">
                     <span className="text-[#5B5B5B] hover:text-black">
-                      Personas
+                      Team Management
                     </span>
                   </a>
                 </div>
@@ -100,47 +108,42 @@ const ManageTags = () => {
               ))}
             </ol>
           </nav>
-
-          <section>
-            <h2 className="font-bold mt-10">Manage Tags</h2>
-            <div className="flex xl:gap-5 gap-3 items-center relative mb-3 flex-wrap mt-10">
-              <div className="mt-2 flex gap-5 items-center">
-                <div className="relative">
-                  <button className="absolute top-1/2 left-0 -translate-y-1/2 pl-3">
-                    <Icons.search />
-                  </button>
-
-                  <input
-                    type="text"
-                    placeholder="Search Persona"
-                    // value={search}
-                    // onChange={(e) => setSearch(e.target.value)}
-                    className="w-full lg:w-80 border  border-stroke py-2.5 rounded-full bg-white text-sm pr-3 pl-8 focus:outline-none focus:border-1 focus:border-primary"
-                  />
-                </div>
-                <div className="relative">
-                  <button className="absolute top-1/2 left-0 -translate-y-1/2 pl-3">
-                    <Icons.filter />
-                  </button>
-
-                  <input
-                    type="text"
-                    placeholder="Filter By"
-                    // value={search}
-                    // onChange={(e) => setSearch(e.target.value)}
-                    className="w-full lg:w-80 border  border-stroke py-2.5 rounded-full bg-white text-sm pr-3 pl-8 focus:outline-none focus:border-1 focus:border-primary"
-                  />
-                </div>
-              </div>
-
-              <div className="ml-auto">
-                <button className="rounded-full bg-indigo-600 px-3.5 w-[160px] text-center py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 flex items-center gap-2">
-                  <Icons.add />
-                  Add New Tag
+          <div className="flex xl:gap-5 gap-3 items-center relative mb-3 flex-wrap mt-10">
+            <div className="mt-2 flex gap-5 items-center">
+              <div className="relative">
+                <button className="absolute top-1/2 left-0 -translate-y-1/2 pl-3">
+                  <Icons.search />
                 </button>
+
+                <input
+                  type="text"
+                  placeholder="Search Persona"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full lg:w-80 border  border-stroke py-2.5 rounded-full bg-white text-sm pr-3 pl-8 focus:outline-none focus:border-1 focus:border-primary"
+                />
+              </div>
+              <div className="relative">
+                <button className="absolute top-1/2 left-0 -translate-y-1/2 pl-3">
+                  <Icons.filter />
+                </button>
+
+                <input
+                  type="text"
+                  placeholder="Filter By"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full lg:w-80 border  border-stroke py-2.5 rounded-full bg-white text-sm pr-3 pl-8 focus:outline-none focus:border-1 focus:border-primary"
+                />
               </div>
             </div>
-          </section>
+
+            <div className="ml-auto">
+              <button className="rounded-full bg-indigo-600 px-3.5 w-[160px] text-center py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 flex items-center gap-2 justify-center">
+                Download CSV
+              </button>
+            </div>
+          </div>
 
           <div className="mt-10">
             {isFetching ? (
@@ -149,9 +152,9 @@ const ManageTags = () => {
               <>
                 <Table show>
                   <Table.TableRow>
-                    <Table.Row>Name</Table.Row>
-                    <Table.Row>Date Modified</Table.Row>
-                    <Table.Row>Actions</Table.Row>
+                    <Table.Row>Timestamp</Table.Row>
+                    <Table.Row>User</Table.Row>
+                    <Table.Row>Activity</Table.Row>
                   </Table.TableRow>
 
                   <Table.TableItems>
@@ -161,24 +164,21 @@ const ManageTags = () => {
                         onClick={() => setSelectedResume(item)}
                         key={item?.id + "-" + index}
                       >
-                        <Table.Cell>{item.tag}</Table.Cell>
                         <Table.Cell>
-                          <p className="text-sm text-black">
-                            {item.dateModified}
+                          <p>
+                            Last Access: {item.lastAccessDate} <span>|</span>{" "}
+                            {item.lastAccessTime}
                           </p>
                         </Table.Cell>
                         <Table.Cell>
-                          <Dropdown
-                            icon={<Icons.elipsis className="text-black" />}
-                            bg={false}
-                          >
-                            <div className="flex flex-col py-2 text-start px-4">
-                              <p className="text-xs hover:bg-[#f1ebf7] p-2 rounded-md cursor-pointer">
-                                Edit Tag
-                              </p>
-                            </div>
-                          </Dropdown>
+                          <div className=" text-black text-sm">
+                            <p className="font-semibold">
+                              {item?.job?.companyName}
+                            </p>
+                            <p className="text-xs">{item?.job?.email}</p>
+                          </div>
                         </Table.Cell>
+                        <Table.Cell>{item.desc}</Table.Cell>
                       </Table.CellRows>
                     ))}
                   </Table.TableItems>
@@ -195,7 +195,7 @@ const ManageTags = () => {
               </>
             ) : (
               <Table.NoData
-                onAdd={() => navigate(`/app/tutors/courses/courseupload`)}
+                // onAdd={() => navigate(`/app/tutors/courses/courseupload`)}
                 hideButton={true}
                 show={
                   allResumes === undefined ||
@@ -209,9 +209,9 @@ const ManageTags = () => {
             )}
           </div>
         </section>
-      </section>
+      </div>
     </DefaultLayout>
   );
 };
 
-export default ManageTags;
+export default ActivityReport;

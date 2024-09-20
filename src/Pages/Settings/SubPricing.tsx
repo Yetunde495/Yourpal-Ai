@@ -5,8 +5,6 @@ import { Fragment, useState } from "react";
 import { Radio, RadioGroup } from "@headlessui/react";
 import fireEmoji from "../../assets/fireEmoji.png";
 
-type TierName = "Basic" | "Full" | "Limited" | "Unlimited";
-
 interface Feature {
   name: string;
   starterAccess?: string;

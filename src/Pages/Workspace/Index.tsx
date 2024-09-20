@@ -5,6 +5,7 @@ import AddPersonaForm from "./persona/AddPersonaForm";
 import ManageTags from "./persona/ManageTags";
 import AccountSettings from "../Settings/AccountSettings";
 import SubPricing from "../Settings/SubPricing";
+import ActivityReport from "../Settings/ActivityReport";
 
 function Index() {}
 
@@ -15,5 +16,6 @@ Index.AddPersona = AddPersonaForm;
 Index.ManageTags = ManageTags;
 Index.AccountSettings = AccountSettings;
 Index.SubPricing = SubPricing;
+Index.ActivityReport = ActivityReport;
 
 export default Index;

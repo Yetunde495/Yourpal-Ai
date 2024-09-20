@@ -106,6 +106,10 @@ function App() {
                   path="/app/subscription"
                   element={<DashboardPages.SubPricing />}
                 />
+                <Route
+                  path="/app/settings/teams/activity-report"
+                  element={<DashboardPages.ActivityReport />}
+                />
               </Route>
             </>
           </Routes>

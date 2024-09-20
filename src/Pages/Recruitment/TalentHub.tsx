@@ -16,7 +16,6 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 import cancelIcon from "../../assets/svg/icon-cancel.svg";
 import { ActionTooltip } from "../../components/action-tooltip";
 import { Icons } from "../../components/icons";
-import Delete from "../../components/modal/Delete";
 import AlertDialog from "../../components/modal/AlertDialog";
 import MatchScoreTable from "./MatchScoreTable";
 import { ScrollArea } from "../../components/scroll-area";
@@ -510,9 +509,19 @@ const TalentHub: React.FC = () => {
 const CellAction = ({ id }: { id: string }) => {
   const [deleteAlert, setDeleteAlert] = useState(false);
 
-  const handleDelete = (id: string) => {
-    // Logic to delete the item by id
-    console.log(`Deleting item with id: ${id}`);
+  const handleDelete = (id: string | string[]) => {
+    if (Array.isArray(id)) {
+      // Logic to delete multiple items
+      id.forEach((itemId) => {
+        console.log(`Deleting item with id: ${itemId}`);
+        // Add your delete logic here
+      });
+    } else {
+      // Logic to delete a single item
+      console.log(`Deleting item with id: ${id}`);
+      // Add your delete logic here
+    }
+
     setDeleteAlert(false);
   };
 
@@ -548,19 +557,24 @@ const CellAction = ({ id }: { id: string }) => {
         </div>
       </ActionTooltip>
       {deleteAlert && (
-        <Delete
+        <AlertDialog
           show={deleteAlert}
-          id={id}
           onHide={() => setDeleteAlert(false)}
-          onProceed={handleDelete}
-          title="Are you sure?"
-          desc="This action cannot be undone."
-          okText="Delete"
-          cancelText="Cancel"
-          isLoading={false}
-          isLoadingText="Deleting..."
-          icon={<span>🗑️</span>}
-        ></Delete>
+          title=""
+        >
+          <h3 className="text-base mb-3">Delete Resume</h3>
+          <p className="text-xs mb-5">
+            Are you sure you want to remove this Resume?
+          </p>
+          <div className="flex gap-5 justify-center items-center flex-col mt-10">
+            <button className="border-red-500 border text-red-500 text-sm px-5 rounded-full py-1 font-normal w-[60%]">
+              Yes, Delete
+            </button>
+            <button className="border-[#D4D4D4] border text-[#928f8f] text-sm px-5 rounded-full py-1 font-normal w-[60%]">
+              No, Cancel
+            </button>
+          </div>
+        </AlertDialog>
       )}
     </div>
   );
