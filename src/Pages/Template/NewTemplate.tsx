@@ -9,18 +9,11 @@ import { AutoInput } from "../../components/form/customInput";
 import Select from "../../components/form/customSelect";
 import { Textarea } from "../../components/form";
 
-const EditTemplate: React.FC = () => {
+const NewTemplate: React.FC = () => {
   const navigate = useNavigate();
   const methods = useForm<any>();
   const [isLoading, setIsLoading] = useState(false);
   const [_isSuccess, setIsSuccess] = useState<boolean>(false);
-  const [templateData, _setTemplateData] = useState({
-    name: 'Test',
-    tag: 'Job Seeker',
-    content: `Test template content
-    Test a new line
-    `
-  })
 
   const onSubmit = async (data: any) => {
     const { errors } = methods.formState;
@@ -46,7 +39,7 @@ const EditTemplate: React.FC = () => {
     <DefaultLayout>
       <section className="px-4 py-4 md:py-6 md:px-6">
         <Breadcrumb
-          pageName="Edit Template"
+          pageName="Add Template"
           homeRoute="/app/templates"
           homeRouteName="Templates"
         />
@@ -56,7 +49,7 @@ const EditTemplate: React.FC = () => {
             <form onSubmit={methods.handleSubmit(onSubmit)} className="">
               <div className="flex justify-between items-center mb-6">
                 <h1 className="text-xl lg:text-2xl font-semibold dark:text-slate-200">
-                  Update Template
+                  Add Template
                 </h1>
                 <div className="flex gap-3 items-center">
                   <Button type="button" variant="link" rounded onClick={() => navigate(`/app/persona/manage-tags`)}>
@@ -78,7 +71,6 @@ const EditTemplate: React.FC = () => {
                   name="name"
                   placeholder="Enter a name for this template"
                   isRequired
-                  defaultValue={templateData?.name}
                   rules={{
                     required: "This field is required",
                   }}
@@ -88,10 +80,9 @@ const EditTemplate: React.FC = () => {
                     label="Tag"
                     name="tag"
                     isRequired
-                    defaultValue={templateData?.tag}
                     rules={{ required: "This field is required" }}
                   >
-                    <option value={templateData?.tag || ''}>{templateData?.tag || 'Select...'}</option>
+                    <option value={''}>Select...</option>
                     <option>Job Seeker</option>
                     <option>Recruiter</option>
                   </Select>
@@ -101,7 +92,6 @@ const EditTemplate: React.FC = () => {
                  label="Template Content"
                  name="content"
                  isRequired
-                 defaultValue={templateData?.content}
                  placeholder="Type your content here"
                  rules={{required: 'This field is required'}}
                  props={{maxLength: 3000, row: 6, copy: true}}
@@ -115,4 +105,4 @@ const EditTemplate: React.FC = () => {
   );
 };
 
-export default EditTemplate;
+export default NewTemplate;

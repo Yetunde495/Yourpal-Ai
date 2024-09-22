@@ -20,6 +20,7 @@ import {
 import StaggeredDropDown, {
   AnimatedOption,
 } from "../../AnimatedUi/staggeredDropdown";
+import Delete from "../../components/modal/Delete";
 
 const sampleData = [
   {
@@ -46,6 +47,7 @@ const AllTemplates: React.FC = () => {
 
   const [singleSelect, setSingleSelect] = useState<string>("");
   const [multiSelect, setMultiSelect] = useState<string[]>([]);
+  const [deleteModal, setDeleteModal] = useState(false)
 
   const enableDelete = singleSelect || multiSelect?.length > 0 ? true : false;
   const enableViewData =
@@ -113,10 +115,10 @@ const AllTemplates: React.FC = () => {
     );
   const handleToggleSelectAllItems = () =>
     multiSelect.length !== sampleData?.length
-      ? setMultiSelect((prevState: Array<string>) => [
+      ? setMultiSelect((_prevState: Array<string>) => [
           ...getAllIdsInArray(sampleData, "id"),
         ])
-      : setMultiSelect((prevState: Array<string>) => []);
+      : setMultiSelect((_prevState: Array<string>) => []);
   return (
     <DefaultLayout>
       <section className="pb-6 px-4 md:px-6">
@@ -154,7 +156,7 @@ const AllTemplates: React.FC = () => {
             </div>
 
             <div className="ml-auto">
-              <button className="px-6 py-1.5 rounded-full bg-primary text-white hover:opacity-95">
+              <button className="px-6 py-1.5 rounded-full bg-primary text-white hover:opacity-95" onClick={() => navigate('new-template')}>
                 Add New Template
               </button>
             </div>
@@ -205,7 +207,7 @@ const AllTemplates: React.FC = () => {
                           <StaggeredDropDown>
                             <AnimatedOption
                               text="Edit Template"
-                              onClick={() => {}}
+                              onClick={() => {navigate(`edit-template`)}}
                             />
                             <AnimatedOption
                               text="Duplicate Template"
@@ -213,7 +215,7 @@ const AllTemplates: React.FC = () => {
                             />
                             <AnimatedOption
                               text="Delete Template"
-                              onClick={() => {}}
+                              onClick={() => {setDeleteModal(true)}}
                             />
                           </StaggeredDropDown>
                         </Table.Cell>
@@ -247,6 +249,17 @@ const AllTemplates: React.FC = () => {
             )}
           </div>
         </section>
+        <Delete
+         show={deleteModal}
+         onHide={() => {setDeleteModal(false)}}
+         title="Delete Template"
+         desc="Are you sure you want to delete this template? This action is irreversible"
+        //  size="w-full max-w-[300px]"
+         onProceed={() => {}}
+         isLoading={false}
+         isLoadingText="Deleting..."
+
+        />
       </section>
     </DefaultLayout>
   );

@@ -1,5 +1,5 @@
 import React from "react";
-import { BsTrash3Fill, BsXCircleFill } from "react-icons/bs";
+import { BsXCircleFill } from "react-icons/bs";
 
 type DeleteProps = {
   show?: boolean;
@@ -14,9 +14,7 @@ type DeleteProps = {
   icon?: React.ReactNode;
   size?: string;
   onHide: () => void;
-  // onProceed: () => void;
-  onProceed: (id: string) => void;
-  id: string;
+  onProceed: () => void;
 };
 
 export default function Delete({
@@ -28,48 +26,47 @@ export default function Delete({
   disabled,
   isLoading,
   isLoadingText,
-  icon,
+  // icon,
   size,
   children,
   cancelText,
   okText,
-  id,
 }: DeleteProps) {
   return show ? (
     <div className="fixed top-0 left-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5">
       <div
         className={`${
-          size ? size : "w-full max-w-142.5"
-        } rounded-lg bg-white py-12 px-6 text-center dark:bg-boxdark relative`}
+          size ? size : "w-full max-w-[300px] md:max-w-[420px]"
+        } rounded-xl bg-white py-12 px-6 text-center dark:bg-boxdark relative`}
       >
-        <button onClick={onHide} className="absolute right-4 top-4">
+        <button onClick={onHide} className="absolute right-4 top-4 text-neutral-300 hover:text-neutral-400">
           <BsXCircleFill size={25} />
         </button>
 
-        <span className="mx-auto inline-block bg-[#bf09093b] rounded-full p-4 text-[#ee1919]">
-          {icon ? icon : <BsTrash3Fill className="h-[30px] w-[30px]" />}
-        </span>
+        {/* <span className="mx-auto inline-block bg-[#bf09093b] rounded-full p-2.5 text-[#ee1919]">
+          {icon ? icon : <BsTrash3Fill className="h-[20px] w-[20px]" />}
+        </span> */}
 
-        <h3 className="mt-5.5 pb-2 text-xl font-bold text-black dark:text-white sm:text-2xl">
+        <h3 className="mt-1 pb-2 text-xl font-semibold text-black/80 dark:text-white">
           {title || children}
         </h3>
         <p className="mb-10">{desc}</p>
-        <div className="-mx-3 flex gap-y-4">
-          <div className="w-full px-3 2xsm:w-1/2">
-            <button
-              onClick={() => onHide()}
-              className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
-            >
-              {cancelText || "Cancel"}
-            </button>
-          </div>
-          <div className="w-full px-3 2xsm:w-1/2">
+        <div className="mx-6 flex flex-col gap-y-6">
+          <div className="w-full px-3">
             <button
               disabled={disabled}
-              onClick={() => onProceed(id)}
-              className="block w-full rounded border border-meta-1 bg-meta-1 p-3 text-center font-medium text-white transition hover:bg-opacity-90"
+              onClick={() => onProceed()}
+              className="block w-full rounded-full border border-meta-1 hover:bg-meta-1 text-meta-1 py-2 px-3 text-center font-medium hover:text-white transition"
             >
-              {isLoading ? isLoadingText : okText || "Proceed"}
+              {isLoading ? isLoadingText : okText || "Yes, Delete"}
+            </button>
+          </div>
+          <div className="w-full px-3">
+            <button
+              onClick={() => onHide()}
+              className="block w-full rounded-full border border-stroke bg-transparent hover:bg-gray px-3 py-2 text-center font-medium text-black transition"
+            >
+              {cancelText || "No, Cancel"}
             </button>
           </div>
         </div>

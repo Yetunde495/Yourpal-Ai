@@ -22,7 +22,7 @@ interface ButtonProps {
     | "danger"
     | "light"
     | "link"
-    | "transparent";
+    | "transparent" | "outline-primary";
   classNames?: string;
   btnProps?: any;
   elevation?: number;
@@ -125,9 +125,11 @@ export default function Button({
       : variant === "danger"
       ? "bg-meta-1 text-white"
       : variant === "link"
-      ? "bg-transparent text-black border-b-2 border-primary rounded-none py-0"
+      ? "bg-transparent text-primary underline underline-offset-[3px] rounded-none py-0"
       : variant === "transparent"
       ? "bg-transparent text-black hover:bg-slate-200 border border-slate-300"
+      : variant === "outline-primary" 
+      ? "bg-white border border-primary text-primary hover:bg-primary hover:text-white"
       : "bg-gray text-black";
   let btnCls = `flex justify-center transition disabled:opacity-65 opacity-95 hover:opacity-100 ${bgColor} ${
     rounded ? "rounded-full" : "rounded-md"

@@ -217,8 +217,8 @@ export const Row: React.FC<RowProps> = ({
   if (rowIndex === 0) {
     return (
       <th
-        className={`min-w-[${
-          rowWidth || "220px"
+        className={` min-w-[${
+          rowWidth || `220px`
         }] py-4 px-4 font-medium text-zinc-500 dark:text-white xl:pl-11`}
       >
         {row || children}
@@ -228,7 +228,7 @@ export const Row: React.FC<RowProps> = ({
 
   if (isLastItem) {
     return (
-      <th className="py-4 px-4 font-medium text-zinc-500 dark:text-white">
+      <th className="py-4 px-4 font-medium text-center text-zinc-500 dark:text-white">
         {row || children}
       </th>
     );
@@ -270,7 +270,7 @@ export const Cell: React.FC<CellProps> = ({
 }) => {
   let val = (
     <td className="border-b border-[#eee] py-3 px-4 dark:border-strokedark">
-      <p className="text-zinc-500 dark:text-white">{cell || children}</p>
+      <p className=" dark:text-white text-sm text-black">{cell || children}</p>
     </td>
   );
 
@@ -383,7 +383,7 @@ export const RowCheckInput: React.FC<RowCheckInputProps> = ({
     checked={isChecked}
     title="tr-input"
     type="checkbox"
-    className="text-blue-500 border-gray-300 rounded cursor-pointer
+    className="text-primary h-[14px] w-[14px] border border-primary rounded cursor-pointer
       dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700 mr-3"
   />
 );

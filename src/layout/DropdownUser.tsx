@@ -16,7 +16,7 @@ const DropdownUser = () => {
   const handleSignout = async () => {
     //send request to API for logout
     signOut();
-      navigate("/");
+    navigate("/");
   };
 
   useEffect(() => {
@@ -54,8 +54,8 @@ const DropdownUser = () => {
       <Link
         ref={trigger}
         onClick={() => {
-          console.log(user)
-          setDropdownOpen(!dropdownOpen)
+          console.log(user);
+          setDropdownOpen(!dropdownOpen);
         }}
         className="flex items-center gap-2"
         to="#"
@@ -69,10 +69,10 @@ const DropdownUser = () => {
           )}
         />
 
-        <IoMdArrowDropdown size={22} className={`${
-            dropdownOpen ? "rotate-180" : ""
-          } text-slate-800`} />
-        
+        <IoMdArrowDropdown
+          size={22}
+          className={`${dropdownOpen ? "rotate-180" : ""} text-slate-800`}
+        />
       </Link>
 
       {/* <!-- Dropdown Start --> */}
@@ -80,15 +80,16 @@ const DropdownUser = () => {
         ref={dropdown}
         onFocus={() => setDropdownOpen(true)}
         onBlur={() => setDropdownOpen(false)}
-        className={`absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${
+        className={`absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border p-2 border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${
           dropdownOpen === true ? "block" : "hidden"
         }`}
       >
-        <ul className="hidden flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
-        
-         
-         
-        </ul>
+        <ul className="hidden flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark"></ul>{" "}
+        <li className="list-none">
+          <Link to={"/app/settings"}>
+            <button>Account Settings</button>
+          </Link>
+        </li>
         <button
           onClick={handleSignout}
           className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"

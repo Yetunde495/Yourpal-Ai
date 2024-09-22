@@ -58,6 +58,14 @@ a:hover {
   --tw-ring-offset-width: 0 !important;
 }
 
+.linkedin-cont {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.recruiter-gradient {
+  background: linear-gradient(90deg, #5272ea, #2e4084);
+}
+
 @keyframes slideIn {
   0% {
     transform: translateX(100%);
