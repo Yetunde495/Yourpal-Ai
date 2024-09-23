@@ -1,13 +1,18 @@
 import { Fragment, useEffect, useRef, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { SlSettings } from "react-icons/sl";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { MdOutlineFileDownload } from "react-icons/md";
 import { useApp } from "../context/AppContext";
 import { HOME_NAV_DATA } from "./config";
 import logo1 from "../assets/svg/logo-1.svg";
+import logo2 from "../assets/nav-icons/jobseeker.svg";
+import logo3 from "../assets/nav-icons/recruiter.svg";
+import logo4 from "../assets/nav-icons/social.svg";
+
 import { SOCIAL_NAV_DATA } from "./config";
 import { JOBSEEKER_NAV_DATA } from "./config";
 import { RECRUITER_NAV_DATA } from "./config";
-
+import { RiLogoutCircleLine } from "react-icons/ri";
+import Modal from "../components/modal";
 
 const Sidebar = ({
   sidebarOpen,
@@ -16,22 +21,34 @@ const Sidebar = ({
   sidebarOpen: any;
   setSidebarOpen: any;
 }) => {
-  const { hubCategory } = useApp();
+  const { hubCategory, signOut } = useApp();
+  const navigate = useNavigate();
   const location = useLocation();
   const { pathname } = location;
 
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
-  const [mini] = useState(false);
 
   const storedSidebarExpanded = localStorage.getItem("sidebar-expanded");
-  const [sidebarExpanded, setSidebarExpanded] = useState(
+  const [sidebarExpanded, _setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
   );
+  const [logoutModal, setLogoutModal] = useState(false);
 
   //nav configuration
-  const navConfig = hubCategory === "home" ? HOME_NAV_DATA : hubCategory === "social" ? SOCIAL_NAV_DATA :  hubCategory === "jobseeker" ? JOBSEEKER_NAV_DATA : RECRUITER_NAV_DATA
+  const navConfig =
+    hubCategory === "home"
+      ? HOME_NAV_DATA
+      : hubCategory === "social"
+      ? SOCIAL_NAV_DATA
+      : hubCategory === "jobseeker"
+      ? JOBSEEKER_NAV_DATA
+      : RECRUITER_NAV_DATA;
 
+  const handleSignout = async () => {
+    signOut();
+    navigate("/");
+  };
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: { [key: string]: any }) => {
@@ -72,7 +89,7 @@ const Sidebar = ({
       ref={sidebar}
       className={`absolute h-full left-0 top-0 z-9999 flex border-r border-stroke dark:border-strokedark ${
         sidebarOpen ? "lg:hidden" : "lg:static"
-      } w-[250px] flex-col bg-white overflow-y-hidden text-[#4d4d4d] duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
+      } w-[260px] flex-col bg-white overflow-y-hidden text-[#4d4d4d] duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
@@ -84,8 +101,26 @@ const Sidebar = ({
 
         
       </div> */}
-      <div className="flex items-center justify-between gap-2 px-6 pt-7 pb-10">
-        <img src={logo1} alt="Logo" className="block w-[200px] h-6" />
+      <div className="flex items-center justify-center w-full gap-2 px-6 pt-7 pb-10">
+        <img
+          src={
+            hubCategory === "home"
+              ? logo1
+              : hubCategory === "jobseeker"
+              ? logo2
+              : hubCategory === "recruiter"
+              ? logo3
+              : logo4
+          }
+          alt="Logo"
+          className={`${
+            hubCategory === "home"
+              ? "w-[160px] h-6"
+              : hubCategory === "social"
+              ? "w-[80px] h-2"
+              : "w-[150px] h-5"
+          }block`}
+        />
       </div>
       {/* <!-- SIDEBAR HEADER --> */}
 
@@ -101,7 +136,7 @@ const Sidebar = ({
                 {navdata.children.map((nchild: any, nindex: number) => {
                   const NChildIcon = nchild.icon;
                   const FilledIcon = nchild.fillIcon;
-                  return  (
+                  return (
                     <li key={nindex}>
                       <NavLink
                         to={nchild?.path}
@@ -113,7 +148,15 @@ const Sidebar = ({
                             : "text-[#4d4d4d] hover:bg-primary/15"
                         }`}
                       >
-                       {pathname.includes(nchild.path) ? <FilledIcon style={{ width: "18px", height: "18px" }} /> : <NChildIcon style={{ width: "18px", height: "18px" }} />}
+                        {pathname.includes(nchild.path) ? (
+                          <FilledIcon
+                            style={{ width: "18px", height: "18px" }}
+                          />
+                        ) : (
+                          <NChildIcon
+                            style={{ width: "18px", height: "18px" }}
+                          />
+                        )}
 
                         {!sidebarOpen && nchild.name}
                         <p className="block lg:hidden">{nchild.name}</p>
@@ -125,21 +168,59 @@ const Sidebar = ({
             </Fragment>
           ))}
 
-          <div className="absolute bottom-8 w-full right-0 px-4 hidden">
-            <NavLink
-              to={"/app/patient/settings"}
-              className={`group relative flex items-center gap-2.5 text-lg  rounded-sm py-2 px-2 font-medium hover:text-white dark:text-primary hover:bg-primary dark:hover:bg-primary/20 text-black duration-300 ease-in-out dark:hover-bg-meta-4 ${
-                pathname.includes("settings") &&
-                " text-white bg-primary hover:text-white hover:bg-primary/90 dark:text-white"
-              }`}
+          <div className="absolute bottom-8 w-full right-0 pr-2 pl-2.5">
+            <div
+              className={`border border-primary relative flex cursor-pointer items-center gap-2.5 mb-3 rounded-full py-2 px-4 font-medium dark:text-primary hover:bg-primary bg-transparent text-primary hover:text-white duration-300 ease-in-out
+               `}
             >
-              <SlSettings className="w-5 h-5" />
-              {sidebarOpen ? null : "Settings"}
+              <MdOutlineFileDownload /> Download Extension
+            </div>
+            <NavLink
+              to={""}
+              onClick={() => setLogoutModal(true)}
+              className={`group relative flex items-center gap-2.5  rounded-xl py-2 px-4 font-medium hover:text-red-600 duration-300 ease-in-out`}
+            >
+              <RiLogoutCircleLine className="w-5 h-5" />
+              Logout
             </NavLink>
           </div>
         </nav>
         {/* <!-- Sidebar Menu --> */}
       </div>
+      <Modal
+        show={logoutModal}
+        onHide={() => setLogoutModal(false)}
+        size="md:w-[450px] w-[350px]"
+      >
+        <div className="flex flex-col justify-center">
+          <span className="mx-auto inline-block bg-danger/15 rounded-full p-4 text-red-600 mb-3">
+            <RiLogoutCircleLine size={24} />
+          </span>
+
+          <h1 className="text-lg text-black/90 mb-6 text-center">
+            Are you sure you want to logout?
+          </h1>
+
+          <div className="-mx-3 flex flex-col gap-y-6 px-6">
+            <div className="w-full px-3 2xsm:w-1/2">
+              <button
+                onClick={() => setLogoutModal(false)}
+                className="block w-full rounded-full border border-primary bg-primary p-3 text-center font-medium text-white transition hover:opacity-95"
+              >
+                No
+              </button>
+            </div>
+            <div className="w-full px-3 2xsm:w-1/2">
+              <button
+                onClick={() => handleSignout()}
+                className="block w-full rounded-full text-meta-1 border border-meta-1 bg-white p-3 text-center font-medium hover:text-white transition hover:bg-meta-1"
+              >
+                Yes
+              </button>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </aside>
   );
 };

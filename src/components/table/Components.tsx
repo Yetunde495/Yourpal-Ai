@@ -1,5 +1,6 @@
 import React from "react";
 import Placeholder from "../../assets/react.svg";
+import EmptyImg from "../../assets/images/empty-state.png"
 
 export interface RowPhotoProps {
   photoURL: string;
@@ -8,7 +9,11 @@ export interface RowPhotoProps {
 
 export const RowPhoto: React.FC<RowPhotoProps> = ({ photoURL, desc }) => (
   <div className="rounded">
-    <img src={photoURL || Placeholder} alt={desc} className="object-cover w-35 h-20 rounded-md" />
+    <img
+      src={photoURL || Placeholder}
+      alt={desc}
+      className="object-cover w-35 h-20 rounded-md"
+    />
   </div>
 );
 
@@ -212,8 +217,8 @@ export const Row: React.FC<RowProps> = ({
   if (rowIndex === 0) {
     return (
       <th
-        className={`min-w-[${
-          rowWidth || "220px"
+        className={` min-w-[${
+          rowWidth || `220px`
         }] py-4 px-4 font-medium text-zinc-500 dark:text-white xl:pl-11`}
       >
         {row || children}
@@ -223,7 +228,7 @@ export const Row: React.FC<RowProps> = ({
 
   if (isLastItem) {
     return (
-      <th className="py-4 px-4 font-medium text-zinc-500 dark:text-white">
+      <th className="py-4 px-4 font-medium text-center text-zinc-500 dark:text-white">
         {row || children}
       </th>
     );
@@ -265,7 +270,7 @@ export const Cell: React.FC<CellProps> = ({
 }) => {
   let val = (
     <td className="border-b border-[#eee] py-3 px-4 dark:border-strokedark">
-      <p className="text-zinc-500 dark:text-white">{cell || children}</p>
+      <p className=" dark:text-white text-sm text-black">{cell || children}</p>
     </td>
   );
 
@@ -378,7 +383,7 @@ export const RowCheckInput: React.FC<RowCheckInputProps> = ({
     checked={isChecked}
     title="tr-input"
     type="checkbox"
-    className="text-blue-500 border-gray-300 rounded cursor-pointer
+    className="text-primary h-[14px] w-[14px] border border-primary rounded cursor-pointer
       dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700 mr-3"
   />
 );
@@ -576,7 +581,7 @@ export const Pagination = ({
 export interface NoDataProps {
   message?: string;
   title?: string;
-  children?: string;
+  children?: React.ReactNode;
   show: boolean;
   onAdd?: () => void;
   hideButton?: any;
@@ -590,28 +595,27 @@ export const NoData: React.FC<NoDataProps> = ({
   show,
   onAdd,
   hideButton,
-  btnText
+  btnText,
 }) => {
   return show ? (
-    <div className="rounded-md border flex items-center justify-center min-h-[400px] border-stroke bg-white pb-10 shadow-default dark:border-strokedark dark:bg-boxdark">
-      <div className="mt-7.5 text-center">
-        <h2 className="mb-3 text-2xl font-bold text-black dark:text-white">
+    <div className="rounded-md border flex flex-col items-center justify-center min-h-[440px] border-stroke bg-white pb-10 shadow-default dark:border-strokedark dark:bg-boxdark">
+        <img src={EmptyImg} className="max-w-[350px]" />
+        <h2 className="mb-1 text-xl font-bold text-black dark:text-white -mt-14">
           {title}
         </h2>
-        <p className="font-medium text-lg">{message || children}</p>
+        <p className="font-medium">{message || children}</p>
         {hideButton ? null : (
-          <div className="mb-10 mt-10 flex flex-col items-center justify-center">
+          <div className="mb-10 mt-4 flex flex-col items-center justify-center">
             <button
               onClick={() => (typeof onAdd === "function" ? onAdd() : {})}
               type="button"
-              className="flex w-[120px] items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary focus:outline-none focus:ring-4 focus:ring-primary dark:bg-primary dark:hover:bg-white dark:focus:ring-white"
+              className="flex min-w-[150px] items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary focus:outline-none focus:ring-4 focus:ring-primary dark:bg-primary dark:hover:bg-white dark:focus:ring-white"
             >
               {btnText || "Add"}
-              
             </button>
           </div>
         )}
-      </div>
+     
     </div>
   ) : null;
 };

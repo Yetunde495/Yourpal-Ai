@@ -54,7 +54,7 @@ const Table: React.FC<TableProps> & {
      pb-2.5 shadow-default dark:border-strokedark 
     dark:bg-boxdark bg-white xl:pb-1 min-h-[450px]"
     >
-      <div className="max-w-full overflow-x-auto pb-12 min-h-[400px]">
+      <div className="max-w-full overflow-x-auto pb-12 min-h-[440px]">
         <table className="w-full table-auto">{children}</table>
       </div>
     </div>

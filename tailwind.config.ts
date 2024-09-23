@@ -2,29 +2,31 @@
 // import colors from "tailwindcss/colors";
 import { default as flattenColorPalette } from "tailwindcss/lib/util/flattenColorPalette";
 
-
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class",
+  baseUrl: ".",
+  paths: {
+    "@/*": ["./src/*"],
+  },
   theme: {
     screens: {
-      "xs": "500px",
-      'sm': '640px',
-      'md': '768px',
-      'lg': '1024px',
-      'xl': '1280px',
+      xs: "500px",
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
       // => @media (min-width: 1280px) { ... }
 
-      '2xl': '1536px',
-      '3xl': '1600px',
-      '4xl': '1800px',
-      '5xl': '2000px',
-
+      "2xl": "1536px",
+      "3xl": "1600px",
+      "4xl": "1800px",
+      "5xl": "2000px",
     },
     extend: {
       fontFamily: {
-        outfit: ["outfit", "sans-serif"]
+        outfit: ["outfit", "sans-serif"],
       },
       fontSize: {
         "title-xxl": ["44px", "55px"],
@@ -244,10 +246,11 @@ export default {
       dropShadow: {
         1: "0px 1px 0px #E2E8F0",
         2: "0px 1px 4px rgba(0, 0, 0, 0.12)",
-        3: "14px 14px 44px 0px #4A829666"
+        3: "14px 14px 44px 0px #4A829666",
       },
       animation: {
-        scroll: "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
+        scroll:
+          "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
         "meteor-effect": "meteor 5s linear infinite",
         spotlight: "spotlight 2s ease .75s 1 forwards",
         "ping-once": "ping 5s cubic-bezier(0, 0, 0.2, 1)",
@@ -291,13 +294,13 @@ export default {
 };
 
 // This plugin adds each Tailwind color as a global CSS variable, e.g. var(--gray-200).
- 
+
 function addVariablesForColors({ addBase, theme }: any) {
   let allColors = flattenColorPalette(theme("colors"));
   let newVars = Object.fromEntries(
     Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
   );
- 
+
   addBase({
     ":root": newVars,
   });

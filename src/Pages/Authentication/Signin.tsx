@@ -5,10 +5,11 @@ import { FormProvider, useForm } from "react-hook-form";
 // import { toast } from "react-toastify";
 import { toast } from "react-toastify";
 import logo from "../../assets/svg/logo-1.svg";
-import GoogleLogo from "../../assets/svg/google-logo.svg";
 import { AutoInput } from "../../components/form/customInput";
 import AuthSlider from "./AuthSlider";
 import { LockedPasswordInput } from "../../components/form/PasswordInput";
+import { BsLinkedin } from "react-icons/bs";
+import { FcGoogle } from "react-icons/fc";
 
 
 
@@ -53,20 +54,20 @@ const Signin: React.FC = () => {
               </h1>
               <div className="flex w-full items-center justify-center gap-5">
                 <button
-                  className="bg-transparent flex items-center justify-center gap-3 rounded-full border border-slate-300 w-[200px] py-3 px-8"
+                  className="bg-transparent flex items-center justify-center gap-3 rounded-full hover:border-primary border border-slate-300 w-[200px] py-2 px-8"
                   onClick={() => {}}
                   disabled={isLoading}
                 >
-                  <img src={GoogleLogo} className="w-6" />
+                  <FcGoogle size={20} />
                   {isLoading ? "Signing in..." : "Google"}
                 </button>
 
                 <button
-                  className="bg-transparent flex items-center justify-center gap-3 rounded-full border border-slate-300 w-[200px] py-3 px-8"
+                  className="bg-transparent flex items-center justify-center gap-3 rounded-full border border-slate-300 hover:border-primary w-[200px] py-2 px-8"
                   onClick={() => {}}
                   disabled={isLoading}
                 >
-                  <img src={GoogleLogo} className="w-6" />
+                  <BsLinkedin className="text-primary" size={20} />
                   {isLoading ? "Signing in..." : "Linkedin"}
                 </button>
               </div>
@@ -132,7 +133,7 @@ const Signin: React.FC = () => {
                       <p className="text-center text-slate-400 mt-4 dark:text-slate-100">
                         Don't have an account?{" "}
                         <span>
-                          <Link to="/signup">Sign Up</Link>
+                          <Link to="/signup" className="text-primary hover:opacity-95">Sign Up</Link>
                         </span>
                       </p>
                     </div>

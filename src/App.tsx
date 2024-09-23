@@ -3,11 +3,12 @@ import { DATA_CENTER_TOKEN, useApp } from "./context/AppContext";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import axios from "axios";
 import { Loader } from "./components/Loader";
-
 import LandingPages from "./Pages/Landing/Index";
 import AuthPages from "./Pages/Authentication/Index";
 import RouteLayout from "./layout/RouteLayout";
-import DashboardPages from "./Pages/Workspace/Index"
+import DashboardPages from "./Pages/Workspace/Index";
+import PersonaPages from "./Pages/Persona/Index"
+import TemplatePages from "./Pages/Template/Index"
 
 axios.defaults.baseURL = "";
 
@@ -71,14 +72,59 @@ function App() {
                 path="/forgot-password"
                 element={<AuthPages.ResetPassword />}
               />
-              <Route path="/reset-password/:email/:token" element={<AuthPages.ResetPasswordForm/>} />
-
+              <Route
+                path="/reset-password/:email/:token"
+                element={<AuthPages.ResetPasswordForm />}
+              />
             </>
 
             <>
-            <Route path="/app" element={<RouteLayout />}>
-            <Route path="/app/workspace" element={<DashboardPages.Workspace />} />
-
+              <Route path="/app" element={<RouteLayout />}>
+                <Route
+                  path="/app/workspace"
+                  element={<DashboardPages.Workspace />}
+                />
+                <Route
+                  path="/app/recruiter"
+                  element={<DashboardPages.Recruitment />}
+                />
+                <Route
+                  path="/app/persona"
+                  element={<PersonaPages.PersonaMgt />}
+                />
+                <Route
+                  path="/app/persona/add-persona"
+                  element={<PersonaPages.AddPersona />}
+                />
+                <Route
+                  path="/app/persona/manage-tags"
+                  element={<PersonaPages.ManageTags />}
+                />
+                <Route
+                  path="/app/settings"
+                  element={<DashboardPages.AccountSettings />}
+                />
+                <Route
+                  path="/app/subscription"
+                  element={<DashboardPages.SubPricing />}
+                />
+                <Route
+                  path="/app/settings/teams/activity-report"
+                  element={<DashboardPages.ActivityReport />}
+                />
+                <Route
+                  path="/app/templates"
+                  element={<TemplatePages.AllTemplates />}
+                />
+                 <Route
+                  path="/app/templates/new-template"
+                  element={<TemplatePages.NewTemplate />}
+                />
+                 <Route
+                  path="/app/templates/edit-template"
+                  element={<TemplatePages.EditTemplate />}
+                />
+               
               </Route>
             </>
           </Routes>
