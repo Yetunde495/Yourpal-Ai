@@ -26,15 +26,15 @@ import { TooltipTrigger } from "../../components/tooltip-new";
 
 const statusOptions = [
   {
-    text: "Interested",
+    text: "Potentials",
     icon: <FaStar className="text-primary" />,
   },
   {
-    text: "Applied",
+    text: "Hired",
     icon: <FaCircleCheck className="text-success" />,
   },
   {
-    text: "Offer",
+    text: "Shortlisted",
     icon: <FaTrophy className="text-warning" />,
   },
   {
@@ -49,7 +49,7 @@ const statusOptions = [
 
 const sampleData = [
   {
-    status: "Interested",
+    status: "Potentials",
     count: "1",
     id: 1,
     job: {
@@ -199,13 +199,13 @@ const TalentHub: React.FC = () => {
                             label: (
                               <div className="w-full flex gap-2 items-center">
                               <span>
-                                {item?.status === "Interested" ? (
+                                {item?.status === "Potentials" ? (
                                   <FaStar className="text-primary" />
-                                ) : item?.status === "Applied" ? (
+                                ) : item?.status === "Hired" ? (
                                   <FaCircleCheck className="text-success" />
                                 ) : item?.status === "Rejected" ? (
                                   <MdCancel className="text-danger" />
-                                ) : item?.status === "Offer" ? (
+                                ) : item?.status === "Shortlisted" ? (
                                   <FaTrophy className="text-warning" />
                                 ) : (
                                   <BiSolidArchiveIn className="text-[#545454CC]" />
