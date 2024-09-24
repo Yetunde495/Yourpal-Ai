@@ -7,6 +7,7 @@ import LandingPages from "./Pages/Landing/Index";
 import AuthPages from "./Pages/Authentication/Index";
 import RouteLayout from "./layout/RouteLayout";
 import DashboardPages from "./Pages/Workspace/Index";
+import PDFViewer from "./Pages/Recruitment/PdfViewer";
 
 axios.defaults.baseURL = "";
 
@@ -109,6 +110,10 @@ function App() {
                 <Route
                   path="/app/settings/teams/activity-report"
                   element={<DashboardPages.ActivityReport />}
+                />
+                <Route
+                  path="/app/recruiter/application-builder/:id"
+                  element={<PDFViewer />}
                 />
               </Route>
             </>
