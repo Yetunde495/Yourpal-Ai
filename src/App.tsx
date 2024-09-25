@@ -7,7 +7,7 @@ import LandingPages from "./Pages/Landing/Index";
 import AuthPages from "./Pages/Authentication/Index";
 import RouteLayout from "./layout/RouteLayout";
 import DashboardPages from "./Pages/Workspace/Index";
-import PDFViewer from "./Pages/Recruitment/PdfViewer";
+import PDFViewer from "./Pages/Recruitment/PDFViewerLayout";
 
 axios.defaults.baseURL = "";
 
@@ -113,7 +113,11 @@ function App() {
                 />
                 <Route
                   path="/app/recruiter/application-builder/:id"
-                  element={<PDFViewer />}
+                  element={<DashboardPages.ApplicationBuilder />}
+                />
+                <Route
+                  path="/app/recruiter/branding/:id"
+                  element={<DashboardPages.Branding />}
                 />
               </Route>
             </>

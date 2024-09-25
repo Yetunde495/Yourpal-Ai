@@ -4,9 +4,19 @@ import {
   IoReturnUpBackOutline,
   IoColorPaletteOutline,
   IoShareSocial,
+  IoSparklesOutline,
 } from "react-icons/io5";
-import { MdOutlineFileDownload, MdOutlineFilterList } from "react-icons/md";
-import { BsTrash, BsChevronRight } from "react-icons/bs";
+import {
+  MdOutlineFileDownload,
+  MdOutlineFilterList,
+  MdElectricBolt,
+} from "react-icons/md";
+import {
+  BsTrash,
+  BsChevronRight,
+  BsPersonExclamation,
+  BsInfoCircle,
+} from "react-icons/bs";
 import { FaEdit } from "react-icons/fa";
 import { BiSearch } from "react-icons/bi";
 import {
@@ -15,16 +25,20 @@ import {
   IoMdAdd,
   IoIosArrowForward,
   IoIosArrowBack,
+  IoIosArrowDown,
+  IoIosArrowUp,
 } from "react-icons/io";
-import { RxCross2, RxLinkedinLogo } from "react-icons/rx";
+import { RxCross2, RxLinkedinLogo, RxCaretSort } from "react-icons/rx";
 import { FaSort } from "react-icons/fa6";
 import { GrSync } from "react-icons/gr";
 import { HiDocumentAdd } from "react-icons/hi";
 import { LuMoreHorizontal, LuLayout, LuImport } from "react-icons/lu";
 import { CiSliderHorizontal } from "react-icons/ci";
 import { CgFontHeight } from "react-icons/cg";
-import { TbWorld } from "react-icons/tb";
-import { BsInfoCircle } from "react-icons/bs";
+import { TbWorld, TbDeviceImacQuestion } from "react-icons/tb";
+import { RiDraftLine } from "react-icons/ri";
+import { FiMinus } from "react-icons/fi";
+import { FaCircle } from "react-icons/fa6";
 
 export const Icons = {
   checkCircle: IoMdCheckmarkCircle,
@@ -55,4 +69,14 @@ export const Icons = {
   world: TbWorld,
   share: IoShareSocial,
   InfoCircle: BsInfoCircle,
+  bolt: MdElectricBolt,
+  star: IoSparklesOutline,
+  draft: RiDraftLine,
+  personInfo: BsPersonExclamation,
+  question: TbDeviceImacQuestion,
+  singleSort: RxCaretSort,
+  minus: FiMinus,
+  circle: FaCircle,
+  arrowDown: IoIosArrowDown,
+  arrowUp: IoIosArrowUp,
 };

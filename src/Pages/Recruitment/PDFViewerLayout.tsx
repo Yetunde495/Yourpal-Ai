@@ -9,9 +9,7 @@ import { useResizeObserver } from "@wojtekmaj/react-hooks";
 import { Icons } from "../../components/icons";
 import { cn } from "../../lib/utils/cn";
 import PdfDropdown from "./PdfDropDown";
-import { MatchChart } from "./MatchChart";
-import { Textarea } from "../../components/textarea";
-import BtnIcon from "../../assets/btnIcon.png";
+import { Loader } from "../../components/Loader";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
@@ -36,7 +34,7 @@ const dropdownItems = [
   { label: "Subscribe", href: "/#" },
 ];
 
-const PDFViewer = () => {
+const PDFViewerLayout = ({ children, setProgress, form, questions }: any) => {
   const location = useLocation();
   const { documentUrl, docTitle } = location.state || {};
   const [containerWidth, setContainerWidth] = useState<number>();
@@ -44,11 +42,10 @@ const PDFViewer = () => {
   const [numPages, setNumPages] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentDocument, setCurrentDocument] = useState(documentUrl);
-  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setProgress((prevProgress) => {
+      setProgress((prevProgress: number) => {
         if (prevProgress < 85) {
           return prevProgress + 10; // Increment by 10
         } else {
@@ -98,6 +95,15 @@ const PDFViewer = () => {
     if (currentPage < numPages) {
       setCurrentPage(currentPage + 1);
     }
+  };
+
+  const handleDownload = () => {
+    const link = document.createElement("a");
+    link.href = documentUrl;
+    link.download = docTitle;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -150,7 +156,10 @@ const PDFViewer = () => {
                 Share
               </div>
 
-              <button className="border border-[#8343CC] flex items-center gap-1 text-[#8343CC] rounded-full text-sm px-3 py-1">
+              <button
+                className="border border-[#8343CC] flex items-center gap-1 text-[#8343CC] rounded-full text-sm px-3 py-1"
+                onClick={handleDownload}
+              >
                 <Icons.share />
                 Download
               </button>
@@ -203,16 +212,20 @@ const PDFViewer = () => {
                 </div>
               </div>
 
+              {form && form}
+
               <Document
                 file={currentDocument}
                 onLoadSuccess={onDocumentLoadSuccess}
                 options={options}
+                loading="waiting..."
                 onLoadError={(error) =>
                   console.error("Failed to load PDF:", error)
                 }
               >
                 <Page
                   pageNumber={currentPage}
+                  loading={<Loader />}
                   width={
                     containerRef
                       ? Math.min(containerRef.clientWidth, maxWidth)
@@ -220,48 +233,10 @@ const PDFViewer = () => {
                   }
                 />
               </Document>
+              {questions && questions}
             </div>
 
-            {/* match Score */}
-            <div className="mt-10 border border-[#D4D4D4] py-5 rounded-xl w-[25%]">
-              <div className="divide-y divide-solid divide-[#D4D4D4]">
-                <div className="flex items-center gap-2 px-4 pb-1">
-                  <h4>Tailor Applicant</h4>
-                  <Icons.InfoCircle />
-                </div>
-                <div className="flex- flex-col items-center justify-center text-center">
-                  <h4 className="mt-5">Match Score</h4>
-                  <MatchChart progress={progress} size={120} strokeWidth={13} />
-                </div>
-              </div>
-              <div className="flex items-center gap-2 px-4 justify-end mt-3">
-                <h4 className="text-sm text-[#5B5B5B]">Tailor Applicant</h4>
-                <Icons.InfoCircle />
-              </div>
-
-              <div className="px-4 mt-10 py-5">
-                <div className="flex justify-start">
-                  <p className=" mb-5">
-                    Job Description<span className="text-red-500">*</span>
-                  </p>
-                </div>
-                <Textarea
-                  placeholder="Senior HR Expert"
-                  className="md:h-40 border-[#D4D4D4] border-[0.08rem] w-full h-20 mb-5"
-                />
-              </div>
-
-              <div className="flex flex-col items-center justify-center text-center">
-                <button className="group relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 text-sm font-medium text-gray-900 rounded-full group bg-gradient-to-br from-[#60BEE2] via-[#5E4D84] to-[#8FC2DA] group-hover:from-[#60BEE2] group-hover:via-[#5E4D84] group-hover:to-[#8FC2DA] hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800">
-                  <span className="relative px-5 py-1 transition-all ease-in duration-200 bg-white dark:bg-gray-900 rounded-full group-hover:bg-opacity-0 flex gap-2">
-                    <img src={BtnIcon} /> Tailor to Job Description
-                  </span>
-                </button>
-                <p className="mt-2 text-sm px-5">
-                  donec. Adipiscing aenean velit quis eget tinvb massa enim eget{" "}
-                </p>
-              </div>
-            </div>
+            {children}
           </div>
         </div>
       </div>
@@ -269,4 +244,4 @@ const PDFViewer = () => {
   );
 };
 
-export default PDFViewer;
+export default PDFViewerLayout;

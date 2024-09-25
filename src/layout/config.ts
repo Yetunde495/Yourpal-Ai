@@ -1,5 +1,6 @@
 import React from "react";
 import icons from "./navIcons";
+import { Icons } from "../components/icons";
 
 interface INavChild {
   name: string;
@@ -147,6 +148,36 @@ export const RECRUITER_NAV_DATA = [
         path: "/app/tutors/dashboard", //use for nested rendering
         icon: icons.Dashboard,
         fillIcon: icons.DashboardFill,
+        children: [
+          {
+            name: "Tailor Applicant",
+            path: "/app/recruiter/application-builder/:id",
+            icon: Icons.bolt,
+          },
+          {
+            name: "Branding Kit",
+            path: "/app/recruiter/branding/:id",
+            icon: Icons.star,
+          },
+          {
+            name: "Evaluation Criteria",
+            // path: "/app/tutors/dashboard/manage",
+            icon: Icons.draft,
+            toggle: true,
+          },
+          {
+            name: "AI-Interview Question",
+            path: "/app/tutors/dashboard/manage",
+            icon: Icons.question,
+            toggle: true,
+          },
+          {
+            name: "Personal Information",
+            path: "/app/tutors/dashboard/manage",
+            icon: Icons.personInfo,
+            toggle: true,
+          },
+        ],
       },
     ],
   },

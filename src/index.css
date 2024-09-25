@@ -63,3 +63,7 @@ a:hover {
 .recruiter-gradient {
   background: linear-gradient(90deg, #5272ea, #2e4084);
 }
+
+:focus-visible {
+  outline: none !important;
+}

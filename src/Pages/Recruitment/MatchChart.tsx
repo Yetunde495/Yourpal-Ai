@@ -4,16 +4,15 @@ export function MatchChart({ progress, size = 100, strokeWidth = 10 }: any) {
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (progress / 100) * circumference;
 
-  // Determine the color based on the progress percentage
   let progressColor;
   if (progress === 0) {
-    progressColor = "#007AFF26"; // Blue with opacity
+    progressColor = "#007AFF26";
   } else if (progress >= 55) {
-    progressColor = "#3d9b13"; // Green from 55% and above
+    progressColor = "#3d9b13";
   } else if (progress >= 31) {
-    progressColor = "#D4CF46"; // Yellow between 31% and 55%
+    progressColor = "#D4CF46";
   } else if (progress > 0 && progress <= 30) {
-    progressColor = "red"; // Red between 1% and 30%
+    progressColor = "red";
   }
 
   return (
