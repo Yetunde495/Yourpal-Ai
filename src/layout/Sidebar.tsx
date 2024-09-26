@@ -212,6 +212,9 @@ const Sidebar = ({
                       {/* Nested children (dropdown) */}
                       {nchild.children && openMenuIndex === nindex && (
                         <ul className="ml-4 mt-2">
+                          <button className="flex mb-2 gap-2 hover:bg-[#f3edfa] items-center justify-center border font-bold p-2 text-[#8343CC] border-[#8343CC] rounded-full">
+                            <Icons.star /> Apply Changes to all
+                          </button>
                           {nchild.children.map(
                             (child: any, childIndex: number) => (
                               <li key={childIndex}>
