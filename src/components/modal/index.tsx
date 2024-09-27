@@ -12,12 +12,14 @@ type WarningProps = {
   size?: string;
   onHide: () => void;
   onProceed?: () => void;
+  props?: any;
 };
 
 const Modal: React.FC<WarningProps> = ({
   show,
   onHide,
   // onProceed,
+  props,
   title,
   children,
   closeButton = true,
@@ -61,7 +63,7 @@ const Modal: React.FC<WarningProps> = ({
       <div
         className={`${
           size ? size : "min-w-[50%]"
-        } bg-white py-5 rounded-2xl flex flex-col  justify-center md:mx-6 my-auto mx-3`}
+        } ${props?.roundedMd ? "rounded-md" : "rounded-2xl"} bg-white py-5  flex flex-col  justify-center md:mx-6 my-auto mx-3`}
         ref={modalRef}
       >
         <div className="flex flex-col justify-center relative">

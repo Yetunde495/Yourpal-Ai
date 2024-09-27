@@ -19,8 +19,7 @@ import {
   BsDatabaseFillLock,
   BsBellFill,
 } from "react-icons/bs";
-import { LuLayoutTemplate } from "react-icons/lu";
-import { HiOutlineTemplate, HiOutlineUser, HiOutlineUsers, HiUser } from "react-icons/hi";
+import { HiOutlineTemplate, HiOutlineUser, HiOutlineUsers, HiTemplate, HiUser } from "react-icons/hi";
 import { HiMiniUsers } from "react-icons/hi2";
 
 
@@ -35,7 +34,7 @@ export default {
   Dashboard: RiDashboardHorizontalLine,
   DashboardFill: RiDashboardHorizontalFill,
   Template: HiOutlineTemplate,
-  TemplateFill: LuLayoutTemplate,
+  TemplateFill: HiTemplate,
   Analytics: SiSimpleanalytics,
   Database: AiFillDatabase,
   Summary: MdOutlineAnalytics,

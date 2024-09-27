@@ -55,7 +55,7 @@ export const AutoInput: React.FC<TextInputProps> = ({ type, isRequired, disabled
         placeholder={placeholder}
         onBlur={onBlur}
         onChange={onChange}
-        className={`w-full rounded border py-3 px-4.5 
+        className={`w-full rounded border py-2.5 px-4.5 
         text-black focus:border-primary focus-visible:outline-none dark:border-strokedark 
         dark:bg-meta-4 dark:text-white dark:focus:border-primary ${errorData}`}
       

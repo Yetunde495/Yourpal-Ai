@@ -10,37 +10,58 @@ import paginate from "../../lib/utils/paginate";
 import { TableLoader } from "../../components/Loader";
 import Table from "../../components/table";
 import { useQuery } from "@tanstack/react-query";
-import cancelIcon from "../../assets/svg/icon-cancel.svg";
 import TablePagination from "../../components/table/TablePagination";
 import PersonaImg from "../../assets/pseronaImg.png";
 import Delete from "../../components/modal/Delete";
+import Avatar from "../../components/Avatar2";
+import getUserInitials from "../../lib/utils/getUserInitials";
 import Button from "../../components/button";
+import StaggeredDropDown, {
+  AnimatedOption,
+} from "../../AnimatedUi/staggeredDropdown";
+import ManageProfileList from "./ManageProfileList";
+import AddNewProfile from "./NewProfile";
+import { TableSort } from "../../components/form/customDropdown";
 
 const sampleData = [
   {
-    status: "Interested",
-    tag: "Job Seeker",
     id: 1,
-    job: {
-      imgSrc: PersonaImg,
-      companyName: "Henry Peters",
-    },
+    photo_url: PersonaImg,
+    name: "Henry Peters",
+    profession: "Product Designer",
+    lists: ["Prospects", "Client", "Recruiter"],
   },
   {
-    status: "Rejected",
-    tag: "Recruiter",
     id: 2,
-    job: {
-      imgSrc: PersonaImg,
-      companyName: "John Doe",
-    },
+    photo_url: "",
+    name: "Elizabeth Parker",
+    profession: "Software Engineer",
+    lists: ["Prospects"],
+  },
+  {
+    id: 3,
+    photo_url: "",
+    name: "Kim Taeyeon",
+    profession: "Project Manager",
+    lists: [],
   },
 ];
 
-const PersonaMgt: React.FC = () => {
+const orderOptions = [
+  {
+  label: 'Newest to Oldest',
+  value: 'asc'
+},
+{
+  label: 'Oldest to Newest',
+  value: 'desc'
+}
+]
+
+const AllSavedProfiles: React.FC = () => {
   const navigate = useNavigate();
-  const [allResumes, setAllResumes] = useState<any>([]);
-  const [_selectedResume, setSelectedResume] = useState<any>(null);
+  const [allProfiles, setAllProfiles] = useState<any>([]);
+  const [selectedProfile, setSelectedProfile] = useState<any>(null);
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -48,16 +69,20 @@ const PersonaMgt: React.FC = () => {
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
   const [deleteModal, setDeleteModal] = useState(false);
+  const [manageModal, setManageModal] = useState(false);
+  const [addModal, setAddModal] = useState(false);
+  const [order, setOrder] = useState('asc')
+  
 
   const { data, isFetching } = useQuery(
-    ["ALL CLASSROOMS", search, page, itemsPerPage],
+    ["ALL_SAVED_PROFILES", search, page, itemsPerPage, order],
     () => {},
     {
       keepPreviousData: true,
       refetchOnWindowFocus: false,
       enabled: false,
       onSuccess: (data: any) => {
-        setAllResumes(data?.resumes);
+        setAllProfiles(data?.resumes);
       },
       onError: (err: any) => {
         toast(
@@ -101,7 +126,7 @@ const PersonaMgt: React.FC = () => {
       <section className="pb-6 px-4 md:px-6">
         <div className="flex gap-2 items-center pt-4">
           <h1 className="text-xl lg:text-2xl font-semibold dark:text-slate-200">
-            Personas
+            Saved Profiles
           </h1>
           <div className="mt-2">
             <Popover
@@ -124,47 +149,42 @@ const PersonaMgt: React.FC = () => {
 
                 <input
                   type="text"
-                  placeholder="Search Persona"
+                  placeholder="Search Profiles"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className="w-full lg:w-80 border  border-stroke py-2.5 rounded-full bg-white text-sm pr-3 pl-8 focus:outline-none focus:border-1 focus:border-primary"
                 />
               </div>
-              <div className="relative">
-                <button className="absolute top-1/2 left-0 -translate-y-1/2 pl-3">
-                  <Icons.filter />
-                </button>
 
-                <input
-                  type="text"
-                  placeholder="Filter By"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="w-full lg:w-80 border  border-stroke py-2.5 rounded-full bg-white text-sm pr-3 pl-8 focus:outline-none focus:border-1 focus:border-primary"
-                />
-              </div>
+              <div>
+              
+
+              <TableSort
+               options={orderOptions}
+               placeholder="Newest to Oldest"
+               onSelect={(val) => {
+                  setOrder(val?.value)
+               }}
+               defaultValue={orderOptions[0]}
+
+              />
+            </div>
+              
               <div className="">
-                <Link to="manage-tags" className="underline text-primary">
-                  Manage Tags
+                <Link to="manage-list" className="underline text-primary">
+                  Manage List
                 </Link>
               </div>
             </div>
 
-            <div className="ml-auto  flex items-center gap-2">
-              {selectedItems.length > 0 && (
-                <Button
-                  rounded
-                  variant="outline-primary"
-                  onClick={() => {
-                    setDeleteModal(true);
-                  }}
-                >
-                  Delete Persona(s)
-                </Button>
-              )}
-              <Button onClick={() => navigate("add-persona")} rounded>
-                <Icons.add />
-                Add Persona
+            <div className="ml-auto flex items-center gap-2">
+            {selectedItems.length > 0 && (
+                  <Button rounded variant="outline-primary" onClick={() => {setDeleteModal(true)}}>
+                    Delete Lists
+                  </Button>
+                )}
+              <Button rounded onClick={() => setAddModal(true)}>
+                Add New Profile
               </Button>
             </div>
           </div>
@@ -172,7 +192,7 @@ const PersonaMgt: React.FC = () => {
           <div className="mt-10">
             {isFetching ? (
               <TableLoader />
-            ) : allResumes?.length === 0 ? (
+            ) : allProfiles?.length === 0 ? (
               <>
                 <Table show>
                   <Table.TableRow>
@@ -184,7 +204,7 @@ const PersonaMgt: React.FC = () => {
                       />
                     </Table.Row>
                     <Table.Row>Name</Table.Row>
-                    <Table.Row>Tag</Table.Row>
+                    <Table.Row>Lists</Table.Row>
                     <Table.Row isLastItem>Actions</Table.Row>
                   </Table.TableRow>
 
@@ -192,7 +212,7 @@ const PersonaMgt: React.FC = () => {
                     {sampleData?.map((item: any, index: number) => (
                       <Table.CellRows
                         useSelectOption={false}
-                        onClick={() => setSelectedResume(item)}
+                        onClick={() => setSelectedProfile(item)}
                         key={item?.id + "-" + index}
                       >
                         <Table.Cell cellIndex={0}>
@@ -203,23 +223,75 @@ const PersonaMgt: React.FC = () => {
                           />
                         </Table.Cell>
 
-                        <Table.Cell>
-                          {item?.job ? (
-                            <div className="flex gap-3 items-center text-black text-sm">
-                              <img src={item?.job?.imgSrc} />
-                              <p>{item?.job?.companyName}</p>
-                            </div>
-                          ) : (
+                        <Table.Cell isAction>
+                          <div className="flex gap-3 items-center text-black">
+                            <Avatar
+                              src={item?.photo_url}
+                              size="small"
+                              initials={getUserInitials(
+                                item?.name || "User",
+                                ""
+                              )}
+                            />
                             <div>
-                              <img src={cancelIcon} className="-ml-4 -mt-3" />
+                              <p className="mb-[2px] font-medium">
+                                {item?.name}
+                              </p>
+                              <p>{item?.profession}</p>
                             </div>
-                          )}
-                        </Table.Cell>
-                        <Table.Cell>
-                          <p className="text-sm text-black">{item.tag}</p>
+                          </div>
                         </Table.Cell>
                         <Table.Cell isAction>
-                          <CellAction id={item.id} />
+                          {item?.lists && item?.lists.length > 0 ? (
+                            <div className="flex items-center gap-2">
+                              {item?.lists.map((val: string, index: number) => (
+                                <span
+                                  key={index}
+                                  className="px-3 py-1.5 rounded-full bg-[#077AB21A]"
+                                >
+                                  {val}
+                                </span>
+                              ))}
+                            </div>
+                          ) : (
+                            <p className="text-sm px-3">Null</p>
+                          )}
+                        </Table.Cell>
+                        <Table.Cell isAction>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              rounded
+                              variant="outline-primary"
+                              onClick={() => {}}
+                            >
+                              See Recent Activity
+                            </Button>
+                            <div>
+                              <StaggeredDropDown>
+                                <AnimatedOption
+                                  text="Manage Profile's List"
+                                  onClick={() => {
+                                    setManageModal(true);
+                                  }}
+                                />
+                                <AnimatedOption
+                                  text="Copy Profile URL"
+                                  onClick={() => {
+                                    navigator.clipboard.writeText(
+                                      item?.profile_url
+                                    );
+                                    alert("text copied!");
+                                  }}
+                                />
+                                <AnimatedOption
+                                  text="Delete Profile"
+                                  onClick={() => {
+                                    setDeleteModal(true);
+                                  }}
+                                />
+                              </StaggeredDropDown>
+                            </div>
+                          </div>
                         </Table.Cell>
                       </Table.CellRows>
                     ))}
@@ -227,7 +299,7 @@ const PersonaMgt: React.FC = () => {
                 </Table>
 
                 <TablePagination
-                  data={allResumes}
+                  data={allProfiles}
                   page={page}
                   pagination={pagination}
                   setPage={setPage}
@@ -240,13 +312,13 @@ const PersonaMgt: React.FC = () => {
                 onAdd={() => navigate(`/app/tutors/courses/courseupload`)}
                 hideButton={true}
                 show={
-                  allResumes === undefined ||
-                  allResumes === null ||
-                  allResumes?.length === 0
+                  allProfiles === undefined ||
+                  allProfiles === null ||
+                  allProfiles?.length === 0
                 }
+                title="You have not saved any Profiles"
               >
-                No Class found. Create one now by clicking on the Create Class
-                button.
+                Lorem ipsum dolor sit amet
               </Table.NoData>
             )}
           </div>
@@ -256,69 +328,27 @@ const PersonaMgt: React.FC = () => {
           onHide={() => {
             setDeleteModal(false);
           }}
-          title={`Delete Selected Persona(s)?`}
-          desc="Are you sure you want to delete these items? This action is irreversible"
+          title={`Delete ${selectedItems.length > 0 ? 'Selected Profile(s)' : 'Profile'}?`}
+          desc="Are you sure you want to delete this profile? This action is irreversible"
           //  size="w-full max-w-[300px]"
           onProceed={() => {}}
           isLoading={false}
           isLoadingText="Deleting..."
         />
+        {manageModal && (
+          <ManageProfileList
+            show={manageModal}
+            onClose={() => setManageModal(false)}
+            profileData={selectedProfile}
+          />
+        )}
+        {addModal && (
+          <AddNewProfile show={addModal} onClose={() => setAddModal(false)} />
+        )}
+        
       </section>
     </DefaultLayout>
   );
 };
 
-const CellAction = ({ id }: { id: string }) => {
-  const [deleteAlert, setDeleteAlert] = useState(false);
-  const navigate = useNavigate();
-
-  const handleDelete = (id: string | string[]) => {
-    if (Array.isArray(id)) {
-      // Logic to delete multiple items
-      id.forEach((itemId) => {
-        console.log(`Deleting item with id: ${itemId}`);
-        // Add your delete logic here
-      });
-    } else {
-      // Logic to delete a single item
-      console.log(`Deleting item with id: ${id}`);
-      // Add your delete logic here
-    }
-
-    setDeleteAlert(false);
-  };
-
-  return (
-    <div className="flex w-full items-center justify-center gap-2">
-      <div
-        onClick={() => setDeleteAlert(true)}
-        className="group flex p-2 items-center justify-center  transition-colors cursor-pointer"
-      >
-        <p className="text-[#D43908] hover:text-red-600 underline font-medium">
-          Delete
-        </p>
-      </div>
-      <button
-        className="font-medium hover:bg-primary hover:text-white text-primary border border-primary py-[2px] px-7 rounded-full"
-        onClick={() => navigate("edit-persona")}
-      >
-        Edit
-      </button>
-      {deleteAlert && (
-        <Delete
-          show={deleteAlert}
-          onHide={() => setDeleteAlert(false)}
-          title="Delete Persona?"
-          desc="Are you sure you want to delete this persona? This action is irreversible"
-          onProceed={() => {
-            handleDelete(id);
-          }}
-          isLoading={false}
-          isLoadingText="Deleting..."
-        />
-      )}
-    </div>
-  );
-};
-
-export default PersonaMgt;
+export default AllSavedProfiles;

@@ -116,10 +116,11 @@ export default function Button({
   width,
   height,
   rounded,
+  size,
 }: ButtonProps) {
   const bgColor =
     variant === "primary"
-      ? "bg-primary  text-white"
+      ? "bg-primary hover:bg-secondary  text-white"
       : variant === "secondary"
       ? "bg-[#00112c] text-white"
       : variant === "danger"
@@ -129,11 +130,11 @@ export default function Button({
       : variant === "transparent"
       ? "bg-transparent text-black hover:bg-slate-200 border border-slate-300"
       : variant === "outline-primary" 
-      ? "bg-white border border-primary text-primary hover:bg-primary hover:text-white"
+      ? "bg-white border border-primary text-primary hover:bg-secondary hover:text-white"
       : "bg-gray text-black";
-  let btnCls = `flex justify-center transition disabled:opacity-65 opacity-95 hover:opacity-100 ${bgColor} ${
+  let btnCls = `flex justify-center transition disabled:opacity-65 ${bgColor} ${
     rounded ? "rounded-full" : "rounded-md"
-  } py-2 px-6 font-medium `;
+  } ${size === "lg" ? "py-2 px-10" : "py-2 px-6"}  font-medium `;
   // btnCls = size === 'xsm' ? btnCls +' w-10' : size === 'sm' ? btnCls +' w-32' : size === 'md' ? btnCls + ' w-64' : size === 'lg' ? btnCls + ' w-128': btnCls + ' w-100';
   btnCls = elevation ? btnCls + " hover:shadow-" + elevation : btnCls;
   btnCls = width ? btnCls + " w-" + width : btnCls;
@@ -148,7 +149,9 @@ export default function Button({
       type={type}
       {...btnProps}
     >
+      <span className="hover:scale-105 w-full flex justify-center items-center gap-2">
       {text || children}
+      </span>
     </button>
   );
 }

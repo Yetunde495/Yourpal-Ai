@@ -12,15 +12,11 @@ import { useQuery } from "@tanstack/react-query";
 import Popover from "../../components/Popover";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import DefaultLayout from "../../layout/DefaultLayout";
-import {
-  getAllIdsInArray,
-  idExistInArray,
-  toggleIdInArray,
-} from "../../lib/utils";
 import StaggeredDropDown, {
   AnimatedOption,
 } from "../../AnimatedUi/staggeredDropdown";
 import Delete from "../../components/modal/Delete";
+import Button from "../../components/button";
 
 const sampleData = [
   {
@@ -43,15 +39,12 @@ const sampleData = [
 const AllTemplates: React.FC = () => {
   const navigate = useNavigate();
   const [allResumes, setAllResumes] = useState<any>([]);
-  const [selectedResume, setSelectedResume] = useState<any>(null);
+  const [_selectedTemplate, setSelectedTemplate] = useState<any>(null);
 
-  const [singleSelect, setSingleSelect] = useState<string>("");
-  const [multiSelect, setMultiSelect] = useState<string[]>([]);
-  const [deleteModal, setDeleteModal] = useState(false)
+  const [deleteModal, setDeleteModal] = useState(false);
 
-  const enableDelete = singleSelect || multiSelect?.length > 0 ? true : false;
-  const enableViewData =
-    singleSelect || multiSelect?.length === 1 ? true : false;
+  const [selectAll, setSelectAll] = useState(false);
+  const [selectedItems, setSelectedItems] = useState<any[]>([]);
 
   const [search, setSearch] = useState<string>("");
 
@@ -89,36 +82,22 @@ const AllTemplates: React.FC = () => {
     Number(itemsPerPage)
   );
 
-  const handleViewItem = () => {
-    let user;
-    if (singleSelect) {
-      user = singleSelect;
+  const handleSelectAll = () => {
+    if (selectAll) {
+      setSelectedItems([]);
+    } else {
+      setSelectedItems(sampleData.map((item) => item.id));
     }
-
-    if (multiSelect && multiSelect?.length === 1) {
-      user = multiSelect[0] as any;
-      navigate("/app/users/" + user);
-    }
-    if (!user) return;
-
-    navigate("/app/users/" + user);
+    setSelectAll(!selectAll);
   };
-  //   const handleRemoveItem = () => {
-  //     if (!singleSelect && multiSelect?.length < 1) return;
-  //     //    setShowWarning(true);
-  //   };
-  //   const handleAddItem = () => navigate("/app/users/create");
-  //functions to handle table input selections
-  const handleMultiCheckItem = (id: string) =>
-    setMultiSelect((prevState: Array<string>) =>
-      toggleIdInArray([...prevState], id)
-    );
-  const handleToggleSelectAllItems = () =>
-    multiSelect.length !== sampleData?.length
-      ? setMultiSelect((_prevState: Array<string>) => [
-          ...getAllIdsInArray(sampleData, "id"),
-        ])
-      : setMultiSelect((_prevState: Array<string>) => []);
+
+  const handleCheckboxClick = (id: string | number) => {
+    if (selectedItems.includes(id)) {
+      setSelectedItems(selectedItems.filter((itemId) => itemId !== id));
+    } else {
+      setSelectedItems([...selectedItems, id]);
+    }
+  };
   return (
     <DefaultLayout>
       <section className="pb-6 px-4 md:px-6">
@@ -155,8 +134,22 @@ const AllTemplates: React.FC = () => {
               </div>
             </div>
 
-            <div className="ml-auto">
-              <button className="px-6 py-1.5 rounded-full bg-primary text-white hover:opacity-95" onClick={() => navigate('new-template')}>
+            <div className="ml-auto flex items-center gap-2">
+              {selectedItems.length > 0 && (
+                <Button
+                  rounded
+                  variant="outline-primary"
+                  onClick={() => {
+                    setDeleteModal(true);
+                  }}
+                >
+                  Delete Templates
+                </Button>
+              )}
+              <button
+                className="px-6 py-1.5 rounded-full bg-primary text-white hover:opacity-95"
+                onClick={() => navigate("new-template")}
+              >
                 Add New Template
               </button>
             </div>
@@ -172,8 +165,8 @@ const AllTemplates: React.FC = () => {
                     <Table.Row rowIndex={0}>
                       <Table.RowCheckInput
                         id="000"
-                        isChecked={multiSelect.length > 0}
-                        onChecked={handleToggleSelectAllItems}
+                        isChecked={selectAll || selectedItems.length > 0}
+                        onChecked={handleSelectAll}
                       />
                     </Table.Row>
 
@@ -188,14 +181,14 @@ const AllTemplates: React.FC = () => {
                     {sampleData?.map((item: any, index: number) => (
                       <Table.CellRows
                         useSelectOption={false}
-                        onClick={() => setSelectedResume(item)}
+                        onClick={() => setSelectedTemplate(item)}
                         key={item?.id + "-" + index}
                       >
                         <Table.Cell cellIndex={0}>
                           <Table.RowCheckInput
                             id={item?.id}
-                            isChecked={idExistInArray(multiSelect, item?.id)}
-                            onChecked={handleMultiCheckItem}
+                            isChecked={selectedItems.includes(item.id)}
+                            onChecked={() => handleCheckboxClick(item.id)}
                           />
                         </Table.Cell>
                         <Table.Cell>{item?.name}</Table.Cell>
@@ -207,7 +200,9 @@ const AllTemplates: React.FC = () => {
                           <StaggeredDropDown>
                             <AnimatedOption
                               text="Edit Template"
-                              onClick={() => {navigate(`edit-template`)}}
+                              onClick={() => {
+                                navigate(`edit-template`);
+                              }}
                             />
                             <AnimatedOption
                               text="Duplicate Template"
@@ -215,7 +210,9 @@ const AllTemplates: React.FC = () => {
                             />
                             <AnimatedOption
                               text="Delete Template"
-                              onClick={() => {setDeleteModal(true)}}
+                              onClick={() => {
+                                setDeleteModal(true);
+                              }}
                             />
                           </StaggeredDropDown>
                         </Table.Cell>
@@ -244,21 +241,25 @@ const AllTemplates: React.FC = () => {
                   allResumes?.length === 0
                 }
               >
-              Click the  'Add New Template'  button at the top to create a new template
+                Click the 'Add New Template' button at the top to create a new
+                template
               </Table.NoData>
             )}
           </div>
         </section>
         <Delete
-         show={deleteModal}
-         onHide={() => {setDeleteModal(false)}}
-         title="Delete Template"
-         desc="Are you sure you want to delete this template? This action is irreversible"
-        //  size="w-full max-w-[300px]"
-         onProceed={() => {}}
-         isLoading={false}
-         isLoadingText="Deleting..."
-
+          show={deleteModal}
+          onHide={() => {
+            setDeleteModal(false);
+          }}
+          title={`Delete ${
+            selectedItems.length > 0 ? "Selected Template(s)" : "Template"
+          } ?`}
+          desc="Are you sure you want to delete the selected template(s)? This action is irreversible"
+          //  size="w-full max-w-[300px]"
+          onProceed={() => {}}
+          isLoading={false}
+          isLoadingText="Deleting..."
         />
       </section>
     </DefaultLayout>

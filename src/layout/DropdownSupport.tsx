@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { MdOutlineQuestionMark } from "react-icons/md";
 import FaqComponent from "../Pages/General/Faq";
 import ContactForm from "../Pages/General/Contact";
+import Tasks from "../Pages/General/Tasks";
 
 const DropdownSupport = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -11,6 +12,7 @@ const DropdownSupport = () => {
   const dropdown = useRef<HTMLDivElement | null>(null);
   const [faqView, setFaq] = useState(false);
   const [support, setSupport] = useState(false);
+  const [taskView, setTaskView] = useState(true);
 
   useEffect(() => {
     const clickHandler = ({ target }: any) => {
@@ -86,7 +88,9 @@ const DropdownSupport = () => {
           </li>
 
           <li
-            onClick={() => {}}
+            onClick={() => {
+              setTaskView(true);
+            }}
             className="py-2 px-4 flex items-center gap-2 text-[14px] cursor-pointer border-b border-stroke text-black/90  hover:bg-slate-50 dark:hover:bg-primary/10 dark:text-slate-100"
           >
             Task
@@ -96,6 +100,9 @@ const DropdownSupport = () => {
       {faqView && <FaqComponent show={faqView} setShow={() => setFaq(false)} />}
       {support && (
         <ContactForm show={support} setShow={() => setSupport(false)} />
+      )}
+      {taskView && (
+        <Tasks isOpen={taskView} onClose={() => setTaskView(false)} />
       )}
     </div>
   );

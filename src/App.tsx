@@ -9,6 +9,7 @@ import RouteLayout from "./layout/RouteLayout";
 import DashboardPages from "./Pages/Workspace/Index";
 import PersonaPages from "./Pages/Persona/Index"
 import TemplatePages from "./Pages/Template/Index"
+import SavedProfilePages from "./Pages/SavedProfiles/Index"
 
 axios.defaults.baseURL = "";
 
@@ -96,6 +97,10 @@ function App() {
                   path="/app/persona/add-persona"
                   element={<PersonaPages.AddPersona />}
                 />
+                 <Route
+                  path="/app/persona/edit-persona"
+                  element={<PersonaPages.EditPersona />}
+                />
                 <Route
                   path="/app/persona/manage-tags"
                   element={<PersonaPages.ManageTags />}
@@ -124,7 +129,14 @@ function App() {
                   path="/app/templates/edit-template"
                   element={<TemplatePages.EditTemplate />}
                 />
-               
+                <Route
+                  path="/app/saved-profiles"
+                  element={<SavedProfilePages.SavedProfiles />}
+                />
+                 <Route
+                  path="/app/saved-profiles/manage-list"
+                  element={<SavedProfilePages.ManageList />}
+                />
               </Route>
             </>
           </Routes>

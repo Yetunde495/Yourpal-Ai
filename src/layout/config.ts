@@ -92,7 +92,7 @@ export const HOME_NAV_DATA = [
       },
       {
         name: "Saved Profiles",
-        path: "/app/workspace/saved-profiles", //use for nested rendering
+        path: "/app/saved-profiles", //use for nested rendering
         icon: icons.Users,
         fillIcon: icons.UsersFill,
       },
