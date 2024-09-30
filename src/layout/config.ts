@@ -152,20 +152,22 @@ export const RECRUITER_NAV_DATA = [
   },
 ];
 
-//Students navigation
+//SocialPal Pages
 export const SOCIAL_NAV_DATA = [
   // MENU
   {
     children: [
       {
         name: "Linkedin Optimization",
-        path: "/app/home", //use for nested rendering
-        icon: icons.Home,
+        path: "/app/profile-optimization", //use for nested rendering
+        icon: icons.Optimize,
+        fillIcon: icons.OptimizeFill
       },
       {
         name: "Banner Maker",
         path: "/app/organization/dashboard", //use for nested rendering
-        icon: icons.Dashboard,
+        icon: icons.Banner,
+        fillIcon: icons.Banner
       },
     ],
   },

@@ -72,7 +72,10 @@ const Header = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <img src={RecruiterIcon} className="w-[100px]" />
             </li>
             <li
-              onClick={() => changeCategory("social")}
+              onClick={() => {
+                changeCategory("social")
+                navigate("/app/profile-optimization")
+              }}
               className={`flex flex-col items-center hover:bg-[#0077B5]/15 rounded-md cursor-pointer px-2 py-1.5 ${
                 hubCategory === "social" ? "bg-[#0077b5]/15" : ""
               }`}

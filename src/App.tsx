@@ -7,9 +7,10 @@ import LandingPages from "./Pages/Landing/Index";
 import AuthPages from "./Pages/Authentication/Index";
 import RouteLayout from "./layout/RouteLayout";
 import DashboardPages from "./Pages/Workspace/Index";
-import PersonaPages from "./Pages/Persona/Index"
-import TemplatePages from "./Pages/Template/Index"
-import SavedProfilePages from "./Pages/SavedProfiles/Index"
+import PersonaPages from "./Pages/Persona/Index";
+import TemplatePages from "./Pages/Template/Index";
+import SavedProfilePages from "./Pages/SavedProfiles/Index";
+import SocialpalPages from "./Pages/SocialPal/Index";
 
 axios.defaults.baseURL = "";
 
@@ -97,7 +98,7 @@ function App() {
                   path="/app/persona/add-persona"
                   element={<PersonaPages.AddPersona />}
                 />
-                 <Route
+                <Route
                   path="/app/persona/edit-persona"
                   element={<PersonaPages.EditPersona />}
                 />
@@ -121,11 +122,11 @@ function App() {
                   path="/app/templates"
                   element={<TemplatePages.AllTemplates />}
                 />
-                 <Route
+                <Route
                   path="/app/templates/new-template"
                   element={<TemplatePages.NewTemplate />}
                 />
-                 <Route
+                <Route
                   path="/app/templates/edit-template"
                   element={<TemplatePages.EditTemplate />}
                 />
@@ -133,11 +134,18 @@ function App() {
                   path="/app/saved-profiles"
                   element={<SavedProfilePages.SavedProfiles />}
                 />
-                 <Route
+                <Route
                   path="/app/saved-profiles/manage-list"
                   element={<SavedProfilePages.ManageList />}
                 />
               </Route>
+
+              {/* SOCIAL PAL PAGES */}
+              <Route
+                path="/app/profile-optimization"
+                element={<SocialpalPages.LinkedinOptimization />}
+              />
+              {/* SOCIAL PAL PAGES */}
             </>
           </Routes>
         </Router>

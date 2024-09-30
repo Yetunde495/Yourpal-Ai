@@ -26,6 +26,7 @@ import { LiaEdit } from "react-icons/lia";
 import ApplicationInfo from "./ApplicationInfo";
 import Button from "../../components/button";
 import StaggeredDropDown, { AnimatedOption } from "../../AnimatedUi/staggeredDropdown";
+import NewApplicantKit from "./NewApplication";
 
 const statusOptions = [
   {
@@ -105,6 +106,7 @@ const JobHub: React.FC = () => {
   const [interviewtipModal, setInterviewtipModal] = useState(false);
   const [infoView, setInfoView] = useState(false);
   const [companyoverviewModal, setCompanyoverviewModal] = useState(false);
+  const [addNew, setAddNew] = useState(false);
 
   const { data, isFetching } = useQuery(
     ["ALL CLASSROOMS", search, page, itemsPerPage],
@@ -172,7 +174,7 @@ const JobHub: React.FC = () => {
           </div>
 
           <div className="ml-auto">
-            <Button rounded onClick={() => {}} size="lg">
+            <Button rounded onClick={() => {setAddNew(true)}} size="lg">
               New Applicant Kit
             </Button>
           </div>
@@ -321,12 +323,7 @@ const JobHub: React.FC = () => {
                       <Table.Cell isAction>
                         <div className="flex w-full items-center justify-center">
                         <StaggeredDropDown>
-                                <AnimatedOption
-                                  text="Edit"
-                                  onClick={() => {
-                                    
-                                  }}
-                                />
+                                
                                 <AnimatedOption
                                   text="Rename Resume"
                                   onClick={() => setInfoView(true)}
@@ -334,6 +331,12 @@ const JobHub: React.FC = () => {
                                 <AnimatedOption
                                   text="View More Info"
                                   onClick={() => setInfoView(true)}
+                                />
+                                <AnimatedOption
+                                  text="Delete"
+                                  onClick={() => {
+                                    
+                                  }}
                                 />
                               </StaggeredDropDown>
                          
@@ -408,6 +411,9 @@ const JobHub: React.FC = () => {
           }}
           resumeData={selectedResume}
         />
+      )}
+      {addNew && (
+        <NewApplicantKit show={addNew} onClose={() => setAddNew(false)} />
       )}
     </section>
   );

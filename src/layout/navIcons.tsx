@@ -21,6 +21,8 @@ import {
 } from "react-icons/bs";
 import { HiOutlineTemplate, HiOutlineUser, HiOutlineUsers, HiTemplate, HiUser } from "react-icons/hi";
 import { HiMiniUsers } from "react-icons/hi2";
+import { IoFlash, IoFlashOutline } from "react-icons/io5";
+import { GiVerticalBanner } from "react-icons/gi";
 
 
 export default {
@@ -42,4 +44,8 @@ export default {
   UsersFill: HiMiniUsers,
   UsersGroup: FaUsers,
   PaymentCard: MdOutlinePayment,
+  Optimize: IoFlashOutline,
+  OptimizeFill: IoFlash,
+  Banner: GiVerticalBanner,
+
 };

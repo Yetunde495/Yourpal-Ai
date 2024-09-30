@@ -1,6 +1,7 @@
 // src/components/Accordion.tsx
 import React, { useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { motion } from "framer-motion";
 
 interface AccordionProps {
   items: {
@@ -12,7 +13,10 @@ interface AccordionProps {
   }[];
   initialOpenIndex?: number | null;
 }
-
+interface Accordion2Props {
+  title: React.ReactNode;
+  children: React.ReactNode;
+}
 const Accordion: React.FC<AccordionProps> = ({ items, initialOpenIndex }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(
     initialOpenIndex !== undefined ? Number(initialOpenIndex) : null
@@ -58,6 +62,46 @@ const Accordion: React.FC<AccordionProps> = ({ items, initialOpenIndex }) => {
           </div>
         );
       })}
+    </div>
+  );
+};
+
+export const ContentAccordion: React.FC<Accordion2Props> = ({ title, children }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleAccordion = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <div className="w-full lg:flex lg:gap-4">
+      {/* For large screens, content should always be visible */}
+      <div className="hidden lg:block w-full py-4 bg-white shadow-md rounded-md">
+        <div className="mb-4 xl:border-b-2 border-slate-200 px-4 pb-1.5">{title}</div>
+        <div className="px-4">{children}</div>
+      </div>
+
+      {/* For small screens, accordion behavior */}
+      <div className="block lg:hidden w-full">
+        <button
+          onClick={toggleAccordion}
+          className="w-full flex justify-between items-center p-4 bg-white shadow-md rounded-md"
+        >
+          <div className="">{title}</div>
+          <span>{isOpen ? "-" : "+"}</span>
+        </button>
+
+        {/* Accordion content with Framer Motion for animation */}
+        <motion.div
+          initial={{ height: 0 }}
+          animate={{ height: isOpen ? "auto" : 0 }}
+          className="overflow-hidden bg-white shadow-md rounded-md"
+        >
+          <div className="p-4">
+            <div>{children}</div>
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 };

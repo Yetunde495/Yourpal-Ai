@@ -126,7 +126,7 @@ export default function Button({
       : variant === "danger"
       ? "bg-meta-1 text-white"
       : variant === "link"
-      ? "bg-transparent text-primary underline underline-offset-[3px] rounded-none py-0"
+      ? "bg-transparent text-primary hover:text-primary-2 underline underline-offset-[3px] rounded-none py-0"
       : variant === "transparent"
       ? "bg-transparent text-black hover:bg-slate-200 border border-slate-300"
       : variant === "outline-primary" 
