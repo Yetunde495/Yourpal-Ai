@@ -11,8 +11,8 @@ const defaultContext = {
   isLoggedIn: false,
   newChat: false,
   hubCategory: 'home',
-  drawer: null,
-  setDrawer: (_drawer: string) => {},
+  savedResumes: [],
+  setSavedResumes: (_savedResumes: any[]) => {},
   changeCategory: (_category: string) => {},
   signIn: (_data: any) => {},
   setNewChat: (_value:boolean) => {},
@@ -26,8 +26,8 @@ interface AppContextInterface {
   isLoggedIn: boolean;
   newChat: boolean;
   hubCategory:string;
-  drawer: null,
-  setDrawer: (value: string | null) => void;
+  savedResumes: any[],
+  setSavedResumes: (value: any[]) => void;
   signIn: (data: any) => void;
   signOut: () => void;
   updateUser: (data:  any) => void;
@@ -113,8 +113,8 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
     update({hubCategory: value})
   }
 
-  const setDrawer = (value: string | null) => {
-    update({drawer: value})
+  const setSavedResumes = (value: any[]) => {
+    update({savedResumes: value})
   }
 
 
@@ -127,8 +127,8 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
     newChat: state?.newChat,
     hubCategory: state?.hubCategory,
     changeCategory,
-    drawer: state?.drawer,
-    setDrawer,
+    savedResumes: state?.savedResumes,
+    setSavedResumes,
     setNewChat,
     signIn,
     signOut,

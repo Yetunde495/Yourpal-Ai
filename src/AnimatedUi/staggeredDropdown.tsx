@@ -48,7 +48,7 @@ export const AnimatedOption = ({
     <motion.li
       variants={itemVariants}
       onClick={onClick}
-      className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
+      className={`flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md ${text.includes('Delete') ? 'text-danger hover:bg-danger/15 hover:text-red-600' : 'hover:bg-indigo-100 hover:text-indigo-500 text-slate-700 '}   transition-colors cursor-pointer`}
     >
       <motion.span variants={actionIconVariants}>
         {Icon && <Icon />}

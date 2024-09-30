@@ -44,7 +44,7 @@ export default function FieldInput({
     return (
         <div className={containerClass}>
             <label
-                className='mb-3 block font-medium text-black dark:text-white'
+                className='mb-[0.4rem] block font-medium text-black dark:text-white'
                 htmlFor={name}
             >
                 {label}{requiredField}

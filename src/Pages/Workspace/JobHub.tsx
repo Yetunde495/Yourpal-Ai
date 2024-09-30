@@ -14,7 +14,6 @@ import { FaCircleCheck, FaStar, FaTrophy } from "react-icons/fa6";
 import { MdCancel, MdOutlineFileDownload } from "react-icons/md";
 import Popover from "../../components/Popover";
 import {
-  IoMdInformationCircle,
   IoMdInformationCircleOutline,
 } from "react-icons/io";
 import cancelIcon from "../../assets/svg/icon-cancel.svg";
@@ -25,6 +24,9 @@ import InterviewTips from "./InterviewTips";
 import { Tooltip2 } from "../../components/Tooltip";
 import { LiaEdit } from "react-icons/lia";
 import ApplicationInfo from "./ApplicationInfo";
+import Button from "../../components/button";
+import StaggeredDropDown, { AnimatedOption } from "../../AnimatedUi/staggeredDropdown";
+import NewApplicantKit from "./NewApplication";
 
 const statusOptions = [
   {
@@ -59,7 +61,15 @@ const sampleData = [
     },
     created_at: "2024-08-26T22:46:24.684Z",
     last_updated: "2024-08-26T22:46:24.684Z",
-    tags: ['HR', 'expert', 'recruitment', 'onboarding', 'compliance', 'policies', 'structure' ],
+    tags: [
+      "HR",
+      "expert",
+      "recruitment",
+      "onboarding",
+      "compliance",
+      "policies",
+      "structure",
+    ],
     cover_letter: `Dear [Employer's Name],
 
 I am excited to apply for the Human Resources position at [Company Name]. With [X years] of experience in HR management, including recruitment, employee relations, and performance management, I am confident in my ability to contribute effectively to your team.
@@ -96,6 +106,7 @@ const JobHub: React.FC = () => {
   const [interviewtipModal, setInterviewtipModal] = useState(false);
   const [infoView, setInfoView] = useState(false);
   const [companyoverviewModal, setCompanyoverviewModal] = useState(false);
+  const [addNew, setAddNew] = useState(false);
 
   const { data, isFetching } = useQuery(
     ["ALL CLASSROOMS", search, page, itemsPerPage],
@@ -163,7 +174,9 @@ const JobHub: React.FC = () => {
           </div>
 
           <div className="ml-auto">
-            <h1>Create Job</h1>
+            <Button rounded onClick={() => {setAddNew(true)}} size="lg">
+              New Applicant Kit
+            </Button>
           </div>
         </div>
 
@@ -235,7 +248,9 @@ const JobHub: React.FC = () => {
                         {item?.job ? (
                           <div className="font-medium">
                             <p>{item?.job?.position}</p>
-                            <p className="text-sm text-primary">{item?.job?.companyName}</p>
+                            <p className="text-sm text-primary">
+                              {item?.job?.companyName}
+                            </p>
                           </div>
                         ) : (
                           <div>
@@ -247,7 +262,10 @@ const JobHub: React.FC = () => {
                         <div className="flex w-full items-center justify-center">
                           <div>
                             <Tooltip2 text="View">
-                              <button onClick={() => setLetterModal(true)} className="hover:bg-stone-200 rounded-md p-[2.5px]">
+                              <button
+                                onClick={() => setLetterModal(true)}
+                                className="hover:bg-stone-200 rounded-md p-[2.5px]"
+                              >
                                 <BsEye />
                               </button>
                             </Tooltip2>
@@ -256,7 +274,6 @@ const JobHub: React.FC = () => {
                       </Table.Cell>
                       <Table.Cell isAction>
                         <div className="flex w-full gap-1 items-center">
-                         
                           <Tooltip2 text="Edit">
                             <button
                               onClick={() => {}}
@@ -273,7 +290,6 @@ const JobHub: React.FC = () => {
                               <MdOutlineFileDownload size={20} />
                             </button>
                           </Tooltip2>
-                          
                         </div>
                       </Table.Cell>
                       <Table.Cell isAction>
@@ -306,18 +322,24 @@ const JobHub: React.FC = () => {
                       </Table.Cell>
                       <Table.Cell isAction>
                         <div className="flex w-full items-center justify-center">
-                          
-                          <div className="">
-                          <Tooltip2 text="More Details">
-                          <button onClick={() => setInfoView(true)} className="hover:bg-stone-200 rounded-md p-[2.5px]">
-                            <IoMdInformationCircle
-                              size={22}
-                              className="text-primary"
-                            />
-                          </button>
-                          </Tooltip2>
-                          </div>
-                      
+                        <StaggeredDropDown>
+                                
+                                <AnimatedOption
+                                  text="Rename Resume"
+                                  onClick={() => setInfoView(true)}
+                                />
+                                <AnimatedOption
+                                  text="View More Info"
+                                  onClick={() => setInfoView(true)}
+                                />
+                                <AnimatedOption
+                                  text="Delete"
+                                  onClick={() => {
+                                    
+                                  }}
+                                />
+                              </StaggeredDropDown>
+                         
                         </div>
                       </Table.Cell>
                     </Table.CellRows>
@@ -381,14 +403,17 @@ const JobHub: React.FC = () => {
         />
       )}
       {infoView && (
-        <ApplicationInfo 
-         show={infoView}
-         setShow={() => {
-          setSelectedResume(null)
-          setInfoView(false)
-         }}
-         resumeData={selectedResume}  
+        <ApplicationInfo
+          show={infoView}
+          setShow={() => {
+            setSelectedResume(null);
+            setInfoView(false);
+          }}
+          resumeData={selectedResume}
         />
+      )}
+      {addNew && (
+        <NewApplicantKit show={addNew} onClose={() => setAddNew(false)} />
       )}
     </section>
   );

@@ -12,12 +12,14 @@ type WarningProps = {
   size?: string;
   onHide: () => void;
   onProceed?: () => void;
+  props?: any;
 };
 
 const Modal: React.FC<WarningProps> = ({
   show,
   onHide,
   // onProceed,
+  props,
   title,
   children,
   closeButton = true,
@@ -57,11 +59,86 @@ const Modal: React.FC<WarningProps> = ({
   }
 
   return ReactDOM.createPortal(
-    <div className="w-screen h-screen z-9999 bg-black bg-opacity-50 fixed top-0 flex items-center justify-center text-[#444444] overflow-x-auto">
+    <div className="w-screen h-screen z-9999 bg-black bg-opacity-50 fixed top-0 flex md:items-center justify-center text-[#444444] overflow-x-auto">
       <div
         className={`${
-          size ? size : "min-w-[50%]"
-        } bg-white py-5 rounded-2xl flex flex-col  justify-center md:mx-6 my-auto mx-3`}
+          size ? size : "md:min-w-[50%] min-w-full"
+        } ${props?.roundedMd ? "md:rounded-md" : "md:rounded-2xl"} bg-white py-5  flex flex-col  justify-center md:mx-6 md:my-auto mx-0`}
+        ref={modalRef}
+      >
+        <div className="flex flex-col justify-center relative">
+          <div className="flex items-center md:px-6 px-4">
+            <h3 className="pb-2 text-xl font-semibold text-black dark:text-white sm:text-2xl">
+              {title}
+            </h3>
+            {closeButton && (
+              <button
+                onClick={onHide}
+                className="absolute -top-[12px] text-zinc-900 right-2 bg-slate-200 hover:bg-slate-300 rounded-full p-[4px]"
+              >
+                <RxCross2 size={18} className="" />
+              </button>
+            )}
+          </div>
+
+          <div className="px-10 py-5">{children}</div>
+        </div>
+      </div>
+    </div>,
+
+    document.querySelector("#modal") as HTMLElement
+  );
+};
+
+export const FullModal: React.FC<WarningProps> = ({
+  show,
+  onHide,
+  // onProceed,
+  // props,
+  title,
+  children,
+  closeButton = true,
+  // cancelText,
+  // okText,
+  size,
+}) => {
+  const modalRef = React.useRef<HTMLDivElement | null>(null);
+  React.useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      // Check if the click target is outside the modal content and not on the scrollbar
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node) &&
+        event.target !== document.documentElement
+      ) {
+        onHide(); // Call onHide when clicking outside the modal, excluding the scrollbar
+      }
+    };
+
+    if (show) {
+      // Add the event listener when the modal is shown
+      document.addEventListener("mousedown", handleOutsideClick);
+    } else {
+      // Remove the event listener when the modal is hidden
+      document.removeEventListener("mousedown", handleOutsideClick);
+    }
+
+    // Clean up the event listener when the component is unmounted
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [show, onHide]);
+
+  if (!show) {
+    return null;
+  }
+
+  return ReactDOM.createPortal(
+    <div className="w-screen h-screen z-9999 bg-black bg-opacity-50 fixed top-0 flex justify-center text-[#444444] overflow-x-auto">
+      <div
+        className={`${
+          size ? size : "w-full"
+        } bg-white py-5`}
         ref={modalRef}
       >
         <div className="flex flex-col justify-center relative">

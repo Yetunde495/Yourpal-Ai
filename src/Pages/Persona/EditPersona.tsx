@@ -1,23 +1,37 @@
 import { useNavigate } from "react-router-dom";
-import DefaultLayout from "../../layout/DefaultLayout";
 import Breadcrumb from "../../components/BreadCrumb";
-import { FormProvider, useForm } from "react-hook-form";
 import Button from "../../components/button";
-import { useApp } from "../../context/AppContext";
+import DefaultLayout from "../../layout/DefaultLayout";
+import { FormProvider, useForm } from "react-hook-form";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { UploadUserPhoto } from "../Authentication/uploadProfilephoto";
 import { AutoInput } from "../../components/form/customInput";
 import Select from "../../components/form/customSelect";
-import { FiUpload } from "react-icons/fi";
 import { Textarea } from "../../components/form";
+import Delete from "../../components/modal/Delete";
+import { UploadUserPhoto } from "../Authentication/uploadProfilephoto";
+import { useApp } from "../../context/AppContext";
+import { FiUpload } from "react-icons/fi";
 
-const AddPersonaForm = () => {
+const EditPersona: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useApp();
   const methods = useForm<any>();
   const [isLoading, setIsLoading] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
   const [_url, setUrl] = useState("");
+
+  const [_isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [personaData, _setPersonaData] = useState<any>({
+    name: "John Doe",
+    industry: 'Tech',
+    tone: 'Analytical',
+    tag: "Job Seeker",
+    content: `Lorem ipsum dolor sit amet consectetur. In et mi laoreet dapibus diam. Eu dis nisi orci sed vitae imperdiet. Viverra ut felis accumsan nulla quis vitae leo. Morbi nunc at nunc donec. Adipiscing aenean velit quis eget tincidunt massa enim eget mauris. Eget a sed porttitor suspendisse ullamcorper massa proin posuere feugiat.
+
+Scelerisque porta vestibulum consectetur cras dolor quis. Sed pellentesque dui tempor vel sem amet neque turpis. Ipsum nec non dolor vulputate lacinia massa. Id enim feugiat tristique adipiscing. Sagittis dignissim nulla neque pharetra condimentum. Amet pellentesque egestas velit augue nam viverra turpis viverra. Montes ut dolor urna dis. Bibendum nunc aliquet diam et sed ullamcorper morbi. Ut vulputate volutpat imperdiet tincidunt.
+    `,
+  });
 
   const onSubmit = async (data: any) => {
     const { errors } = methods.formState;
@@ -31,17 +45,19 @@ const AddPersonaForm = () => {
     try {
       setIsLoading(true);
       console.log(data);
+      setIsSuccess(true);
     } catch (err: any) {
       toast.error(err.message);
     } finally {
       setIsLoading(false);
     }
   };
+
   return (
     <DefaultLayout>
       <section className="px-4 py-4 md:py-6 md:px-6">
         <Breadcrumb
-          pageName="Add Persona"
+          pageName="Edit Persona"
           homeRoute="/app/persona"
           homeRouteName="Personas"
         />
@@ -51,7 +67,7 @@ const AddPersonaForm = () => {
             <form onSubmit={methods.handleSubmit(onSubmit)} className="">
               <div className="flex justify-between items-center mb-6">
                 <h1 className="text-xl lg:text-2xl font-semibold dark:text-slate-200">
-                  Add Persona
+                  Edit Persona
                 </h1>
                 <div className="flex gap-3 items-center">
                   <Button
@@ -68,17 +84,17 @@ const AddPersonaForm = () => {
                     onClick={() => {}}
                     disabled={isLoading}
                   >
-                    {isLoading ? "Saving..." : "Save Persona"}
+                    {isLoading ? "Saving Template" : "Update Persona"}
                   </Button>
                   <Button
                     type="button"
                     variant="outline-primary"
                     rounded
                     onClick={() => {
-                      navigate(-1);
+                      setDeleteModal(true);
                     }}
                   >
-                    Cancel
+                    Delete Persona
                   </Button>
                 </div>
               </div>
@@ -96,6 +112,7 @@ const AddPersonaForm = () => {
                         name="name"
                         placeholder="Ex: John Doe"
                         isRequired
+                        defaultValue={personaData?.name}
                         rules={{
                           required: "This field is required",
                         }}
@@ -108,9 +125,12 @@ const AddPersonaForm = () => {
                           label="Tag"
                           name="tag"
                           isRequired
+                          defaultValue={personaData?.tag}
                           rules={{ required: "This field is required" }}
                         >
-                          <option value={""}>Select...</option>
+                          <option value={personaData?.tag || ""}>
+                            {personaData?.tag || "Select..."}
+                          </option>
                           <option>Job Seeker</option>
                           <option>Recruiter</option>
                         </Select>
@@ -130,9 +150,7 @@ const AddPersonaForm = () => {
                                 htmlFor="file-upload"
                                 className="relative cursor-pointer flex items-center justify-center gap-2  font-semibold text-primary"
                               >
-                                <span>
-                                  <FiUpload />
-                                </span>
+                                <span><FiUpload /></span>
                                 <span>Click to Upload</span>
                                 <input
                                   id="file-upload"
@@ -158,6 +176,7 @@ const AddPersonaForm = () => {
                     label="Industry"
                     name="industry"
                     placeholder="Ex: Tech"
+                    defaultValue={personaData?.industry}
                     rules={{
                       required: false,
                     }}
@@ -165,9 +184,12 @@ const AddPersonaForm = () => {
                   <Select
                     label="Tone and Personality"
                     name="tone"
+                    defaultValue={personaData?.tag}
                     rules={{ required: false }}
                   >
-                    <option value={""}>Select...</option>
+                    <option value={personaData?.tone || ""}>
+                      {personaData?.tone || "Select..."}
+                    </option>
                     <option>Analytical</option>
                     <option>Engaging</option>
                   </Select>
@@ -178,6 +200,8 @@ const AddPersonaForm = () => {
                     label="Keywords and Phrases"
                     name="keywords"
                     placeholder="Ex: Fast Growing, Hardworking"
+                    isRequired
+                    defaultValue={personaData?.keywords}
                     rules={{
                       required: false,
                     }}
@@ -188,6 +212,7 @@ const AddPersonaForm = () => {
                   label="Background and History"
                   name="content"
                   isRequired
+                  defaultValue={personaData?.content}
                   placeholder="Type your content here"
                   rules={{ required: false }}
                   props={{ maxLength: 2000, row: 6 }}
@@ -196,9 +221,21 @@ const AddPersonaForm = () => {
             </form>
           </FormProvider>
         </div>
+        <Delete
+          show={deleteModal}
+          onHide={() => {
+            setDeleteModal(false);
+          }}
+          title={`Delete Persona?`}
+          desc="Are you sure you want to delete this persona? This action is irreversible"
+          //  size="w-full max-w-[300px]"
+          onProceed={() => {}}
+          isLoading={false}
+          isLoadingText="Deleting..."
+        />
       </section>
     </DefaultLayout>
   );
 };
 
-export default AddPersonaForm;
+export default EditPersona;

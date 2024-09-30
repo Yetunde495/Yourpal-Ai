@@ -13,28 +13,27 @@ import Breadcrumb from "../../components/BreadCrumb";
 import StaggeredDropDown, {
   AnimatedOption,
 } from "../../AnimatedUi/staggeredDropdown";
-import Modal from "../../components/modal";
-import FieldInput from "../../components/form/Input";
 import Button from "../../components/button";
+import AddNewList, { EditList } from "./NewList";
 import Delete from "../../components/modal/Delete";
 
 const sampleData = [
   {
-    tag: "Job Seeker",
+    name: "Recruiter",
     id: 1,
     dateModified: "Jul 01, 2024",
   },
   {
-    tag: "Recruiter",
+    name: "Client",
     id: 2,
     dateModified: "Jul 01, 2024",
   },
 ];
 
-const ManageTags = () => {
+const ManageList = () => {
   const navigate = useNavigate();
   const [allResumes, setAllResumes] = useState<any>([]);
-  const [selectedTag, setSelectedTag] = useState<any>(null);
+  const [selectedList, setSelectedList] = useState<any>(null);
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -42,6 +41,9 @@ const ManageTags = () => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
+
+  const [selectAll, setSelectAll] = useState(false);
+  const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
   const { data, isFetching } = useQuery(
     ["ALL CLASSROOMS", search, page, itemsPerPage],
@@ -73,19 +75,36 @@ const ManageTags = () => {
     Number(page),
     Number(itemsPerPage)
   );
+
+  const handleSelectAll = () => {
+    if (selectAll) {
+      setSelectedItems([]);
+    } else {
+      setSelectedItems(sampleData.map((item) => item.id));
+    }
+    setSelectAll(!selectAll);
+  };
+
+  const handleCheckboxClick = (id: number) => {
+    if (selectedItems.includes(id)) {
+      setSelectedItems(selectedItems.filter((itemId) => itemId !== id));
+    } else {
+      setSelectedItems([...selectedItems, id]);
+    }
+  };
   return (
     <DefaultLayout>
       <section className="pb-6 px-4 md:px-6">
         <section className="sm:block py-8">
           <Breadcrumb
-            pageName="Manage Tags"
-            homeRoute="/app/persona"
-            homeRouteName="Personas"
+            pageName="Manage Lists"
+            homeRoute="/app/saved-profiles"
+            homeRouteName="Saved Profiles"
           />
 
           <section>
-            <h1 className="text-xl lg:text-2xl font-semibold">Manage Tags</h1>
-            <div className="flex xl:gap-5 gap-3 items-center relative mb-3 flex-wrap mt-10">
+            <h1 className="text-xl lg:text-2xl font-semibold">Manage Lists</h1>
+            <div className="flex xl:gap-5 gap-3 items-center relative mb-3 flex-wrap mt-6">
               <div className="mt-2 flex gap-5 items-center">
                 <div className="relative">
                   <button className="absolute top-1/2 left-0 -translate-y-1/2 pl-3">
@@ -94,7 +113,7 @@ const ManageTags = () => {
 
                   <input
                     type="text"
-                    placeholder="Search Tags"
+                    placeholder="Search Lists"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     className="w-full lg:w-80 border  border-stroke py-2.5 rounded-full bg-white text-sm pr-3 pl-8 focus:outline-none focus:border-1 focus:border-primary"
@@ -102,26 +121,38 @@ const ManageTags = () => {
                 </div>
               </div>
 
-              <div className="ml-auto">
+              <div className="ml-auto flex items-center gap-2">
+                {selectedItems.length > 0 && (
+                  <Button rounded variant="outline-primary" onClick={() => {setDeleteModal(true)}}>
+                    Delete Lists
+                  </Button>
+                )}
                 <Button
                   rounded
                   onClick={() => {
                     setAddModal(true);
                   }}
                 >
-                  Add New Tag
+                  Add New List
                 </Button>
               </div>
             </div>
           </section>
 
-          <div className="mt-10">
+          <div className="mt-8">
             {isFetching ? (
               <TableLoader />
             ) : allResumes?.length === 0 ? (
               <>
                 <Table show>
                   <Table.TableRow>
+                    <Table.Row rowIndex={0}>
+                      <Table.RowCheckInput
+                        id="000"
+                        isChecked={selectAll || selectedItems.length > 0}
+                        onChecked={handleSelectAll}
+                      />
+                    </Table.Row>
                     <Table.Row>Name</Table.Row>
                     <Table.Row>Date Created</Table.Row>
                     <Table.Row>Last Updated</Table.Row>
@@ -132,10 +163,17 @@ const ManageTags = () => {
                     {sampleData?.map((item: any, index: number) => (
                       <Table.CellRows
                         useSelectOption={false}
-                        onClick={() => setSelectedTag(item)}
+                        onClick={() => setSelectedList(item)}
                         key={item?.id + "-" + index}
                       >
-                        <Table.Cell>{item.tag}</Table.Cell>
+                        <Table.Cell cellIndex={0}>
+                          <Table.RowCheckInput
+                            id={item?.id}
+                            isChecked={selectedItems.includes(item.id)}
+                            onChecked={() => handleCheckboxClick(item.id)}
+                          />
+                        </Table.Cell>
+                        <Table.Cell>{item.name}</Table.Cell>
                         <Table.Cell>Jan 1, 2024</Table.Cell>
                         <Table.Cell>
                           <p className="text-sm text-black">
@@ -145,16 +183,14 @@ const ManageTags = () => {
                         <Table.Cell isAction>
                           <StaggeredDropDown>
                             <AnimatedOption
-                              text="Edit Tag"
+                              text="Edit List"
                               onClick={() => {
-                                setEditModal(true);
+                                setEditModal(true)
                               }}
                             />
                             <AnimatedOption
-                              text="Delete Tag"
-                              onClick={() => {
-                                setDeleteModal(true);
-                              }}
+                              text="Delete List"
+                              onClick={() => {setDeleteModal(true)}}
                             />
                           </StaggeredDropDown>
                         </Table.Cell>
@@ -189,7 +225,7 @@ const ManageTags = () => {
           </div>
         </section>
         {addModal && (
-          <AddNewTag
+          <AddNewList
             show={addModal}
             onClose={() => {
               setAddModal(false);
@@ -197,19 +233,15 @@ const ManageTags = () => {
           />
         )}
         {editModal && (
-          <EditTag
-            show={editModal}
-            onClose={() => setEditModal(false)}
-            tagData={selectedTag}
-          />
+          <EditList show={editModal} onClose={() => setEditModal(false)} listData={selectedList} />
         )}
-        <Delete
+         <Delete
           show={deleteModal}
           onHide={() => {
             setDeleteModal(false);
           }}
-          title={`Delete Tag?`}
-          desc="Are you sure you want to delete this tag? This action is irreversible"
+          title={`Delete ${selectedItems.length > 0 ? 'Selected List(s)' : 'List'}?`}
+          desc="Are you sure you want to delete? This action is irreversible"
           //  size="w-full max-w-[300px]"
           onProceed={() => {}}
           isLoading={false}
@@ -220,87 +252,4 @@ const ManageTags = () => {
   );
 };
 
-const AddNewTag: React.FC<{
-  show: boolean;
-  onClose: () => void;
-}> = ({ show, onClose }) => {
-  const [name, setName] = useState("");
-  return (
-    <div className="">
-      <Modal
-        show={show}
-        onHide={onClose}
-        props={{ roundedMd: true }}
-        size="w-full lg:max-w-[600px]"
-      >
-        <div className="mb-6 text-center">
-          <h1 className="font-outfit font-medium text-[30px]">Add New Tag</h1>
-          <p className="font-medium hidden">Placeholder for description</p>
-        </div>
-
-        <div className="mb-9">
-          <FieldInput
-            label="Tag"
-            placeholder="Ex: Job Seeker"
-            value={name}
-            onChange={(val) => setName(val)}
-            id="url"
-          />
-        </div>
-
-        <div className="flex gap-3 justify-center items-center">
-          <Button variant="outline-primary" rounded onClick={onClose}>
-            Cancel
-          </Button>
-          <Button rounded onClick={() => {}} size="lg">
-            Save
-          </Button>
-        </div>
-      </Modal>
-    </div>
-  );
-};
-
-const EditTag: React.FC<{
-  show: boolean;
-  onClose: () => void;
-  tagData: any;
-}> = ({ show, onClose, tagData }) => {
-  const [name, setName] = useState(tagData?.tag || "");
-  return (
-    <div className="">
-      <Modal
-        show={show}
-        onHide={onClose}
-        props={{ roundedMd: true }}
-        size="w-full lg:max-w-[600px]"
-      >
-        <div className="mb-6 text-center">
-          <h1 className="font-outfit font-medium text-[30px]">Edit Tag</h1>
-          <p className="font-medium hidden">Placeholder for description</p>
-        </div>
-
-        <div className="mb-9">
-          <FieldInput
-            label="Tag"
-            placeholder="Ex: Job Seeker"
-            value={name}
-            onChange={(val) => setName(val)}
-            id="url"
-          />
-        </div>
-
-        <div className="flex gap-3 justify-center items-center">
-          <Button variant="outline-primary" rounded onClick={onClose}>
-            Cancel
-          </Button>
-          <Button rounded onClick={() => {}} size="lg">
-            Update
-          </Button>
-        </div>
-      </Modal>
-    </div>
-  );
-};
-
-export default ManageTags;
+export default ManageList;

@@ -39,7 +39,7 @@ const Select: React.FC<SelectProps> = ({
   };
   return (
     <div className={containerClass}>
-      <label htmlFor={name} className="mb-2.5 text-black dark:text-white flex items-center gap-1">
+      <label htmlFor={name} className="mb-[0.4rem] text-black dark:text-white flex items-center gap-1">
         {label} {isRequired && <span><FaStarOfLife className="text-danger" size={8} /></span>}
       </label>
       <div className="relative z-20 bg-transparent dark:bg-form-input">
@@ -51,8 +51,8 @@ const Select: React.FC<SelectProps> = ({
         onBlur={onBlur}
         value={value}
         ref={ref}
-        className="relative z-20 w-full rounded min-h-[50px] appearance-none
-        border border-[#d0d5dd] py-3 px-5 outline-none 
+        className="relative z-20 w-full rounded appearance-none
+        border border-[#d0d5dd] py-2.5 px-5 outline-none 
         transition focus:border-primary active:border-primary bg-white
         dark:border-form-strokedark dark:bg-form-input 
         dark:focus:border-primary"

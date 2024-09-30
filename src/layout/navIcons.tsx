@@ -19,9 +19,10 @@ import {
   BsDatabaseFillLock,
   BsBellFill,
 } from "react-icons/bs";
-import { LuLayoutTemplate } from "react-icons/lu";
-import { HiOutlineTemplate, HiOutlineUser, HiOutlineUsers, HiUser } from "react-icons/hi";
+import { HiOutlineTemplate, HiOutlineUser, HiOutlineUsers, HiTemplate, HiUser } from "react-icons/hi";
 import { HiMiniUsers } from "react-icons/hi2";
+import { IoFlash, IoFlashOutline } from "react-icons/io5";
+import { GiVerticalBanner } from "react-icons/gi";
 
 
 export default {
@@ -35,7 +36,7 @@ export default {
   Dashboard: RiDashboardHorizontalLine,
   DashboardFill: RiDashboardHorizontalFill,
   Template: HiOutlineTemplate,
-  TemplateFill: LuLayoutTemplate,
+  TemplateFill: HiTemplate,
   Analytics: SiSimpleanalytics,
   Database: AiFillDatabase,
   Summary: MdOutlineAnalytics,
@@ -43,4 +44,8 @@ export default {
   UsersFill: HiMiniUsers,
   UsersGroup: FaUsers,
   PaymentCard: MdOutlinePayment,
+  Optimize: IoFlashOutline,
+  OptimizeFill: IoFlash,
+  Banner: GiVerticalBanner,
+
 };

@@ -37,14 +37,15 @@ type TextAreaProps = {
   label: string;
   value: string;
   onChange: (value: string) => void;
-  id: string;
-  name: string;
+  id?: string;
+  name?: string;
   classNames?: string;
   isRequired?: string;
   disabled?: boolean;
   placeholder?: string;
   children?: string;
   row?: number;
+  props?:any;
   textAreaProps?: object;
   maxLength?: number;
   minLength?: number;
@@ -66,6 +67,7 @@ const TextArea = ({
   textAreaProps,
   maxLength,
   minLength,
+  props,
   height,
 }: TextAreaProps) => {
   const containerClass = classNames ? "w-full" + classNames : "w-full";
@@ -76,7 +78,7 @@ const TextArea = ({
   return (
     <div className={containerClass}>
       <label
-        className="mb-3 block text-sm font-medium text-black dark:text-white"
+        className="mb-[0.4rem] block text-sm font-medium text-black dark:text-white"
         htmlFor={name}
       >
         {label}
@@ -88,12 +90,12 @@ const TextArea = ({
         ) : null}
         <textarea
           style={{ minHeight: height }}
-          className="
-                     w-full rounded border border-stroke 
+          className={`
+                     w-full ${props?.roundedLg ? "rounded-lg" : 'rounded'} border border-stroke 
                      py-3 pl-4.5 pr-4.5 text-black
                      focus:border-primary focus-visible:outline-none
                      dark:border-strokedark dark:bg-meta-4
-                     dark:text-white dark:focus:border-primary "
+                     dark:text-white dark:focus:border-primary `}
           name={name}
           id={id}
           placeholder={placeholder}
