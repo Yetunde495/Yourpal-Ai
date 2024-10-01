@@ -166,8 +166,17 @@ const NewApplicantKit: React.FC<{ show: boolean; onClose: () => void }> = ({
               )}
 
               {selectedOption === "upload" && (
-                <div className="bg-white">
-                 <FileUpload maxFiles={1} onChange={(files: any) => console.log(files)} />
+                <div className="bg-slate-50 rounded-lg">
+                  <FileUpload
+                    maxFiles={1}
+                    onChange={(files: any) => console.log(files)}
+                    acceptedFiles={[
+                      "application/pdf",
+                      "application/msword",
+                      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    ]}
+                    supportedFormat="Supported File Format: PDF, DOC and DOCX"
+                  />
                 </div>
               )}
             </div>
@@ -212,9 +221,9 @@ const NewApplicantKit: React.FC<{ show: boolean; onClose: () => void }> = ({
           </ScrollArea>
           <div className="mt-10 flex items-center justify-between">
             <button
-              className="text-sm"
+              className="font-medium text-lg"
               onClick={() => {
-                //   setTalentMatchAlert(false);
+                onClose()
               }}
             >
               Close

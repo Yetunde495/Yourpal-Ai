@@ -1,0 +1,27 @@
+.Example__container {
+  display: flex;
+  flex-direction: column;
+}
+
+.Example__container__document {
+  width: 60%;
+  max-width: calc(100% - 2em);
+  margin: 1em 0;
+  margin-left: 2.5em;
+}
+
+.Example__container__document .react-pdf__Document {
+  display: flex;
+  flex-direction: column;
+  justify-items: flex-start;
+  /* align-items: center; */
+}
+
+.Example__container__document .react-pdf__Page {
+  margin: 1em 0;
+}
+
+.Example__container__document .react-pdf__message {
+  padding: 10px;
+  color: red;
+}

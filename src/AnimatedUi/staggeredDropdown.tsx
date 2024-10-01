@@ -60,7 +60,7 @@ export const AnimatedOption = ({
 
 export default StaggeredDropDown;
 
-const wrapperVariants = {
+export const wrapperVariants = {
   open: {
     scaleY: 1,
     transition: {
@@ -77,12 +77,12 @@ const wrapperVariants = {
   },
 };
 
-const iconVariants = {
+export const iconVariants = {
   open: { rotate: 180 },
   closed: { rotate: 0 },
 };
 
-const itemVariants = {
+export const itemVariants = {
   open: {
     opacity: 1,
     y: 0,

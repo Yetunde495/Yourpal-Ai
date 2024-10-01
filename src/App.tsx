@@ -11,6 +11,7 @@ import PersonaPages from "./Pages/Persona/Index";
 import TemplatePages from "./Pages/Template/Index";
 import SavedProfilePages from "./Pages/SavedProfiles/Index";
 import SocialpalPages from "./Pages/SocialPal/Index";
+import JobseekerPages from "./Pages/JobSeeker/Index"
 
 axios.defaults.baseURL = "";
 
@@ -138,6 +139,14 @@ function App() {
                   path="/app/saved-profiles/manage-list"
                   element={<SavedProfilePages.ManageList />}
                 />
+                <Route
+                  path="/app/recruiter/application-builder/:id"
+                  element={<DashboardPages.ApplicationBuilder />}
+                />
+                <Route
+                  path="/app/recruiter/branding/:id"
+                  element={<DashboardPages.Branding />}
+                />
               </Route>
 
               {/* SOCIAL PAL PAGES */}
@@ -146,6 +155,17 @@ function App() {
                 element={<SocialpalPages.LinkedinOptimization />}
               />
               {/* SOCIAL PAL PAGES */}
+
+               {/* JOBSEEKER  PAGES */}
+               <Route
+                path="/app/jobseeker"
+                element={<JobseekerPages.Jobhub />}
+              />
+                <Route
+                path="/app/resume-builder"
+                element={<JobseekerPages.ResumeBuilder />}
+              />
+              {/* JOBSEEKER PAGES */}
             </>
           </Routes>
         </Router>

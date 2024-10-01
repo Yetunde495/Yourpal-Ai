@@ -34,6 +34,10 @@ const Sidebar = ({
     storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
   );
   const [logoutModal, setLogoutModal] = useState(false);
+  const handleSignout = async () => {
+    signOut();
+    navigate("/");
+  };
 
   //nav configuration
   const navConfig =
@@ -45,10 +49,11 @@ const Sidebar = ({
       ? JOBSEEKER_NAV_DATA
       : RECRUITER_NAV_DATA;
 
-  const handleSignout = async () => {
-    signOut();
-    navigate("/");
-  };
+  // const [openMenuIndex, setOpenMenuIndex] = useState<number | null>(1);
+
+  // const toggleDropdown = (index: number) => {
+  //   setOpenMenuIndex(openMenuIndex === index ? null : index);
+  // };
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: { [key: string]: any }) => {
@@ -118,7 +123,7 @@ const Sidebar = ({
               ? "w-[160px] h-6"
               : hubCategory === "social"
               ? "w-[80px] h-2"
-              : "w-[150px] h-5"
+              : "w-[125px] h-2"
           }block`}
         />
       </div>
@@ -140,12 +145,44 @@ const Sidebar = ({
                     <li key={nindex}>
                       <NavLink
                         to={nchild?.path}
-                        className={`group relative flex items-center gap-2.5 font-medium  dark:text-primary rounded-sm  ${
+                        className={`group relative flex items-center gap-2.5 font-medium rounded-sm  ${
                           !sidebarOpen ? "px-4 py-2" : "pl-5 py-3"
-                        } font-medium  hover:text-primary duration-300 rounded-xl ease-in-out  dark:hover:bg-meta-4 ${
+                        } font-medium duration-300 rounded-xl ease-in-out  ${
                           pathname.includes(nchild?.path)
-                            ? "text-primary bg-primary/15 hover:text-white hover:bg-primary/90 dark:text-white"
-                            : "text-[#4d4d4d] hover:bg-primary/15"
+                            ? `${
+                                hubCategory === "home"
+                                  ? "text-primary"
+                                  : hubCategory === "jobseeker"
+                                  ? "text-jobseeker"
+                                  : hubCategory === "social"
+                                  ? "text-socialpal"
+                                  : "text-recruiter"
+                              } ${
+                                hubCategory === "home"
+                                  ? `bg-primary/15`
+                                  : hubCategory === "jobseeker"
+                                  ? `bg-jobseeker/15`
+                                  : hubCategory === "social"
+                                  ? `bg-socialpal/15`
+                                  : `bg-recruiter/15`
+                              } hover:text-white ${
+                                hubCategory === "home"
+                                  ? "hover:bg-primary/90"
+                                  : hubCategory === "jobseeker"
+                                  ? "hover:bg-jobseeker/90"
+                                  : hubCategory === "social"
+                                  ? "hover:bg-socialpal/90"
+                                  : "hover:bg-recruiter/90"
+                              } dark:text-white hover:text-white`
+                            : `text-[#4d4d4d] ${
+                                hubCategory === "home"
+                                  ? "hover:bg-primary/15 hover:text-primary"
+                                  : hubCategory === "jobseeker"
+                                  ? "hover:bg-jobseeker/15 hover:text-jobseeker"
+                                  : hubCategory === "social"
+                                  ? "hover:bg-socialpal/15 hover:text-socialpal"
+                                  : "hover:bg-recruiter/15 hover:text-recruiter"
+                              }`
                         }`}
                       >
                         {pathname.includes(nchild.path) ? (
@@ -185,6 +222,108 @@ const Sidebar = ({
             </NavLink>
           </div>
         </nav>
+
+        {/* <nav className={`p-2 ${sidebarOpen ? "px-0" : "px-2"}`}>
+          {navConfig.map((navdata: any, index: number) => (
+            <Fragment key={navdata.section + "-" + index}>
+              <h3 className="mb-4 ml-4 text-sm font-semibold">
+                {navdata.section}
+              </h3>
+              <ul className="gap-4 sm:mb-1 flex flex-col">
+                {navdata.children.map((nchild: any, nindex: number) => {
+                  const NChildIcon = nchild.icon;
+                  const FilledIcon = nchild.fillIcon;
+
+                  return (
+                    <li key={nindex}>
+                      <div
+                        onClick={() => toggleDropdown(nindex)}
+                        className={`group relative flex items-center justify-between gap-2.5 font-medium dark:text-primary rounded-sm ${
+                          !sidebarOpen ? "px-4 py-2" : "pl-5 py-3"
+                        } font-medium hover:text-primary duration-300 rounded-xl ease-in-out dark:hover:bg-meta-4 ${
+                          pathname.includes(nchild?.path)
+                            ? "text-primary bg-primary/15 hover:text-white hover:bg-primary/90 dark:text-white"
+                            : "text-[#4d4d4d] hover:bg-primary/15"
+                        } cursor-pointer`}
+                      >
+                        <div className="flex items-center">
+                          {pathname.includes(nchild.path) ? (
+                            <FilledIcon
+                              style={{ width: "18px", height: "18px" }}
+                            />
+                          ) : (
+                            <NChildIcon
+                              style={{ width: "18px", height: "18px" }}
+                            />
+                          )}
+                          {!sidebarOpen && nchild.name}
+                        </div>
+
+                        {nchild.children && (
+                          <span className="ml-auto">
+                            {openMenuIndex === nindex ? (
+                              <Icons.arrowUp />
+                            ) : (
+                              <Icons.arrowDown />
+                            )}
+                          </span>
+                        )}
+                      </div>
+
+                      {nchild.children && openMenuIndex === nindex && (
+                        <ul className="ml-4 mt-2">
+                          <button className="flex mb-2 gap-2 hover:bg-[#f3edfa] items-center justify-center border font-bold p-2 text-[#8343CC] border-[#8343CC] rounded-full">
+                            <Icons.star /> Apply Changes to all
+                          </button>
+                          {nchild.children.map(
+                            (child: any, childIndex: number) => (
+                              <li key={childIndex}>
+                                <NavLink
+                                  to={child.path}
+                                  className={`block p-2 rounded-xl hover:bg-[#f3edfa] hover:text-[#8343CC]  ${
+                                    pathname.includes(child.path)
+                                      ? "text-[#8343CC] "
+                                      : "text-gray-600"
+                                  }`}
+                                >
+                                  <div className="flex items-center">
+                                    {child.icon && (
+                                      <span className="mr-2">
+                                        {<child.icon />}
+                                      </span>
+                                    )}
+                                    {child.name}{" "}
+                                  </div>
+                                </NavLink>
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </Fragment>
+          ))}
+
+          <div className="absolute bottom-8 w-full right-0 pr-2 pl-2.5">
+            <div
+              className={`border border-primary relative flex cursor-pointer items-center gap-2.5 mb-3 rounded-full py-2 px-4 font-medium dark:text-primary hover:bg-primary bg-transparent text-primary hover:text-white duration-300 ease-in-out
+               `}
+            >
+              <MdOutlineFileDownload /> Download Extension
+            </div>
+            <NavLink
+              to={""}
+              onClick={() => setLogoutModal(true)}
+              className={`group relative flex items-center gap-2.5  rounded-xl py-2 px-4 font-medium hover:text-red-600 duration-300 ease-in-out`}
+            >
+              <RiLogoutCircleLine className="w-5 h-5" />
+              Logout
+            </NavLink>
+          </div>
+        </nav> */}
         {/* <!-- Sidebar Menu --> */}
       </div>
       <Modal
