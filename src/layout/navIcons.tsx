@@ -23,11 +23,14 @@ import { HiOutlineTemplate, HiOutlineUser, HiOutlineUsers, HiTemplate, HiUser } 
 import { HiMiniUsers } from "react-icons/hi2";
 import { IoFlash, IoFlashOutline } from "react-icons/io5";
 import { GiVerticalBanner } from "react-icons/gi";
+import { PiReadCvLogoFill, PiReadCvLogoLight } from "react-icons/pi";
 
 
 export default {
   Home: AiOutlineHome,
   HomeFill: AiFillHome,
+  Resume: PiReadCvLogoLight,
+  ResumeFill: PiReadCvLogoFill,
   Notification: BsBellFill,
   Plus: AiOutlinePlus,
   User: HiOutlineUser,

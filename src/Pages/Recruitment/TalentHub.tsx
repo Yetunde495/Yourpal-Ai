@@ -65,7 +65,13 @@ const sampleData = [
   },
 ];
 
-const uploadedFiles = [{ name: "file1.pdf" }, { name: "hello.pdf" }];
+interface UploadedFile {
+  id: number;
+  name: string;
+  documentUrl: string;
+  docTitle: string;
+  file: File; // This will hold the actual File object
+}
 
 const TalentHub: React.FC = () => {
   const navigate = useNavigate();
@@ -76,9 +82,9 @@ const TalentHub: React.FC = () => {
   const [removeResume, setRemoveResume] = useState(false);
   const [resumeInput, setResumeInput] = useState(false);
   const [matchJob, setMatchJob] = useState(false);
-
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [search, setSearch] = useState<string>("");
-
+  const [fileToRemoveId, setFileToRemoveId] = useState<number | null>(null);
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
@@ -112,6 +118,52 @@ const TalentHub: React.FC = () => {
     Number(page),
     Number(itemsPerPage)
   );
+
+  const openRemoveModal = (id: number) => {
+    setFileToRemoveId(id);
+    setRemoveResume(true);
+  };
+
+  const confirmRemoveFile = () => {
+    if (fileToRemoveId !== null) {
+      setUploadedFiles((prevFiles) =>
+        prevFiles.filter((_, index) => index !== fileToRemoveId)
+      );
+    }
+    setRemoveResume(false);
+  };
+
+  const gotoEditPdf = async (
+    pdfId: string | number,
+    documentUrl: string,
+    docTitle: string
+  ) => {
+    try {
+      navigate(`/app/recruiter/application-builder/${pdfId}`, {
+        state: {
+          documentUrl,
+          docTitle,
+        },
+      });
+    } catch (error) {
+      console.error("Navigation error", error);
+    }
+  };
+
+  const selectedFile = uploadedFiles.length > 0 ? uploadedFiles[0] : null;
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const uploadedFilesArray = files.map((file) => ({
+      id: Date.now(), // or use some unique identifier
+      name: file.name,
+      documentUrl: URL.createObjectURL(file), // Temporary URL for local preview
+      docTitle: file.name.split(".")[0], // Filename without extension
+      file,
+    }));
+    setUploadedFiles((prevFiles) => [...prevFiles, ...uploadedFilesArray]);
+  };
+
   return (
     <section>
       <div className="flex gap-2 items-center pt-4">
@@ -426,6 +478,8 @@ const TalentHub: React.FC = () => {
                             name="file-upload"
                             type="file"
                             className="sr-only"
+                            multiple
+                            onChange={handleFileUpload}
                           />
                         </label>
                       </div>
@@ -441,13 +495,8 @@ const TalentHub: React.FC = () => {
                 {uploadedFiles.map((file, id) => (
                   <div key={id}>
                     <div className="flex items-center gap-2 px-2.5 py-1.5 bg-[#FFFFFF] rounded-full text-xs">
-                      {file.name}{" "}
-                      <span
-                        onClick={() => {
-                          setRemoveResume(true);
-                          setTalentMatchAlert(false);
-                        }}
-                      >
+                      {file?.name}{" "}
+                      <span onClick={() => openRemoveModal(id)}>
                         <Icons.cancel className="cursor-pointer" />
                       </span>
                     </div>
@@ -477,14 +526,27 @@ const TalentHub: React.FC = () => {
               >
                 Close
               </button>
-              {uploadedFiles.length != 0 ? (
+              {uploadedFiles.length <= 0 ? (
                 <button className="group relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 text-sm font-medium text-gray-900 rounded-full group bg-gradient-to-br from-[#60BEE2] via-[#5E4D84] to-[#8FC2DA] group-hover:from-[#60BEE2] group-hover:via-[#5E4D84] group-hover:to-[#8FC2DA] hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800">
                   <span className="relative px-5 py-1 transition-all ease-in duration-200 bg-white dark:bg-gray-900 rounded-full group-hover:bg-opacity-0 flex gap-2">
                     <img src={BtnIcon} /> Generate
                   </span>
                 </button>
               ) : (
-                <button className="border-[#8343CC] border text-[#8343CC] hover:text-white text-sm px-5 rounded-full py-1 hover:bg-[#8343CC]">
+                <button
+                  className="border-[#8343CC] border text-[#8343CC] hover:text-white text-sm px-5 rounded-full py-1 hover:bg-[#8343CC]"
+                  onClick={() => {
+                    if (selectedFile) {
+                      gotoEditPdf(
+                        selectedFile.id,
+                        selectedFile.documentUrl,
+                        selectedFile.docTitle
+                      );
+                    } else {
+                      alert("No file selected!");
+                    }
+                  }}
+                >
                   Continue
                 </button>
               )}
@@ -500,10 +562,16 @@ const TalentHub: React.FC = () => {
             Are you sure you want to remove this resume from bulk?
           </p>{" "}
           <div className="flex gap-5 justify-center items-center flex-col mt-10">
-            <button className="border-red-500 border text-red-500 text-sm px-5 rounded-full py-1 font-normal w-[60%]">
+            <button
+              className="border-red-500 border text-red-500 text-sm px-5 rounded-full py-1 font-normal w-[60%]"
+              onClick={confirmRemoveFile}
+            >
               Yes, Remove
             </button>
-            <button className="border-[#D4D4D4] border text-[#928f8f] text-sm px-5 rounded-full py-1 font-normal w-[60%]">
+            <button
+              className="border-[#D4D4D4] border text-[#928f8f] text-sm px-5 rounded-full py-1 font-normal w-[60%]"
+              onClick={() => setRemoveResume(false)}
+            >
               No, Cancel
             </button>
           </div>

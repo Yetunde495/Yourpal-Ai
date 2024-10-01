@@ -56,7 +56,11 @@ const Header = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               className={`flex flex-col items-center hover:bg-[#457032]/15 rounded-md cursor-pointer py-1.5 ${
                 hubCategory === "jobseeker" ? "bg-[#457032]/15" : ""
               }`}
-              onClick={() => changeCategory("jobseeker")}
+              onClick={() => {
+                changeCategory("jobseeker")
+                navigate("/app/jobseeker");
+              }
+            }
             >
               <img src={JobIcon} className="w-[100px]" />
             </li>

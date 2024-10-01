@@ -124,3 +124,7 @@ a:hover {
 .custom-scrollbar::-moz-scrollbar-track {
   background-color: transparent !important;
 }
+
+:focus-visible {
+  outline: none !important;
+}

@@ -22,7 +22,7 @@ interface ButtonProps {
     | "danger"
     | "light"
     | "link"
-    | "transparent" | "outline-primary";
+    | "transparent" | "outline-primary" | "jobseeker" | "recruiter" | "socialpal";
   classNames?: string;
   btnProps?: any;
   elevation?: number;
@@ -121,6 +121,8 @@ export default function Button({
   const bgColor =
     variant === "primary"
       ? "bg-primary hover:bg-secondary  text-white"
+      : variant === "jobseeker" 
+      ? "bg-jobseeker hover:opacity-95 text-white"
       : variant === "secondary"
       ? "bg-[#00112c] text-white"
       : variant === "danger"
