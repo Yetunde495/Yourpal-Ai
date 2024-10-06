@@ -60,7 +60,7 @@ const ResumeBuilder: React.FC = () => {
                 <ul className="gap-4 sm:mb-1 flex flex-col ">
                   <li>
                     <NavLink
-                      to={`app/jobseeker`}
+                      to={`/app/jobseeker`}
                       className={`group relative flex items-center gap-2.5 font-medium rounded-sm  ${
                         !sidebarOpen ? "px-4 py-2" : "pl-5 py-3"
                       } font-medium duration-300 rounded-xl ease-in-out  

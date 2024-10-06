@@ -1,3 +1,4 @@
+import { IoMdArrowDropdown } from "react-icons/io";
 
 export const SelectOption = ({ value, isDefault, children, disabled }:any) => (
   <option
@@ -69,6 +70,55 @@ const Select = ({
               ></path>
             </g>
           </svg>
+        </span>
+      </div>
+    </div>
+  );
+};
+
+export const Select4 = ({
+  label,
+  // value,
+  onChange,
+  // id,
+  name,
+  classNames,
+  isRequired,
+  disabled,
+  placeholder,
+  defaultValue,
+  children,
+  selectProps,
+}:any) => {
+  const containerClass = classNames ? "w-full" + classNames : "w-full";
+  const requiredField = isRequired ? (
+    <span className="text-danger">&#42;</span>
+  ) : null;
+
+  return (
+    <div className={containerClass}>
+      <label htmlFor={name} className="mb-[0.4rem] block text-black dark:text-white">
+        {label}
+        {requiredField}
+      </label>
+      <div className="relative z-20 bg-transparent dark:bg-form-input">
+        <select
+          placeholder={placeholder}
+          defaultChecked={defaultValue}
+          defaultValue={defaultValue}
+          disabled={disabled}
+          onChange={(e) => onChange(e.target.value)}
+          className="relative z-20 w-full appearance-none rounded-md 
+                    border border-[#D4D4D4] bg-transparent py-1.5 px-3 outline-none 
+                    transition focus:border-primary active:border-primary 
+                    dark:border-form-strokedark dark:bg-form-input 
+                    dark:focus:border-primary bg-white"
+          {...selectProps}
+        >
+          {children}
+        </select>
+        <span className="absolute top-1/2  cursor-pointer pointer-events-none right-2 z-30 -translate-y-1/2">
+        <IoMdArrowDropdown />
         </span>
       </div>
     </div>

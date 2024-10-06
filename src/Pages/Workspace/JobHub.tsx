@@ -13,9 +13,7 @@ import { DropdownSelect } from "../../components/form/customDropdown";
 import { FaCircleCheck, FaStar, FaTrophy } from "react-icons/fa6";
 import { MdCancel, MdOutlineFileDownload } from "react-icons/md";
 import Popover from "../../components/Popover";
-import {
-  IoMdInformationCircleOutline,
-} from "react-icons/io";
+import { IoMdInformationCircleOutline } from "react-icons/io";
 import cancelIcon from "../../assets/svg/icon-cancel.svg";
 import { BsEye } from "react-icons/bs";
 import CoverLetterDetails from "./coverletterDetails";
@@ -25,8 +23,13 @@ import { Tooltip2 } from "../../components/Tooltip";
 import { LiaEdit } from "react-icons/lia";
 import ApplicationInfo from "./ApplicationInfo";
 import Button from "../../components/button";
-import StaggeredDropDown, { AnimatedOption } from "../../AnimatedUi/staggeredDropdown";
+import StaggeredDropDown, {
+  AnimatedOption,
+} from "../../AnimatedUi/staggeredDropdown";
 import NewApplicantKit from "./NewApplication";
+import Delete from "../../components/modal/Delete";
+import FieldInput from "../../components/form/Input";
+import Modal from "../../components/modal";
 
 const statusOptions = [
   {
@@ -107,6 +110,8 @@ const JobHub: React.FC = () => {
   const [infoView, setInfoView] = useState(false);
   const [companyoverviewModal, setCompanyoverviewModal] = useState(false);
   const [addNew, setAddNew] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [renameModal, setRenameModal] = useState(false);
 
   const { data, isFetching } = useQuery(
     ["ALL CLASSROOMS", search, page, itemsPerPage],
@@ -174,7 +179,13 @@ const JobHub: React.FC = () => {
           </div>
 
           <div className="ml-auto">
-            <Button rounded onClick={() => {setAddNew(true)}} size="lg">
+            <Button
+              rounded
+              onClick={() => {
+                setAddNew(true);
+              }}
+              size="lg"
+            >
               New Applicant Kit
             </Button>
           </div>
@@ -322,24 +333,20 @@ const JobHub: React.FC = () => {
                       </Table.Cell>
                       <Table.Cell isAction>
                         <div className="flex w-full items-center justify-center">
-                        <StaggeredDropDown>
-                                
-                                <AnimatedOption
-                                  text="Rename Resume"
-                                  onClick={() => setInfoView(true)}
-                                />
-                                <AnimatedOption
-                                  text="View More Info"
-                                  onClick={() => setInfoView(true)}
-                                />
-                                <AnimatedOption
-                                  text="Delete"
-                                  onClick={() => {
-                                    
-                                  }}
-                                />
-                              </StaggeredDropDown>
-                         
+                          <StaggeredDropDown>
+                            <AnimatedOption
+                              text="Rename Resume"
+                              onClick={() => setRenameModal(true)}
+                            />
+                            <AnimatedOption
+                              text="View More Info"
+                              onClick={() => setInfoView(true)}
+                            />
+                            <AnimatedOption
+                              text="Delete"
+                              onClick={() => setDeleteModal(true)}
+                            />
+                          </StaggeredDropDown>
                         </div>
                       </Table.Cell>
                     </Table.CellRows>
@@ -415,6 +422,57 @@ const JobHub: React.FC = () => {
       {addNew && (
         <NewApplicantKit show={addNew} onClose={() => setAddNew(false)} />
       )}
+      {renameModal && (
+        <div className="">
+          <Modal
+            show={renameModal}
+            onHide={() => setRenameModal(false)}
+            props={{ roundedMd: true }}
+            size="w-full lg:max-w-[600px]"
+          >
+            <div className="mb-6 text-center">
+              <h1 className="font-outfit font-medium text-[30px]">
+                Edit Resume Name
+              </h1>
+            </div>
+
+            <div className="mb-9">
+              <FieldInput
+                label="Resume Name"
+                placeholder="E.g Resume 2"
+                value={selectedResume?.name}
+                onChange={(val) => console.log(val)}
+                id="name"
+              />
+            </div>
+
+            <div className="flex gap-3 justify-center items-center">
+              <Button
+                variant="outline-primary"
+                rounded
+                onClick={() => setRenameModal(false)}
+              >
+                Cancel
+              </Button>
+              <Button rounded onClick={() => {}} size="lg">
+                Update
+              </Button>
+            </div>
+          </Modal>
+        </div>
+      )}
+      <Delete
+        show={deleteModal}
+        onHide={() => {
+          setDeleteModal(false);
+        }}
+        title={`Delete ${"Selected Applicant Kit"}?`}
+        desc="Are you sure you want to delete the selected applicant kit? This action is irreversible"
+        //  size="w-full max-w-[300px]"
+        onProceed={() => {}}
+        isLoading={false}
+        isLoadingText="Deleting..."
+      />
     </section>
   );
 };

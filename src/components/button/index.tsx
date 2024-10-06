@@ -9,6 +9,8 @@ import {
   AiOutlineFolderView,
 } from "react-icons/ai";
 import { BiPrinter, BiEdit } from "react-icons/bi";
+import BtnIcon from "../../assets/svg/btn-icon-2.svg";
+
 
 interface ButtonProps {
   children?: React.ReactNode;
@@ -156,4 +158,21 @@ export default function Button({
       </span>
     </button>
   );
+}
+
+export const GradientButton: React.FC<{disabled?:boolean, onClick:() => void, text:string, className?: string, props?: any}> = ({disabled, onClick, text, className, props}) => {
+  return (
+    <div className={`${className && className} button-wrapper`}>
+    <div className="button-bg group w-full text-center">
+      <button
+        className="rounded-full bg-white group-hover:bg-transparent group:hover:text-white w-full"
+        onClick={onClick}
+        disabled={disabled}
+        type="button"
+      >
+        <span className={`text-gradient gap-2 font-medium text-center justify-center items-center w-full ${props?.padding ? props?.padding : 'py-1 px-3'} text-sm`}> <img src={BtnIcon} alt="icon" /> {text}</span>
+      </button>
+    </div>
+  </div>
+  )
 }

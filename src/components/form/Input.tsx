@@ -9,6 +9,7 @@ export default function FieldInput({
     name,
     defaultValue,
     classNames,
+    size,
     isRequired,
     disabled,
     inputType = 'text',
@@ -36,6 +37,7 @@ export default function FieldInput({
     maxLength?: number;
     minLength?: number;
     description?: string;
+    size?: "small" | "medium"
     error?: string;
 }){
     const containerClass = classNames ? 'w-full ' + classNames : 'w-full';
@@ -53,7 +55,7 @@ export default function FieldInput({
                 <input
                     disabled={disabled}
                     // aria-disabled={disabled}
-                    className={`w-full rounded border border-stroke py-3 px-4.5 
+                    className={`w-full rounded border border-stroke ${size === "small" ? 'py-1.5 px-2' : 'py-3 px-4.5'}  
                     text-black focus:border-primary focus-visible:outline-none dark:border-strokedark 
                     dark:bg-meta-4 dark:text-white dark:focus:border-primary${errorData}`}
                     type={inputType}

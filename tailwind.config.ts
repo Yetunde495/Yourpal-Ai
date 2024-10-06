@@ -257,6 +257,7 @@ export default {
         "spin-1.5": "spin 1.5s linear infinite",
         "spin-2": "spin 2s linear infinite",
         "spin-3": "spin 3s linear infinite",
+        'gradient-move': 'gradientMove 8s linear infinite',
       },
       keyframes: {
         scroll: {
@@ -285,6 +286,11 @@ export default {
             opacity: 1,
             transform: "translate(-50%,-40%) scale(1)",
           },
+        },
+        gradientMove: {
+          '0%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' },
         },
       },
     },
