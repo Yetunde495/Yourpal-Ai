@@ -15,8 +15,11 @@ import { TfiLayout } from "react-icons/tfi";
 import { AiOutlineLayout } from "react-icons/ai";
 import {
   BasicInfo,
+  CustomTextSection,
   Education,
   Experience,
+  Hobbies,
+  Languages,
   ProfessionalSummary,
   Skills,
 } from "../ApplicantComponents";
@@ -65,6 +68,22 @@ const ResumeEditor: React.FC = () => {
   const [showPalette, setShowPalette] = useState(false);
   const [showPalette2, setShowPalette2] = useState(false);
 
+  const [config, setConfig] = useState({
+    photo: true,
+    about: true,
+    experience: true,
+    location: true,
+    education: true,
+    skills: true,
+    languages: false,
+    hobbies: false,
+    email: true,
+    website: true,
+    phone: true,
+    linkedin: false,
+    role: true,
+  });
+
   const [resumeData, setResumeData] = useState<any>({
     style: {
       primary_color: "#0077B5",
@@ -90,15 +109,103 @@ const ResumeEditor: React.FC = () => {
         duration: "",
       },
     ],
-    skills: [" "],
+    skills: [""],
+    languages: [""],
   });
+
+  const [sectionCount, setSectionCount] = useState(0); // To track the number of sections added
+  const [customSections, setCustomSections] = useState<any[]>([]);
+  const [sectionType, setSectionType] = useState("");
+  const [sectionPlacement, setSectionPlacement] = useState("");
+
+  // Function to add a new section to resumeData
+  const addCustomSection = (type: string, placement: string) => {
+    const newSection = {
+      name: `customSection${sectionCount + 1}`,
+      type: type, // Store the type
+      placement: placement, // Store the placement
+      content: type === "list" ? [""] : "", // Initialize based on type
+    };
+
+    // Add to customSections array
+    setCustomSections((prevSections) => [...prevSections, newSection]);
+
+    // Only add the section name as a key to resumeData
+    setResumeData((prevData: any) => ({
+      ...prevData,
+      [`customSection${sectionCount + 1}`]: newSection.content, // Add key and initial value to resumeData
+    }));
+    setSectionCount((prevCount) => prevCount + 1);
+  };
+
+  const updateSectionName = (oldName: string, newName: string) => {
+    // Update customSections array
+    setCustomSections((prevSections) =>
+      prevSections.map((section) =>
+        section.name === oldName ? { ...section, name: newName } : section
+      )
+    );
+
+    // Update resumeData by changing the key from oldName to newName
+    setResumeData((prevData: any) => {
+      const { [oldName]: sectionContent, ...rest } = prevData;
+  
+      // Check if oldName is a placeholder (e.g., "customSection1")
+      const isPlaceholder = oldName.startsWith("customSection");
+  
+      // If the old name is a placeholder, remove it and add the new name
+      if (isPlaceholder) {
+        removeSection(oldName)       
+      }
+  
+      // If the old name is not a placeholder, just update the name
+      return {
+        ...rest, // Retain everything
+        [newName]: sectionContent, // Update the name
+      };
+    });
+  };
+
+  // Function to update section content
+  const updateSectionContent = (
+    sectionName: string,
+    newContent: string | string[]
+  ) => {
+    // Update the customSections array
+    setCustomSections((prevSections) =>
+      prevSections.map((section) =>
+        section.name === sectionName
+          ? { ...section, content: newContent }
+          : section
+      )
+    );
+
+    // Update the content in the resumeData object
+    setResumeData((prevData: any) => ({
+      ...prevData,
+      [sectionName]: newContent, // Update the content of the section in resumeData
+    }));
+  };
+
+  const removeSection = (sectionName: string) => {
+    // Remove the section from the customSections array
+    setCustomSections((prevSections) =>
+      prevSections.filter((section) => section.name !== sectionName)
+    );
+
+    // Remove the section from the resumeData object
+    setResumeData((prevData: any) => {
+      const { [sectionName]: _, ...rest } = prevData;
+      return rest; // Return the remaining sections in resumeData
+    });
+  };
 
   const [on, setOn] = useState(false);
 
   return (
     <div className="">
       <div className="shadow-2 lg:px-9 md:px-6 px-2 py-3 mb-6">
-        <div className="flex space-x-3 items-center relative w-full z-9999">
+        <div className="flex flex-wrap space-x-3 items-center relative w-full z-9999">
           <Menu setActive={setActive}>
             <MenuItem
               setActive={setActive}
@@ -292,56 +399,56 @@ const ResumeEditor: React.FC = () => {
                     <ul className="space-y-2.5">
                       <li>
                         <Switch
-                          checked
-                          value={on}
+                          checked={config.location}
+                          value={config.location}
                           label="Location"
                           size="sm"
                           onChange={(val) => {
-                            setOn(val);
+                            setConfig((c) => ({ ...c, location: val }));
                           }}
                         />
                       </li>
                       <li>
                         <Switch
-                          checked
-                          value={on}
+                          checked={config.phone}
+                          value={config.phone}
                           label="Phone Number"
                           size="sm"
                           onChange={(val) => {
-                            setOn(val);
+                            setConfig((c) => ({ ...c, phone: val }));
                           }}
                         />
                       </li>
                       <li>
                         <Switch
-                          checked
-                          value={on}
+                          checked={config.email}
+                          value={config.email}
                           label="Email"
                           size="sm"
                           onChange={(val) => {
-                            setOn(val);
+                            setConfig((c) => ({ ...c, email: val }));
                           }}
                         />
                       </li>
                       <li>
                         <Switch
-                          checked
-                          value={on}
+                          checked={config.website}
+                          value={config.website}
                           label="Website"
                           size="sm"
                           onChange={(val) => {
-                            setOn(val);
+                            setConfig((c) => ({ ...c, website: val }));
                           }}
                         />
                       </li>
                       <li>
                         <Switch
-                          checked
-                          value={on}
+                          checked={config.linkedin}
+                          value={config.linkedin}
                           label="Linkedin"
                           size="sm"
                           onChange={(val) => {
-                            setOn(val);
+                            setConfig((c) => ({ ...c, linkedin: val }));
                           }}
                         />
                       </li>
@@ -374,89 +481,101 @@ const ResumeEditor: React.FC = () => {
                     <ul className="space-y-2.5">
                       <li>
                         <Switch
-                          checked
-                          value={on}
+                          checked={config.photo}
+                          value={config.photo}
                           label="Picture"
                           size="sm"
                           onChange={(val) => {
-                            setOn(val);
+                            setConfig((c) => ({ ...c, photo: val }));
                           }}
                         />
                       </li>
                       <li>
                         <Switch
-                          checked
-                          value={on}
+                          checked={config.about}
+                          value={config.about}
                           label="About Me"
                           size="sm"
                           onChange={(val) => {
-                            setOn(val);
+                            setConfig((c) => ({ ...c, about: val }));
                           }}
                         />
                       </li>
                       <li>
                         <Switch
-                          checked
-                          value={on}
+                          checked={config.role}
+                          value={config.role}
                           label="Role"
                           size="sm"
                           onChange={(val) => {
-                            setOn(val);
+                            setConfig((c) => ({ ...c, role: val }));
                           }}
                         />
                       </li>
                       <li>
                         <Switch
-                          checked
-                          value={on}
+                          checked={config.experience}
+                          value={config.experience}
                           label="Work Experience"
                           size="sm"
                           onChange={(val) => {
-                            setOn(val);
+                            setConfig((c) => ({ ...c, experience: val }));
                           }}
                         />
                       </li>
                       <li>
                         <Switch
-                          checked
-                          value={on}
+                          checked={config.education}
+                          value={config.education}
                           label="Education"
                           size="sm"
                           onChange={(val) => {
-                            setOn(val);
+                            setConfig((c) => ({ ...c, education: val }));
                           }}
                         />
                       </li>
                       <li>
                         <Switch
-                          checked
-                          value={on}
+                          checked={config.skills}
+                          value={config.skills}
                           label="Skills"
                           size="sm"
                           onChange={(val) => {
-                            setOn(val);
+                            setConfig((c) => ({ ...c, skills: val }));
                           }}
                         />
                       </li>
                       <li>
                         <Switch
-                          checked
-                          value={on}
+                          checked={config.languages}
+                          value={config.languages}
                           label="Languages"
                           size="sm"
                           onChange={(val) => {
-                            setOn(val);
+                            if (!resumeData?.hobbies) {
+                              setResumeData((rd: any) => ({
+                                ...rd,
+                                languages: [""],
+                              }));
+                            }
+                            setConfig((c) => ({ ...c, languages: val }));
                           }}
                         />
                       </li>
                       <li>
                         <Switch
-                          checked
-                          value={on}
+                          checked={config.hobbies}
+                          value={config.hobbies}
                           label="Hobbies"
                           size="sm"
                           onChange={(val) => {
-                            setOn(val);
+                            if (!resumeData?.hobbies) {
+                              setResumeData((rd: any) => ({
+                                ...rd,
+                                hobbies: [""],
+                              }));
+                            }
+                            setConfig((c) => ({ ...c, hobbies: val }));
                           }}
                         />
                       </li>
@@ -464,21 +583,48 @@ const ResumeEditor: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex gap-2 items-center">
-                  <Select4>
-                    <option disabled>Select Type</option>
-                    <option>Text Section</option>
-                    <option>List Section</option>
-                  </Select4>
-                  <Select4>
-                    <option disabled>Select Placement</option>
-                    <option>Left Column</option>
-                    <option>Right Column</option>
-                  </Select4>
+                <div className="py-2">
+                  <p className="font-semibold text-sm mb-0">
+                    Add a Custom Section
+                  </p>
+                  <div className="flex gap-2 items-center pb-12">
+                    <Select4
+                      value={sectionType}
+                      onChange={(val: string) => setSectionType(val)}
+                    >
+                      <option value={""}>Select Type</option>
+                      <option value={"text"}>Text Section</option>
+                      <option value={"list"}>List Section</option>
+                    </Select4>
+                    {resumeData?.template === "basic" ? (
+                        <Select4
+                          value={sectionPlacement}
+                          onChange={(val: string) => setSectionPlacement(val)}
+                        >
+                          <option value={""}>Select Placement...</option>
+                          <option value="top">Top Part</option>
+                          <option value="bottom">Bottom Part</option>
+                        </Select4>
+                    ) : (
+                      <Select4
+                        value={sectionPlacement}
+                        onChange={(val: string) => setSectionPlacement(val)}
+                      >
+                        <option value={""}>Select Placement...</option>
+                        <option value={"left"}>Left Column</option>
+                        <option value={"right"}>Right Column</option>
+                      </Select4>
+                    )}
 
-                  <button className="border w-[16%] h-[38px] bg-jobseeker/10 text-sm mt-2 flex justify-center items-center rounded-md border-jobseeker hover:bg-jobseeker hover:text-white">
-                    <FaPlus />
-                  </button>
+                    <button
+                      onClick={() =>
+                        addCustomSection(sectionType, sectionPlacement)
+                      }
+                      className="border w-[16%] h-[38px] bg-jobseeker/10 text-sm mt-2 flex justify-center items-center rounded-md border-jobseeker hover:bg-jobseeker hover:text-white"
+                    >
+                      <FaPlus />
+                    </button>
+                  </div>
                 </div>
               </div>
             </MenuItem>
@@ -526,15 +672,23 @@ const ResumeEditor: React.FC = () => {
         </div>
       </div>
 
-      <div className="pl-8">
-        <div className="flex gap-3">
-          <div>
+      <div className="lg:pl-8 pl-1">
+        <div className="grid grid-cols-4 gap-3 w-full">
+          <div className="lg:col-span-3 col-span-4">
             {resumeData?.template === "basic" && (
-              <div className="bg-white py-8 px-6 w-full ">
+              <div className="bg-white py-8 px-6 w-full overflow-x-auto custom-scrollbar">
+                <button
+                  onClick={() => {
+                    console.log(resumeData);
+                    console.log(customSections);
+                  }}
+                >
+                  Console
+                </button>
                 <div className="flex w-full justify-between  mb-25">
                   <div className="flex flex-col mt-10">
                     <input
-                      className={`border-none bg-white focus:bg-zinc-200 px-3 font-medium text-[40px] dynamic-input`}
+                      className={`border-none bg-white focus:bg-zinc-200  px-3 font-medium text-[40px] dynamic-input`}
                       style={{ color: resumeData?.style?.primary_color }}
                       placeholder="Your Name"
                       value={resumeData?.name}
@@ -545,17 +699,19 @@ const ResumeEditor: React.FC = () => {
                         }))
                       }
                     />
-                    <input
-                      className={`border-none text-lg bg-white text-black mr-2 uppercase placeholder:text-black focus:bg-zinc-200 px-4 font-bold`}
-                      placeholder="YOUR ROLE"
-                      value={resumeData?.role}
-                      onChange={(e) =>
-                        setResumeData((r: any) => ({
-                          ...r,
-                          role: e.target.value,
-                        }))
-                      }
-                    />
+                    {config.role && (
+                      <input
+                        className={`border-none text-lg bg-white text-black mr-2 uppercase placeholder:text-black focus:bg-zinc-200 px-4 font-bold`}
+                        placeholder="YOUR ROLE"
+                        value={resumeData?.role}
+                        onChange={(e) =>
+                          setResumeData((r: any) => ({
+                            ...r,
+                            role: e.target.value,
+                          }))
+                        }
+                      />
+                    )}
                     <style>
                       {`
               .dynamic-input::placeholder {
@@ -564,66 +720,132 @@ const ResumeEditor: React.FC = () => {
             `}
                     </style>
                   </div>
-                  <div>
-                    <UploadResumePhoto
-                      user={null}
-                      setUrl={(val) =>
-                        setResumeData((r: any) => ({ ...r, photo_url: val }))
-                      }
-                    />
-                  </div>
+                  {config.photo && (
+                    <div>
+                      <UploadResumePhoto
+                        user={null}
+                        setUrl={(val) =>
+                          setResumeData((r: any) => ({ ...r, photo_url: val }))
+                        }
+                      />
+                    </div>
+                  )}
                 </div>
 
-                <div>
-                  <ProfessionalSummary
-                    resumeData={resumeData}
-                    setResumeData={setResumeData}
-                  />
-                </div>
+                {config.about && (
+                  <div>
+                    <ProfessionalSummary
+                      resumeData={resumeData}
+                      setResumeData={setResumeData}
+                    />
+                  </div>
+                )}
 
                 <div className="mt-3 mb-9 px-5">
                   <BasicInfo
                     resumeData={resumeData}
                     setResumeData={setResumeData}
+                    config={config}
                   />
                 </div>
 
-                <div>
-                  <Experience
-                    resumeData={resumeData}
-                    setResumeData={setResumeData}
-                  />
+                <div className="flex w-full flex-col gap-4">
+                  {customSections
+                    .filter((section) => section.placement === "top")
+                    .map((section, index) => (
+                      <div key={index}>
+                        <CustomTextSection
+                          props={{
+                            key: section.name,
+                            section: resumeData[section.name],
+                            updateSectionName: updateSectionName,
+                            updateSectionContent: updateSectionContent,
+                          }}
+                          handleRemove={() => removeSection(section.name)}
+                        />
+                      </div>
+                    ))}
                 </div>
 
-                <div className="mt-7">
-                  <Education
-                    resumeData={resumeData}
-                    setResumeData={setResumeData}
-                  />
-                </div>
+                {config.experience && (
+                  <div>
+                    <Experience
+                      resumeData={resumeData}
+                      setResumeData={setResumeData}
+                    />
+                  </div>
+                )}
 
-                <div className="mt-7">
-                  <Skills
-                    resumeData={resumeData}
-                    setResumeData={setResumeData}
-                  />
+                {config.education && (
+                  <div className="mt-7">
+                    <Education
+                      resumeData={resumeData}
+                      setResumeData={setResumeData}
+                    />
+                  </div>
+                )}
+
+                {config.skills && (
+                  <div className="mt-7">
+                    <Skills
+                      resumeData={resumeData}
+                      setResumeData={setResumeData}
+                    />
+                  </div>
+                )}
+                {config.languages && (
+                  <div className="mt-7">
+                    <Languages
+                      resumeData={resumeData}
+                      setResumeData={setResumeData}
+                    />
+                  </div>
+                )}
+                {config.hobbies && (
+                  <div className="mt-7">
+                    <Hobbies
+                      resumeData={resumeData}
+                      setResumeData={setResumeData}
+                    />
+                  </div>
+                )}
+                {/* Dynamically render custom sections */}
+                <div className="flex w-full flex-col gap-4">
+                  {customSections
+                    .filter((section) => section.placement === "bottom")
+                    .map((section, index) => (
+                      <div key={index}>
+                        <CustomTextSection
+                          props={{
+                            key: section.name,
+                            section: resumeData[section.name],
+                            updateSectionName: updateSectionName,
+                            updateSectionContent: updateSectionContent,
+                            
+                          }}
+                          handleRemove={() => removeSection(section.name)}
+                        />
+                      </div>
+                    ))}
                 </div>
               </div>
             )}
 
-             {resumeData?.template === "standard" && (
-              <div className="bg-white py-8 px-6 w-full ">
-                <div className="flex w-full gap-x-6  mb-20">
-                  
-                  <div>
-                    <UploadResumePhoto
-                      user={null}
-                      setUrl={(val) =>
-                        setResumeData((r: any) => ({ ...r, photo_url: val }))
-                      }
-                    />
-                  </div>
-                  <div className="flex flex-col mt-10">
+            {resumeData?.template === "standard" && (
+              <div className="bg-white py-8 px-6 w-full">
+                <div className="flex w-full gap-1  mb-15">
+                  {config.photo && (
+                    <div>
+                      <UploadResumePhoto
+                        user={null}
+                        props={{ size: "w-60 h-60" }}
+                        setUrl={(val) =>
+                          setResumeData((r: any) => ({ ...r, photo_url: val }))
+                        }
+                      />
+                    </div>
+                  )}
+                  <div className="flex flex-col mt-15">
                     <input
                       className={`border-none bg-white focus:bg-zinc-200 px-3 font-medium text-[40px] dynamic-input`}
                       style={{ color: resumeData?.style?.primary_color }}
@@ -636,17 +858,19 @@ const ResumeEditor: React.FC = () => {
                         }))
                       }
                     />
-                    <input
-                      className={`border-none text-lg bg-white text-black mr-2 uppercase placeholder:text-black focus:bg-zinc-200 px-4 font-bold`}
-                      placeholder="YOUR ROLE"
-                      value={resumeData?.role}
-                      onChange={(e) =>
-                        setResumeData((r: any) => ({
-                          ...r,
-                          role: e.target.value,
-                        }))
-                      }
-                    />
+                    {config.role && (
+                      <input
+                        className={`border-none text-lg bg-white text-black mr-2 uppercase placeholder:text-black focus:bg-zinc-200 px-4 font-bold`}
+                        placeholder="YOUR ROLE"
+                        value={resumeData?.role}
+                        onChange={(e) =>
+                          setResumeData((r: any) => ({
+                            ...r,
+                            role: e.target.value,
+                          }))
+                        }
+                      />
+                    )}
                     <style>
                       {`
               .dynamic-input::placeholder {
@@ -657,50 +881,70 @@ const ResumeEditor: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-4">
-                 <div>
-                 <div>
-                  <ProfessionalSummary
-                    resumeData={resumeData}
-                    setResumeData={setResumeData}
-                  />
-                </div>
-                <div className="mt-3 mb-9 px-5">
-                  <BasicInfo
-                    resumeData={resumeData}
-                    setResumeData={setResumeData}
-                  />
-                </div>
-                 </div>
-                 <div className="col-span-3">
-                 <div>
-                  <Experience
-                    resumeData={resumeData}
-                    setResumeData={setResumeData}
-                  />
-                </div>
+                <div className="flex gap-1 w-full">
+                  <div className="max-w-60">
+                    {config.about && (
+                      <div>
+                        <ProfessionalSummary
+                          resumeData={resumeData}
+                          setResumeData={setResumeData}
+                        />
+                      </div>
+                    )}
+                    <div className="mt-3 mb-9 px-5">
+                      <BasicInfo
+                        resumeData={resumeData}
+                        setResumeData={setResumeData}
+                        config={config}
+                      />
+                    </div>
+                  </div>
+                  <div className="w-full">
+                    {config.experience && (
+                      <div>
+                        <Experience
+                          resumeData={resumeData}
+                          setResumeData={setResumeData}
+                        />
+                      </div>
+                    )}
 
-                <div className="mt-7">
-                  <Education
-                    resumeData={resumeData}
-                    setResumeData={setResumeData}
-                  />
+                    {config.education && (
+                      <div className="mt-7">
+                        <Education
+                          resumeData={resumeData}
+                          setResumeData={setResumeData}
+                        />
+                      </div>
+                    )}
+
+                    {config.skills && (
+                      <div className="mt-7">
+                        <Skills
+                          resumeData={resumeData}
+                          setResumeData={setResumeData}
+                        />
+                      </div>
+                    )}
+
+                    {config.languages && (
+                      <div className="mt-7">
+                        <Languages
+                          resumeData={resumeData}
+                          setResumeData={setResumeData}
+                        />
+                      </div>
+                    )}
+                    {config.hobbies && (
+                      <div className="mt-7">
+                        <Hobbies
+                          resumeData={resumeData}
+                          setResumeData={setResumeData}
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
-
-                <div className="mt-7">
-                  <Skills
-                    resumeData={resumeData}
-                    setResumeData={setResumeData}
-                  />
-                </div>
-                 </div>
-                </div>
-
-                
-
-              
-
-               
               </div>
             )}
           </div>

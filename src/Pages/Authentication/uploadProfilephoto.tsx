@@ -10,6 +10,7 @@ import { MdOutlineFileUpload } from "react-icons/md";
 interface UploadProfilePhotoProps {
   setUrl: React.Dispatch<React.SetStateAction<string>>;
   user: any;
+  props?: any;
 }
 
 const UploadProfilePhoto: React.FC<UploadProfilePhotoProps> = ({
@@ -170,6 +171,7 @@ export const UploadUserPhoto: React.FC<UploadProfilePhotoProps> = ({
 export const UploadResumePhoto: React.FC<UploadProfilePhotoProps> = ({
   setUrl,
   user,
+  props,
 }) => {
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [logoUrl, setLogoUrl] = useState<string>("");
@@ -211,19 +213,19 @@ export const UploadResumePhoto: React.FC<UploadProfilePhotoProps> = ({
   return (
     <label className="items-center">
       <div className="cursor-pointer">
-        <div className="relative w-50">
+        <div className={`relative ${props?.size ? props?.size : 'w-40'}`}>
           {loading ? (
-            <div className="bg-zinc-400 w-50 h-50 flex justify-center items-center rounded-full animate-pulse">
+            <div className={`bg-zinc-400 ${props?.size ? props?.size : 'w-40 h-40'} flex justify-center items-center rounded-full animate-pulse`}>
               <BiLoaderAlt size={40} className="animate-spin text-white" />
             </div>
           ) : logoUrl ? (
             <img
-              className="w-50 h-50 rounded-full absolute"
+              className={`rounded-full absolute ${props?.size ? props?.size : 'w-40 h-40'}`}
               src={logoUrl}
               alt=""
             />
           ) : (
-            <div className="w-50 h-50 group bg-zinc-400 hover:bg-zinc-500 text-white text-sm rounded-full absolute flex flex-col space-y-2 justify-center items-center cursor-pointer transition duration-500">
+            <div className={`${props?.size ? props?.size : 'w-40 h-40'} group bg-zinc-400 hover:bg-zinc-500 text-white text-sm rounded-full absolute flex flex-col space-y-2 justify-center items-center cursor-pointer transition duration-500`}>
               <MdOutlineFileUpload />
               <p>Upload Image</p>
             </div>

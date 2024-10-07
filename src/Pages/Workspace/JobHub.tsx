@@ -93,6 +93,7 @@ Ahmed Mohammad AlDhraif AlShamsi
     status: "Rejected",
     name: "Resume 2",
     job: null,
+    cover_letter: null,
   },
 ];
 
@@ -112,6 +113,7 @@ const JobHub: React.FC = () => {
   const [addNew, setAddNew] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [renameModal, setRenameModal] = useState(false);
+  const [noLetterModal, setNoLetterModal] = useState(false);
 
   const { data, isFetching } = useQuery(
     ["ALL CLASSROOMS", search, page, itemsPerPage],
@@ -274,7 +276,13 @@ const JobHub: React.FC = () => {
                           <div>
                             <Tooltip2 text="View">
                               <button
-                                onClick={() => setLetterModal(true)}
+                                onClick={() => {
+                                  if (item?.cover_letter) {
+                                    setLetterModal(true);
+                                  } else {
+                                    setNoLetterModal(true);
+                                  }
+                                }}
                                 className="hover:bg-stone-200 rounded-md p-[2.5px]"
                               >
                                 <BsEye />
@@ -473,6 +481,38 @@ const JobHub: React.FC = () => {
         isLoading={false}
         isLoadingText="Deleting..."
       />
+      {noLetterModal && (
+        <div>
+          <Modal
+            show={noLetterModal}
+            onHide={() => setNoLetterModal(false)}
+            props={{ roundedMd: false }}
+            size="w-full lg:max-w-[500px]"
+          >
+            <div className="mb-9 text-center">
+              <h1 className="font-outfit font-medium text-2xl text-black">
+                Oops! No Cover letter Found for this resume
+              </h1>
+              <p>To Create cover letter, this resume needs to be tailored</p>
+            </div>
+
+            <div className="flex w-full flex-col gap-5 justify-center items-center">
+              <Button variant="jobseeker" rounded onClick={() => {}} width="[80%]">
+                Tailor Resume
+              </Button>
+              <Button
+                variant="outline-jobseeker"
+                width="[80%]"
+                rounded
+                onClick={() => setNoLetterModal(false)}
+                size="lg"
+              >
+                Cancel
+              </Button>
+            </div>
+          </Modal>
+        </div>
+      )}
     </section>
   );
 };

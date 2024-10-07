@@ -26,7 +26,7 @@ export const MenuItem = ({
   children?: React.ReactNode;
 }) => {
   return (
-    <div onMouseEnter={() => setActive(id)} className="relative">
+    <div onMouseEnter={() => setActive(id)} className="relative bg-[#F2F4F6]">
       <motion.div
         transition={{ duration: 0.3 }}
         className="cursor-pointer z-9999 text-black hover:opacity-[0.9] flex space-x-2 items-center"
@@ -40,11 +40,11 @@ export const MenuItem = ({
           transition={transition}
         >
           {active === id && (
-            <div className="absolute left-1/2 transform -translate-x-1/2 pt-5">
+            <div className="absolute left-1/2 z-99 transform -translate-x-1/2 pt-5">
               <motion.div
                 transition={transition}
                 layoutId="active" // layoutId ensures smooth animation
-                className="bg-white backdrop-blur-sm rounded-md overflow-hidden border border-stroke shadow-xl"
+                className="bg-white  backdrop-blur-sm rounded-md overflow-hidden border border-stroke shadow-xl"
               >
                 <motion.div
                   layout // layout ensures smooth animation
@@ -71,7 +71,7 @@ export const Menu = ({
   return (
     <nav
       onMouseLeave={() => setActive(null)} // resets the state
-      className="relative rounded-full border border-transparent flex justify-center space-x-4 "
+      className="relative border border-transparent bg-[#F2F4F6] flex flex-wrap md:justify-center gap-4 "
     >
       {children}
     </nav>

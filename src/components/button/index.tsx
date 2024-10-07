@@ -24,7 +24,7 @@ interface ButtonProps {
     | "danger"
     | "light"
     | "link"
-    | "transparent" | "outline-primary" | "jobseeker" | "recruiter" | "socialpal";
+    | "transparent" | "outline-primary" | "jobseeker" | "outline-jobseeker" | "recruiter" | "socialpal";
   classNames?: string;
   btnProps?: any;
   elevation?: number;
@@ -135,7 +135,10 @@ export default function Button({
       ? "bg-transparent text-black hover:bg-slate-200 border border-slate-300"
       : variant === "outline-primary" 
       ? "bg-white border border-primary text-primary hover:bg-secondary hover:text-white"
-      : "bg-gray text-black";
+      : variant === "outline-jobseeker" 
+      ? "bg-white border border-jobseeker text-jobseeker hover:bg-jobseeker hover:text-white"
+      :
+      "bg-gray text-black";
   let btnCls = `flex justify-center transition disabled:opacity-65 ${bgColor} ${
     rounded ? "rounded-full" : "rounded-md"
   } ${size === "lg" ? "py-2 px-10" : "py-2 px-6"}  font-medium `;
