@@ -11,7 +11,8 @@ import PersonaPages from "./Pages/Persona/Index";
 import TemplatePages from "./Pages/Template/Index";
 import SavedProfilePages from "./Pages/SavedProfiles/Index";
 import SocialpalPages from "./Pages/SocialPal/Index";
-import JobseekerPages from "./Pages/JobSeeker/Index"
+import JobseekerPages from "./Pages/JobSeeker/Index";
+import RecruitmentPages from "./Pages/Recruitment/Index";
 
 axios.defaults.baseURL = "";
 
@@ -88,10 +89,6 @@ function App() {
                   element={<DashboardPages.Workspace />}
                 />
                 <Route
-                  path="/app/recruiter"
-                  element={<DashboardPages.Recruitment />}
-                />
-                <Route
                   path="/app/persona"
                   element={<PersonaPages.PersonaMgt />}
                 />
@@ -139,33 +136,34 @@ function App() {
                   path="/app/saved-profiles/manage-list"
                   element={<SavedProfilePages.ManageList />}
                 />
-                <Route
-                  path="/app/recruiter/application-builder/:id"
-                  element={<DashboardPages.ApplicationBuilder />}
-                />
-                <Route
-                  path="/app/recruiter/branding/:id"
-                  element={<DashboardPages.Branding />}
-                />
               </Route>
-
               {/* SOCIAL PAL PAGES */}
               <Route
                 path="/app/profile-optimization"
                 element={<SocialpalPages.LinkedinOptimization />}
               />
               {/* SOCIAL PAL PAGES */}
-
-               {/* JOBSEEKER  PAGES */}
-               <Route
+              {/* JOBSEEKER  PAGES */}
+              <Route
                 path="/app/jobseeker"
                 element={<JobseekerPages.Jobhub />}
               />
-                <Route
+              <Route
                 path="/app/resume-builder"
                 element={<JobseekerPages.ResumeBuilder />}
               />
               {/* JOBSEEKER PAGES */}
+              {/* RECRUITER  PAGES */}
+              <Route
+                path="/app/recruiter"
+                element={<RecruitmentPages.TalentHub />}
+              />
+
+              <Route
+                path="/app/application-builder/:id?"
+                element={<RecruitmentPages.ApplicationBuilder />}
+              />
+              {/* RECRUITER  PAGES */}
             </>
           </Routes>
         </Router>
