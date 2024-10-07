@@ -139,7 +139,7 @@ const TalentHub: React.FC = () => {
     docTitle: string
   ) => {
     try {
-      navigate(`/app/recruiter/application-builder/${pdfId}`, {
+      navigate(`/app/application-builder/${pdfId}`, {
         state: {
           documentUrl,
           docTitle,
@@ -250,21 +250,21 @@ const TalentHub: React.FC = () => {
                           defaultValue={{
                             label: (
                               <div className="w-full flex gap-2 items-center">
-                              <span>
-                                {item?.status === "Potentials" ? (
-                                  <FaStar className="text-primary" />
-                                ) : item?.status === "Hired" ? (
-                                  <FaCircleCheck className="text-success" />
-                                ) : item?.status === "Rejected" ? (
-                                  <MdCancel className="text-danger" />
-                                ) : item?.status === "Shortlisted" ? (
-                                  <FaTrophy className="text-warning" />
-                                ) : (
-                                  <BiSolidArchiveIn className="text-[#545454CC]" />
-                                )}
-                              </span>
-                              <span>{item?.status}</span>
-                            </div>
+                                <span>
+                                  {item?.status === "Potentials" ? (
+                                    <FaStar className="text-primary" />
+                                  ) : item?.status === "Hired" ? (
+                                    <FaCircleCheck className="text-success" />
+                                  ) : item?.status === "Rejected" ? (
+                                    <MdCancel className="text-danger" />
+                                  ) : item?.status === "Shortlisted" ? (
+                                    <FaTrophy className="text-warning" />
+                                  ) : (
+                                    <BiSolidArchiveIn className="text-[#545454CC]" />
+                                  )}
+                                </span>
+                                <span>{item?.status}</span>
+                              </div>
                             ),
                             value: item?.status,
                           }}

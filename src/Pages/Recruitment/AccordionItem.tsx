@@ -25,7 +25,7 @@ export const AccordionItem = ({ header, text, children }: any) => {
         </div>
 
         <div className="">
-          <Icons.download />
+          <Icons.arrowDown />
         </div>
       </button>
 
