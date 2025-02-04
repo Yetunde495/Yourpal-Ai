@@ -5,10 +5,10 @@ import { BiLoaderAlt } from 'react-icons/bi';
 
 
 
-// export const Loader = ({show, useWhiteBg}:any) => show ? 
-// <div className={`dc-loader-main${useWhiteBg ? ' dc-loader-white' : ''}`}>
-//     <div className='dc-loader' />
-// </div> : null
+interface SkeletonLoaderProps {
+  style?: React.CSSProperties;
+}
+
 export const Loader = ({ show, useWhiteBg, size }: any) =>
   show ? (
     <div
@@ -76,6 +76,22 @@ export const TableLoader = ({ height }: { height?: string }) => {
       size={80}
       className="text-primary animate-spin"
       />
+    </div>
+  );
+};
+
+export const SkeletonLoader: React.FC<SkeletonLoaderProps> = ({ style }) => {
+  return (
+    <div className=''>
+    <div
+      className="react-loading-skeleton rounded-md"
+      style={{
+        height: style?.height || '20px',
+        width: style?.width || '100%',
+        borderRadius: style?.borderRadius || '4px',
+        ...style,
+      }}
+    ></div>
     </div>
   );
 };

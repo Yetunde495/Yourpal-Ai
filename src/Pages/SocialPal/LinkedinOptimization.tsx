@@ -17,7 +17,7 @@ import ReadMoreComponent from "../../components/ReadMore";
 
 const LinkedinOptimization: React.FC = () => {
   const [linkedinURL, setURL] = useState("");
-  const [resultView, setResultView] = useState(true);
+  const [resultView, _setResultView] = useState(false);
   return (
     <DefaultLayout>
       <section className="py-6 px-1 md:px-6">
@@ -134,7 +134,7 @@ const LinkedinOptimization: React.FC = () => {
 };
 
 const OptimizationView: React.FC = () => {
-  const [defaultData, setDefaultdata] = useState<any>({
+  const [defaultData, _setDefaultdata] = useState<any>({
     logoUrl: "",
     name: "Helen Cooper",
     services: ["Project Management", "Product Development"],
@@ -230,7 +230,7 @@ She is currently seeking job opportunities to expand skills, and gain valuable r
               <h1 className="font-outfit text-xl font-medium mb-4">Skills</h1>
                
               <ul role="list" className="space-y-4 list-none">
-                {defaultData?.services.map((val: any, index: number) => (
+                {defaultData?.services.map((_val: any, index: number) => (
                   <li key={index} className="">
                     
                   </li>

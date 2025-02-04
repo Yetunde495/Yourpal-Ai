@@ -144,7 +144,7 @@ const Signin: React.FC = () => {
           </div>
         </div>
         <div className="lg:w-2/5 lg:block hidden h-screen relative">
-          <div className="lg:w-2/5 fixed right-0 top-0 text-white pl-9 lg:flex justify-center rounded-l-[64px] items-center hidden h-screen bg-gradient">
+          <div className="lg:w-2/5 fixed right-0 top-0 text-white pl-9 lg:flex justify-center rounded-l-[64px] items-center hidden h-screen rotating-gradient-div">
             <AuthSlider />
           </div>
         </div>

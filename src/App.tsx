@@ -13,6 +13,7 @@ import SavedProfilePages from "./Pages/SavedProfiles/Index";
 import SocialpalPages from "./Pages/SocialPal/Index";
 import JobseekerPages from "./Pages/JobSeeker/Index";
 import RecruitmentPages from "./Pages/Recruitment/Index";
+import HeroSection from "./Pages/Landing/landing";
 
 axios.defaults.baseURL = "";
 
@@ -69,7 +70,7 @@ function App() {
         <Router>
           <Routes>
             <>
-              <Route path="/" element={<LandingPages.Homepage />} />
+              <Route path="/" element={<HeroSection />} />
               <Route path="/signin" element={<AuthPages.Signin />} />
               <Route path="/signup" element={<AuthPages.Signup />} />
               <Route

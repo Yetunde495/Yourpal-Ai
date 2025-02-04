@@ -1,6 +1,6 @@
 import { useState } from "react";
 import SlideTab, { Cursor } from "../../AnimatedUi/SlideTabs";
-import Modal from "../../components/modal";
+import Modal, { FullModal } from "../../components/modal";
 import { ScrollArea } from "../../components/scroll-area";
 import { useApp } from "../../context/AppContext";
 import { DropdownSelect } from "../../components/form/customDropdown";
@@ -11,6 +11,7 @@ import FieldInput from "../../components/form/Input";
 import { TextArea } from "../../components/form";
 import BtnIcon from "../../assets/btnIcon.png";
 import { useNavigate } from "react-router-dom";
+import ApplicationResult from "../PageComponents/ApplicationResult";
 
 type Position = {
   left: number;
@@ -39,13 +40,18 @@ const NewApplicationKit: React.FC<{ show: boolean; onClose: () => void }> = ({
   });
   const [imported, setImported] = useState(false);
   const [importLoading, setImportingLoading] = useState(false);
+  const [isResultready, setIsResultready] = useState(false);
+  const [formView, setFormView] = useState(show)
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedOption(event.target.value);
   };
   return (
     <div>
-      <Modal show={show} onHide={onClose}>
+      <Modal show={formView} onHide={() => {
+        setFormView(false)
+        onClose()
+      }}>
         <div className="mb-10 text-center flex flex-col w-full justify-center items-center">
           <h2 className="text-black text-2xl mb-2.5 font-outfit font-semibold">
             Create New
@@ -282,7 +288,10 @@ const NewApplicationKit: React.FC<{ show: boolean; onClose: () => void }> = ({
               >
                 Close
               </button>
-              <button className="group relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 text-sm font-medium text-gray-900 rounded-full group bg-gradient-to-br from-[#60BEE2] via-[#5E4D84] to-[#8FC2DA] group-hover:from-[#60BEE2] group-hover:via-[#5E4D84] group-hover:to-[#8FC2DA] hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800">
+              <button onClick={() => {
+                setFormView(false)
+                setIsResultready(true)
+              }} className="group relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 text-sm font-medium text-gray-900 rounded-full group bg-gradient-to-br from-[#60BEE2] via-[#5E4D84] to-[#8FC2DA] group-hover:from-[#60BEE2] group-hover:via-[#5E4D84] group-hover:to-[#8FC2DA] hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800">
                 <span className="relative px-8 py-1 transition-all ease-in duration-200 bg-white dark:bg-gray-900 rounded-full group-hover:bg-opacity-0 flex gap-2">
                   <img src={BtnIcon} /> Generate
                 </span>
@@ -514,7 +523,7 @@ const NewApplicationKit: React.FC<{ show: boolean; onClose: () => void }> = ({
                   Continue
                 </button>
               ) : (
-                <button className="group relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 text-sm font-medium text-gray-900 rounded-full group bg-gradient-to-br from-[#60BEE2] via-[#5E4D84] to-[#8FC2DA] group-hover:from-[#60BEE2] group-hover:via-[#5E4D84] group-hover:to-[#8FC2DA] hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800">
+                <button onClick={() => setIsResultready(true)} className="group relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 text-sm font-medium text-gray-900 rounded-full group bg-gradient-to-br from-[#60BEE2] via-[#5E4D84] to-[#8FC2DA] group-hover:from-[#60BEE2] group-hover:via-[#5E4D84] group-hover:to-[#8FC2DA] hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800">
                   <span className="relative px-8 py-1 transition-all ease-in duration-200 bg-white dark:bg-gray-900 rounded-full group-hover:bg-opacity-0 flex gap-2">
                     <img src={BtnIcon} /> Generate
                   </span>
@@ -524,6 +533,9 @@ const NewApplicationKit: React.FC<{ show: boolean; onClose: () => void }> = ({
           </div>
         )}
       </Modal>
+      <FullModal show={isResultready} onHide={onClose}>
+        <ApplicationResult />
+      </FullModal>
     </div>
   );
 };

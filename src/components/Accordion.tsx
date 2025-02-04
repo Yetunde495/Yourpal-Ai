@@ -1,5 +1,5 @@
 // src/components/Accordion.tsx
-import React, { useState } from "react";
+import React, {useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { motion } from "framer-motion";
 
@@ -67,11 +67,13 @@ const Accordion: React.FC<AccordionProps> = ({ items, initialOpenIndex }) => {
 };
 
 export const ContentAccordion: React.FC<Accordion2Props> = ({ title, children }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(window.innerWidth <= 768 ? true : false);
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
   };
+
+ 
 
   return (
     <div className="w-full lg:flex lg:gap-4">

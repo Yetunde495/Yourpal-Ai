@@ -15,6 +15,7 @@ import { TfiLayout } from "react-icons/tfi";
 import { AiOutlineLayout } from "react-icons/ai";
 import {
   BasicInfo,
+  CustomListSection,
   CustomTextSection,
   Education,
   Experience,
@@ -149,15 +150,15 @@ const ResumeEditor: React.FC = () => {
     // Update resumeData by changing the key from oldName to newName
     setResumeData((prevData: any) => {
       const { [oldName]: sectionContent, ...rest } = prevData;
-  
+
       // Check if oldName is a placeholder (e.g., "customSection1")
       const isPlaceholder = oldName.startsWith("customSection");
-  
+
       // If the old name is a placeholder, remove it and add the new name
       if (isPlaceholder) {
-        removeSection(oldName)       
+        removeSection(oldName);
       }
-  
+
       // If the old name is not a placeholder, just update the name
       return {
         ...rest, // Retain everything
@@ -205,7 +206,7 @@ const ResumeEditor: React.FC = () => {
   return (
     <div className="">
       <div className="shadow-2 lg:px-9 md:px-6 px-2 py-3 mb-6">
-        <div className="flex flex-wrap space-x-3 items-center relative w-full z-9999">
+        <div className="flex flex-wrap space-x-3 items-center relative w-full z-99">
           <Menu setActive={setActive}>
             <MenuItem
               setActive={setActive}
@@ -597,22 +598,22 @@ const ResumeEditor: React.FC = () => {
                       <option value={"list"}>List Section</option>
                     </Select4>
                     {resumeData?.template === "basic" ? (
-                        <Select4
-                          value={sectionPlacement}
-                          onChange={(val: string) => setSectionPlacement(val)}
-                        >
-                          <option value={""}>Select Placement...</option>
-                          <option value="top">Top Part</option>
-                          <option value="bottom">Bottom Part</option>
-                        </Select4>
+                      <Select4
+                        value={sectionPlacement}
+                        onChange={(val: string) => setSectionPlacement(val)}
+                      >
+                        <option value={""}>Select Placement...</option>
+                        <option value="top">Top Part</option>
+                        <option value="bottom">Bottom Part</option>
+                      </Select4>
                     ) : (
                       <Select4
                         value={sectionPlacement}
                         onChange={(val: string) => setSectionPlacement(val)}
                       >
                         <option value={""}>Select Placement...</option>
-                        <option value={"left"}>Left Column</option>
-                        <option value={"right"}>Right Column</option>
+                        <option value={"top"}>Left Column</option>
+                        <option value={"bottom"}>Right Column</option>
                       </Select4>
                     )}
 
@@ -754,15 +755,28 @@ const ResumeEditor: React.FC = () => {
                     .filter((section) => section.placement === "top")
                     .map((section, index) => (
                       <div key={index}>
-                        <CustomTextSection
-                          props={{
-                            key: section.name,
-                            section: resumeData[section.name],
-                            updateSectionName: updateSectionName,
-                            updateSectionContent: updateSectionContent,
-                          }}
-                          handleRemove={() => removeSection(section.name)}
-                        />
+                        {section?.type === "list" ? (
+                          <CustomListSection
+                            props={{
+                              key: section.name,
+                              section: resumeData[section.name],
+                              sectionContent: resumeData[section.name],
+                              updateSectionName: updateSectionName,
+                              updateSectionContent: updateSectionContent,
+                            }}
+                            handleRemove={() => removeSection(section.name)}
+                          />
+                        ) : (
+                          <CustomTextSection
+                            props={{
+                              key: section.name,
+                              section: resumeData[section.name],
+                              updateSectionName: updateSectionName,
+                              updateSectionContent: updateSectionContent,
+                            }}
+                            handleRemove={() => removeSection(section.name)}
+                          />
+                        )}
                       </div>
                     ))}
                 </div>
@@ -815,16 +829,28 @@ const ResumeEditor: React.FC = () => {
                     .filter((section) => section.placement === "bottom")
                     .map((section, index) => (
                       <div key={index}>
-                        <CustomTextSection
-                          props={{
-                            key: section.name,
-                            section: resumeData[section.name],
-                            updateSectionName: updateSectionName,
-                            updateSectionContent: updateSectionContent,
-                            
-                          }}
-                          handleRemove={() => removeSection(section.name)}
-                        />
+                        {section?.type === "list" ? (
+                          <CustomListSection
+                            props={{
+                              key: section.name,
+                              section: resumeData[section.name],
+                              sectionContent: resumeData[section.name],
+                              updateSectionName: updateSectionName,
+                              updateSectionContent: updateSectionContent,
+                            }}
+                            handleRemove={() => removeSection(section.name)}
+                          />
+                        ) : (
+                          <CustomTextSection
+                            props={{
+                              key: section.name,
+                              section: resumeData[section.name],
+                              updateSectionName: updateSectionName,
+                              updateSectionContent: updateSectionContent,
+                            }}
+                            handleRemove={() => removeSection(section.name)}
+                          />
+                        )}
                       </div>
                     ))}
                 </div>
@@ -898,6 +924,24 @@ const ResumeEditor: React.FC = () => {
                         config={config}
                       />
                     </div>
+
+                    <div className="flex w-full flex-col gap-4">
+                      {customSections
+                        .filter((section) => section.placement === "top")
+                        .map((section, index) => (
+                          <div key={index}>
+                            <CustomTextSection
+                              props={{
+                                key: section.name,
+                                section: resumeData[section.name],
+                                updateSectionName: updateSectionName,
+                                updateSectionContent: updateSectionContent,
+                              }}
+                              handleRemove={() => removeSection(section.name)}
+                            />
+                          </div>
+                        ))}
+                    </div>
                   </div>
                   <div className="w-full">
                     {config.experience && (
@@ -943,6 +987,25 @@ const ResumeEditor: React.FC = () => {
                         />
                       </div>
                     )}
+
+                    {/* Dynamically render custom sections */}
+                    <div className="flex w-full flex-col gap-4">
+                      {customSections
+                        .filter((section) => section.placement === "bottom")
+                        .map((section, index) => (
+                          <div key={index}>
+                            <CustomTextSection
+                              props={{
+                                key: section.name,
+                                section: resumeData[section.name],
+                                updateSectionName: updateSectionName,
+                                updateSectionContent: updateSectionContent,
+                              }}
+                              handleRemove={() => removeSection(section.name)}
+                            />
+                          </div>
+                        ))}
+                    </div>
                   </div>
                 </div>
               </div>

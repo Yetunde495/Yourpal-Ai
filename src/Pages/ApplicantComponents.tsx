@@ -1436,3 +1436,187 @@ export const Hobbies: React.FC<{
     </div>
   );
 };
+
+
+export const CustomListSection: React.FC<{
+  props: any;
+  handleRemove: () => void;
+}> = ({ props, handleRemove }) => {
+  const [hoveredItemId, setHoveredItemId] = useState<number | null>(null);
+  const [showButton, setShowButton] = useState(false);
+  const [items, setItems] = useState<any[]>(
+    props?.sectionContent?.map((val: string, index: number) => ({
+      id: index + 1,
+      value: val,
+    }))
+  );
+  const [draggingItem, setDraggingItem] = useState<any | null>(null);
+
+  useEffect(() => {
+    setItems(
+      props?.sectionContent?.map((val: string, index: number) => ({
+        id: index + 1,
+        value: val,
+      }))
+    );
+  }, [props?.sectionContent]);
+
+  const handleDragStart = (
+    e: React.DragEvent<HTMLDivElement | HTMLButtonElement>,
+    item: any
+  ) => {
+    setDraggingItem(item);
+    e.dataTransfer.setData("text/plain", "");
+  };
+
+  const handleDragEnd = () => {
+    setDraggingItem(null);
+  };
+
+  const handleDragOver = (
+    e: React.DragEvent<HTMLDivElement | HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (
+    _e: React.DragEvent<HTMLDivElement | HTMLButtonElement>,
+    targetItem: any
+  ) => {
+    if (!draggingItem) return;
+
+    const currentIndex = items.indexOf(draggingItem);
+    const targetIndex = items.indexOf(targetItem);
+
+    if (currentIndex !== -1 && targetIndex !== -1) {
+      const updatedItems = [...items];
+      updatedItems.splice(currentIndex, 1);
+      updatedItems.splice(targetIndex, 0, draggingItem);
+
+      setItems(updatedItems);
+      props.updateSectionContent(
+        props.key,
+        updatedItems.map((item: any) => item.value)
+      );
+    }
+  };
+
+  const handleRemoveItem = (id: number) => {
+    const updatedItems = items.filter((item) => item.id !== id);
+    setItems(updatedItems);
+    props.updateSectionContent(
+      props.key,
+      updatedItems.map((item: any) => item.value)
+    );
+  };
+
+  // Handler to add new item
+  const addItem = () => {
+    const newItem = { id: items.length + 1, value: "" };
+    const updatedItems = [...items, newItem];
+    setItems(updatedItems);
+    props.updateSectionContent(
+      props.key,
+      updatedItems.map((item: any) => item.value)
+    );
+  };
+
+  const handleInputChange = (id: number, field: string, value: string) => {
+    const updatedItems = items.map((item) =>
+      item.id === id ? { ...item, [field]: value } : item
+    );
+    setItems(updatedItems);
+    props.updateSectionContent(
+      props.key,
+      updatedItems.map((item: any) => item.value)
+    );
+  };
+
+  return (
+    <div
+      key={props.key}
+      onMouseEnter={() => setShowButton(true)}
+      onMouseLeave={() => setShowButton(false)}
+      className="hover:border border-dashed rounded-md border-spacing-1 px-2 py-3"
+    >
+       <div className="w-full flex justify-end">
+          {showButton && (
+            <div className="-mt-4.5">
+              <button
+                onClick={handleRemove}
+                className="h-6 w-6 flex justify-center items-center border-none text-jobseeker/90 hover:text-jobseeker text-xl"
+              >
+                <FaCircleMinus />
+              </button>
+            </div>
+          )}
+        </div>
+      <div className="w-full flex justify-between">
+        {/* Section name input */}
+        <input
+          type="text"
+          placeholder="Section Name"
+          className="font-bold mb-2 text-black bg-white focus:bg-zinc-100 uppercase py-[2px] px-4 w-full"
+          value={props.sectionName || ""}
+          onChange={(e) =>
+            props.updateSectionName(props.key, e.target.value)
+          }
+        />
+      </div>
+
+      <div className="flex flex-wrap gap-x-4 gap-y-3 ml-3">
+        {items.map((item, index) => (
+          <div
+            key={index}
+            onMouseEnter={() => setHoveredItemId(item.id)}
+            onMouseLeave={() => setHoveredItemId(null)}
+            className={`item ${
+              item.id === draggingItem?.id ? "shadow-3" : ""
+            } relative text-black py-0`}
+            draggable="true"
+            onDragStart={(e) => handleDragStart(e, item)}
+            onDrop={(e) => handleDrop(e, item)}
+            onDragEnd={handleDragEnd}
+            onDragOver={handleDragOver}
+          >
+            <div className="py-1 bg-zinc-100 rounded-lg">
+              {hoveredItemId === item.id && (
+                <div className="flex w-full gap-1 justify-end -mt-4">
+                  <div className="bg-white/15 flex gap-1 items-center">
+                    <button
+                      onClick={addItem}
+                      className="h-6 w-6 flex justify-center items-center border-none text-jobseeker/90 hover:text-jobseeker text-xl"
+                    >
+                      <BsPlusCircleFill />
+                    </button>
+                    {items.length > 1 && (
+                      <button
+                        onClick={() => handleRemoveItem(item.id)}
+                        className="h-6 w-6 flex justify-center items-center border-none text-jobseeker/90 hover:text-jobseeker text-xl"
+                      >
+                        <FaCircleMinus />
+                      </button>
+                    )}
+                    {items.length > 1 && (
+                      <button className=" h-6 w-6 flex justify-center items-center rounded-full border-none text-white bg-jobseeker cursor-grab">
+                        <RiExpandUpDownLine />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+              <input
+                className={`border-none text-base text-black placeholder:text-black bg-zinc-100 px-2`}
+                placeholder="Enter Item"
+                value={item.value}
+                onChange={(e) =>
+                  handleInputChange(item.id, "value", e.target.value)
+                }
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
